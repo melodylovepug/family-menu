@@ -107,13 +107,13 @@ def plain(text):
 
 CATS = D['categories']
 
-def norm(t): return re.sub(r'\s+', '', t).lower()
+def norm(t): return re.sub(r'\s+', '', t.replace('（', '(').replace('）', ')')).lower()
 def last_eaten():
-    """Most recent date each menu dish appears in D['history'] (matched on name or 'aka')."""
+    """Most recent date each menu dish appears in D['history'] (matched on name or its explicit 'aliases')."""
     idx = {}
     for c in CATS:
         for d in c['dishes']:
-            for k in [d['name']] + d.get('aka', []): idx[norm(k)] = d['name']
+            for k in [d['name']] + d.get('aliases', []): idx[norm(k)] = d['name']
     last = {}
     for h in D.get('history', []):
         for raw in h['dishes']:
@@ -553,7 +553,7 @@ function renderPick(note){const L=document.getElementById('pick-list');L.innerHT
   row.style.cssText='--ca:'+pal[0]+';--cd:'+pal[1]+';--cb:'+pal[2];
   const th=x.p?'<img class="pr-th" src="'+x.p+'" alt="" loading="lazy">':'<span class="pr-th">'+x.i+'</span>';
   const tags=[x.k==='cold'?'凉菜·蔬菜':x.m];if(x.k==='cold'&&x.m!=='素')tags.push(x.m);if(x.s)tags.push('汤');
-  const last=x.l?'<span class="pr-last">上次 '+Number(x.l.slice(5,7))+'/'+Number(x.l.slice(8))+'</span>':'';
+  const last=x.l?'<span class="pr-last">'+(daysAgo(x.l,new Date())<0?'已计划 ':'上次 ')+Number(x.l.slice(5,7))+'/'+Number(x.l.slice(8))+'</span>':'';
   row.innerHTML='<button type="button" class="pr-item" aria-pressed="'+marked.has(i)+'"><span class="pr-chk" aria-hidden="true"></span>'+th+
    '<span class="pr-tx"><span class="pr-n"></span><span class="pr-tags">'+tags.map(t=>'<span>'+t+'</span>').join('')+last+'</span></span>'+
    '<span class="pr-go">'+(x.o?'做法 ›':'卡片 ›')+'</span></button><button type="button" class="pr-sw" aria-label="换掉这道"><b>🔄</b><small>换</small></button>';

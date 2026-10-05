@@ -52,7 +52,7 @@
      ],
      "photo": "img/14874549add276.jpg",
      "recipe": "主料：short rib 带骨的最好. 5lb\n## 配料\n1. 苹果2\n2. 🍐 梨 1\n3. 葱姜蒜\n4. 洋葱\n5. 萝卜\n6. 年糕\n7. 土豆\n## 调料\n1. 韩式辣椒酱\n2. 韩式辣椒粉\n3. 红糖\n## 步骤\n1. 牛仔骨放锅里，加水 葱姜料酒 凉水，焯水\n2. 切大块萝卜（红白都行）土豆 洋葱 备用\n3. 切苹果 梨 葱 姜 8瓣蒜 一个洋葱 2片姜 切碎放入破壁机加一点水打成糊\n4. 排骨和糊糊都放高压锅里，加调料（4勺生抽 1勺红糖 2勺韩式辣酱 1勺韩式辣椒粉）高压一起炖 20分钟\n5. 排骨和调料加入切好的配菜放锅里，尝一下味道，根据口味补加辣酱，辣椒粉，盐，生抽，煮 20分钟。加年糕煮 5分钟，加青辣椒，葱花\n![](img:韩式炖short rib)\n[小红书 · 芝加哥的肥面猫](http://xhslink.com/a/Iztz3omDT9n0)",
-     "aka": [
+     "aliases": [
       "short rib"
      ]
     },
@@ -60,6 +60,9 @@
      "name": "清炖牛肋骨条",
      "tag": null,
      "meat": "牛",
+     "aliases": [
+      "牛肋条蘸酱"
+     ],
      "ingredients": "牛肋 · 生姜 · 大葱 · 洋葱 · 桂皮 · 花椒",
      "note": "清炖2小时",
      "links": [
@@ -172,6 +175,9 @@
      "name": "排骨炖豆角",
      "tag": null,
      "meat": "猪",
+     "aliases": [
+      "排骨土豆炖豆角"
+     ],
      "ingredients": "",
      "note": "",
      "links": [],
@@ -255,7 +261,7 @@
      ],
      "photo": "img/10c7454959e934.jpg",
      "recipe": "食材：带骨鸡腿，白胡椒，黑胡椒。\n配菜：白菜，鸡腿菇，豆腐\n调料：大蒜，洋葱，生姜\n[小红书 · 范范的菜](http://xhslink.com/a/WxugKJ8Q3cpW)\n## 步骤\n1. 鸡腿切成中块。用白色的铸铁锅\n2. 准备切块的 大蒜，洋葱，生姜，黑胡椒白胡椒，热油稍微炒一下\n3. 加入调料：一勺蚝油，两勺老抽，白勺汁\n4. 热锅热油翻炒葱姜蒜出香味\n5. 放入 白菜，豆腐， 上面铺上鸡腿。稍微加一些水\n6. 闷住5分钟后放入酱料\n7. 再焖煮10分钟，撒上葱\n![](img:胡椒鸡腿白菜煲)",
-     "aka": [
+     "aliases": [
       "白菜胡椒鸡腿"
      ],
      "photo_ai": "img/10c7454959e934-ai.jpg"
@@ -300,6 +306,9 @@
      "name": "大盘鸡",
      "tag": null,
      "meat": "鸡",
+     "aliases": [
+      "大盘鸡(加面的)"
+     ],
      "ingredients": "鸡肉 · 土豆 · 青红椒 · 洋葱 · 面 · 郫县豆瓣酱 · 葱姜蒜 · 干辣椒 · 花椒 · 八角 · 桂皮 · 香叶",
      "note": "",
      "links": [],
@@ -435,6 +444,9 @@
      "name": "椒麻云片虾",
      "tag": null,
      "meat": "龙虾/虾",
+     "aliases": [
+      "云片虾"
+     ],
      "ingredients": "虾仁 · 花椒粉 · 生粉 · 香菜 · 葱 · 姜 · 花椒油",
      "note": "",
      "links": [],
@@ -605,6 +617,28 @@
      "links": [],
      "photo": null,
      "recipe": ""
+    },
+    {
+     "id": "d70",
+     "name": "东北大拌菜",
+     "tag": null,
+     "meat": "素",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
+    },
+    {
+     "id": "d71",
+     "name": "凉拌莴笋",
+     "tag": null,
+     "meat": "素",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
     }
    ]
   },
@@ -674,6 +708,10 @@
      "name": "牛腩/牛肋条包菜罗宋汤",
      "tag": null,
      "meat": "牛",
+     "aliases": [
+      "牛腩卷心菜土豆罗宋汤",
+      "牛肋条罗宋汤"
+     ],
      "ingredients": "",
      "note": "",
      "links": [],
@@ -1663,9 +1701,37 @@
  "history_source": {
   "page": "https://app.notion.com/p/d4a373f265764fdbbb72f754b2ed546e",
   "fetched": "2026-10-04",
-  "page_last_edited": "2026-08-23 PT"
+  "page_last_edited": "2026-08-23 PT",
+  "note": "9/28, 10/1 (eaten) and 10/5 (planned) entries logged by Melody directly (2026-10-04)"
  },
  "history": [
+  {
+   "date": "2026-10-05",
+   "dishes": [
+    "云片虾",
+    "大盘鸡(加面的)",
+    "冬瓜丸子汤"
+   ],
+   "planned": true
+  },
+  {
+   "date": "2026-10-01",
+   "dishes": [
+    "牛腩卷心菜土豆罗宋汤",
+    "泰式酸辣鸡腿",
+    "东北大拌菜"
+   ]
+  },
+  {
+   "date": "2026-09-28",
+   "dishes": [
+    "Monie",
+    "排骨土豆炖豆角",
+    "牛肋条蘸酱",
+    "黄芽菜肉丝年糕",
+    "凉拌莴笋"
+   ]
+  },
   {
    "date": "2026-08-24",
    "dishes": [
