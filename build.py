@@ -115,6 +115,8 @@ def last_eaten():
     for c in CATS:
         for d in c['dishes']:
             for k in [d['name']] + d.get('aliases', []): idx[norm(k)] = d['name']
+    for t in D['todo']:
+        if t.get('recent'): idx.setdefault(norm(t['name']), t['name'])
     last = {}
     for h in D.get('history', []):
         for raw in h['dishes']:
@@ -166,8 +168,14 @@ for c in CATS:
         if c['id'] in NO_PICK or m == '甜品' or d.get('tag') == '甜品': continue      # never 午餐 / 其他 / dessert
         kind = 'cold' if c['id'] == 'cold' else ('main' if m and m != '素' else None)
         if not kind: continue                                                    # veg-only mains/staples are skipped
-        PICK.append(dict(id=DID[id(d)], n=d['name'], k=kind, m=m, s=(c['id'] == 'soup' or '汤' in d['name']),
+        PICK.append(dict(id=DID[id(d)], n=d['name'], k=kind, m=m, s=(c['id'] == 'soup' or '汤' in d['name']), t=bool(d.get('recent')),
                          r=has_body(d), o=bool(has_recipe(d) or d['ingredients'] or d['note'] or d['links'] or d.get('photo')), p=d.get('photo') or '', i=c['icon'], c=c['id'], l=LAST.get(d['name'], '')))
+# 最近-tagged 待做 items join the pool as mains (needs a protein tag); at most ONE 待做/最近 dish per pick or swap result.
+TID = {id(t): t.get('id') or f't{i}' for i, t in enumerate(D['todo'], 1)}
+for t in D['todo']:
+    if t.get('recent') and t.get('meat') and t['meat'] not in ('素', '甜品'):
+        PICK.append(dict(id=TID[id(t)], n=t['name'], k='main', m=t['meat'], s='汤' in t['name'], t=True, r=False,
+                         o=bool(t.get('link') or t.get('details') or t.get('ingredients')), p='', i='🌸', c='todo', l=LAST.get(t['name'], '')))
 total = sum(len(c['dishes']) for c in CATS)
 out = []
 PAL = {"beef":("#e2cdc4","#8a5f4f","#f6efeb"),"pork":("#efd9dc","#a36f78","#fbf2f3"),"poultry":("#e8dfc8","#8c7a4e","#f8f5ec"),"sea":("#d9e0e7","#66778a","#f2f4f6"),
@@ -283,6 +291,7 @@ footer::before{{content:"🍙 🍡 🍵";display:block;font-size:18px;margin-bot
 .dish.empty{{cursor:default}}.dish.empty:hover{{background:none}}
 .open{{font-size:12px;font-weight:700;color:var(--cd);background:#fff;border:1.5px solid var(--ca);padding:4px 10px;border-radius:999px;font-family:inherit;cursor:pointer}}
 .cam{{font-size:12px;opacity:.75}}
+.recent{{font-size:10px;font-weight:800;color:#fff;background:#a89a8c;border-radius:999px;padding:0 8px;line-height:1.7;letter-spacing:.08em;flex:0 0 auto}}
 .tbd{{font-size:10.5px;font-weight:700;color:var(--mute);border:1.2px dashed #d6ccc2;border-radius:999px;padding:0 7px;line-height:1.6;background:rgba(255,255,255,.6)}}
 .dish.bare{{padding-top:9px;padding-bottom:9px}}
 .dish.bare .name{{font-weight:700;color:#5e544a}}
@@ -445,7 +454,7 @@ span.pr-th{{display:flex;align-items:center;justify-content:center;font-size:24p
 <h1>{E(D["title"])}</h1><div class="jp">「{E(D["subtitle"])}」</div>
 <div class="sub">Home Menu · {total} 道拿手菜 · {len(CATS)} 类 · 点菜名看做法</div><div class="washi"></div></header>
 <section class="pick" id="pick"><div class="pick-row"><select class="pick-n" id="pick-n" aria-label="选几道菜">{"".join(f'<option value="{i}"{" selected" if i == 4 else ""}>{i} 道</option>' for i in range(2, 9))}</select><button class="pick-btn" id="pick-go" type="button">🎲 帮我选 4 道菜</button></div>
-<div class="pick-cap"><span id="pick-capn">1 道凉菜/蔬菜 + 3 道荤菜</span> · <span>主蛋白不重复</span> · <span>最多 1 个汤</span> · <span>不选午餐/其他/甜品</span> · <span>尽量避开近 2 周吃过的</span></div>
+<div class="pick-cap"><span id="pick-capn">1 道凉菜/蔬菜 + 3 道荤菜</span> · <span>主蛋白不重复</span> · <span>最多 1 个汤</span> · <span>最多 1 道「最近」待做</span> · <span>不选午餐/其他/甜品</span> · <span>尽量避开近 2 周吃过的</span></div>
 <div class="pick-res hide" id="pick-res" aria-live="polite"><div class="pr-head"><span>🍱 今日菜单 <small>きょうのこんだて</small></span><button class="pr-re" id="pick-re" type="button">🔄 换一组</button></div>
 <div class="pr-list" id="pick-list"></div>
 <div class="pr-bar"><span class="pr-hint" id="pick-hint"></span><button class="pr-tool" id="pick-sel" type="button">☑️ 多选换菜</button><button class="pr-tool pr-do" id="pick-swap" type="button" disabled>换掉选中的</button></div>
@@ -469,6 +478,7 @@ for c in CATS:
         s = (f'<div class="dish{" empty bare" if bare else ""}" id="{DID[id(d)]}" data-cat="{c["id"]}" '
              f'data-s="{E((d["name"]+" "+d["ingredients"]+" "+d["note"]+" "+plain(d["recipe"])).lower())}">'
              f'<div class="row">{th}<span class="name">{E(d["name"])}</span>')
+        if d.get('recent'): s += '<span class="recent">最近</span>'
         if bare or d.get('tbd'): s += '<span class="tbd" title="做法待补充">待补充</span>'
         s += '</div>'
         if not bare:   # sheet: link tags on top, then ingredients/notes, photo(s), steps
@@ -488,12 +498,19 @@ out.append('</div>')
 TODO_PAL = ("#e3ddd5", "#7d7468", "#f7f5f2")
 out.append(f'<section class="card todo-card" id="todo" style="--ca:{TODO_PAL[0]};--cd:{TODO_PAL[1]};--cb:{TODO_PAL[2]}">'
            f'<h2><span class="ic">📝</span>待做 <small>To try</small><span class="n">{len(D["todo"])}</span></h2><div class="todo-list">')
-for i, t in enumerate(D['todo'], 1):   # same card component as the menu; a sheet only when there is a link
+for i, t in enumerate(D['todo'], 1):   # same card component as the menu; a sheet when there is a link / ingredients
     links = [dict(label='小红书' if 'xhslink' in t['link'] else '食谱', url=t['link'])] if t.get('link') else []
-    _, refs = split_refs(t['details'], links)
-    s = (f'<div class="dish{"" if refs else " empty"}" id="t{i}" data-cat="todo" data-s="{E((t["name"]+" "+t["note"]).lower())}">'
-         f'<div class="row"><span class="dth ic" aria-hidden="true">🌸</span><span class="name">{E(t["name"])}</span></div>')
-    if refs: s += f'<div class="rcp-src" data-ic="📝" data-cat="待做 · To try">{ref_html(refs, "待做:" + t["name"])}</div>'
+    body, refs = split_refs(t['details'], links)
+    ing = t.get('ingredients', '')
+    sheet = bool(refs or ing or body.strip())
+    s = (f'<div class="dish{"" if sheet else " empty"}" id="{TID[id(t)]}" data-cat="todo" data-s="{E((t["name"]+" "+t["note"]+" "+ing+(" 最近" if t.get("recent") else "")).lower())}">'
+         f'<div class="row"><span class="dth ic" aria-hidden="true">🌸</span><span class="name">{E(t["name"])}</span>'
+         + ('<span class="recent">最近</span>' if t.get('recent') else '') + '</div>')
+    if sheet:
+        summ = f'<div class="sh-sum"><div class="ing">{E(ing)}</div></div>' if ing else ''
+        steps = md(body, t.get('ing_photo')) if body.strip() else ''
+        if ing or body.strip(): steps += '<p class="tbd-steps">做法步骤 待补充</p>'
+        s += f'<div class="rcp-src" data-ic="📝" data-cat="待做 · To try">{ref_html(refs, "待做:" + t["name"])}{summ}{steps}</div>'
     out.append(s + '</div>')
 out.append('</div></section>')
 
@@ -545,10 +562,10 @@ document.querySelectorAll('a.wkd').forEach(a=>a.addEventListener('click',e=>{con
  if(d.querySelector('.rcp-src'))openDish(d);else{d.scrollIntoView({behavior:'smooth',block:'center'});d.classList.remove('flash');void d.offsetWidth;d.classList.add('flash');}}));
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDish();});
 /* 帮我选菜: N dishes (2-8) = exactly 1 cold/veg + (N-1) meat/seafood mains; no protein repeated across ALL picks
-   (the cold dish's protein counts unless it is 素), <=1 soup, no dessert,
+   (the cold dish's protein counts unless it is 素), <=1 soup, <=1 dish from 待做/最近, no dessert,
    skip dishes eaten <=14 days ago. Relax order: the 2-week rule first; protein repeats only if there aren't enough proteins. */
 const PK=JSON.parse(document.getElementById('pick-data').textContent);
-const PAL_JS={beef:["#e2cdc4","#8a5f4f","#f6efeb"],pork:["#efd9dc","#a36f78","#fbf2f3"],poultry:["#e8dfc8","#8c7a4e","#f8f5ec"],sea:["#d9e0e7","#66778a","#f2f4f6"],cold:["#dbe2d4","#6f7f67","#f3f5f0"],soup:["#ead8cc","#93705a","#f8f1ec"],staple:["#e6dccd","#8e7b62","#f8f4ee"]};
+const PAL_JS={todo:["#e3ddd5","#7d7468","#f7f5f2"],beef:["#e2cdc4","#8a5f4f","#f6efeb"],pork:["#efd9dc","#a36f78","#fbf2f3"],poultry:["#e8dfc8","#8c7a4e","#f8f5ec"],sea:["#d9e0e7","#66778a","#f2f4f6"],cold:["#dbe2d4","#6f7f67","#f3f5f0"],soup:["#ead8cc","#93705a","#f8f1ec"],staple:["#e6dccd","#8e7b62","#f8f4ee"]};
 function daysAgo(iso,today){if(!iso)return Infinity;const p=iso.split('-').map(Number);
  const t=Date.UTC(today.getFullYear(),today.getMonth(),today.getDate());return Math.round((t-Date.UTC(p[0],p[1]-1,p[2]))/864e5);}
 function wOrder(arr,w,rnd){return arr.map(x=>[Math.pow(rnd(),1/w(x)),x]).sort((p,q)=>q[0]-p[0]).map(p=>p[1]);}
@@ -569,9 +586,9 @@ function fillSlots(kept,kinds,excl,today,rnd,accept){today=today||new Date();rnd
   const w=x=>(x.r?3:1)*(recent(x)?.25:1);
   let first=null;
   for(let t=0;t<80;t++){
-   const used=new Set(kept.filter(isMeat).map(x=>x.m));let soups=kept.filter(x=>x.s).length;const got=[];
-   const ok=(x,strict)=>!got.includes(x)&&!(x.s&&soups)&&(!strict||!isMeat(x)||!used.has(x.m));
-   const take=x=>{got.push(x);if(isMeat(x))used.add(x.m);if(x.s)soups++;};
+   const used=new Set(kept.filter(isMeat).map(x=>x.m));let soups=kept.filter(x=>x.s).length,tds=kept.filter(x=>x.t).length;const got=[];
+   const ok=(x,strict)=>!got.includes(x)&&!(x.s&&soups)&&!(x.t&&tds)&&(!strict||!isMeat(x)||!used.has(x.m));
+   const take=x=>{got.push(x);if(isMeat(x))used.add(x.m);if(x.s)soups++;if(x.t)tds++;};
    const fill=(pool,need)=>{const o=wOrder(pool,w,rnd);let c=0;
     for(const x of o){if(c===need)break;if(ok(x,true)){take(x);c++;}}
     if(rp)for(const x of o){if(c===need)break;if(ok(x,false)){take(x);c++;}}
@@ -610,7 +627,7 @@ function renderPick(note){const L=document.getElementById('pick-list');L.innerHT
   row.className='pr-row'+(marked.has(i)?' on':'')+(fresh.includes(i)?' new':'');row.dataset.id=x.id;row.dataset.i=i;
   row.style.cssText='--ca:'+pal[0]+';--cd:'+pal[1]+';--cb:'+pal[2];
   const th=x.p?'<img class="pr-th" src="'+x.p+'" alt="" loading="lazy">':'<span class="pr-th">'+x.i+'</span>';
-  const tags=[x.k==='cold'?'凉菜·蔬菜':x.m];if(x.k==='cold'&&x.m!=='素')tags.push(x.m);if(x.s)tags.push('汤');
+  const tags=[x.k==='cold'?'凉菜·蔬菜':x.m];if(x.k==='cold'&&x.m!=='素')tags.push(x.m);if(x.s)tags.push('汤');if(x.t)tags.push('最近');
   const last=x.l?'<span class="pr-last">'+(daysAgo(x.l,new Date())<0?'已计划 ':'上次 ')+Number(x.l.slice(5,7))+'/'+Number(x.l.slice(8))+'</span>':'';
   row.innerHTML='<button type="button" class="pr-item" aria-pressed="'+marked.has(i)+'"><span class="pr-chk" aria-hidden="true"></span>'+th+
    '<span class="pr-tx"><span class="pr-n"></span><span class="pr-tags">'+tags.map(t=>'<span>'+t+'</span>').join('')+last+'</span></span>'+

@@ -278,6 +278,17 @@
      ],
      "photo": "img/1ae745498aa58f.jpg",
      "recipe": "![](img:蒜泥白肉)\n[小红书 · 17 麦三斤](http://xhslink.com/a/53t2gEyx3Ic7)"
+    },
+    {
+     "id": "d81",
+     "name": "凉拌猪耳",
+     "tag": null,
+     "meat": "猪",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
     }
    ]
   },
@@ -525,6 +536,21 @@
      "links": [],
      "photo": null,
      "recipe": ""
+    },
+    {
+     "id": "d82",
+     "name": "Cajun 海鲜 (Hot n Juicy style)",
+     "tag": null,
+     "meat": "虾",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": "",
+     "aliases": [
+      "Hotn juicy cajun style",
+      "Hot n Juicy"
+     ]
     }
    ]
   },
@@ -1078,264 +1104,298 @@
  ],
  "todo": [
   {
+   "id": "t45",
+   "name": "熟醉虾",
+   "note": "",
+   "link": "http://xhslink.com/o/42hC6npNCVN",
+   "details": "[小红书 · 饭封神2 陈明媚 · May的熟醉虾教程](http://xhslink.com/o/42hC6npNCVN)\n![](img:熟醉虾)\n## 腌汁\n- 豉油鸡汁 100g\n- 味极鲜 50g\n- 薄盐酱油 100g\n- 清酒 100g\n- 啤酒 250g\n- 糖 100g\n- 白酒 25g\n- 黄酒 25g\n- 话梅、陈皮 各30g\n- 干辣椒、青花椒 各5g\n- 姜片 5片\n- 柠檬片 5片\n- 白胡椒 约3g（截图里被挡住一部分，约量）",
+   "recent": true,
+   "meat": "虾",
+   "ingredients": "虾 · 腌汁（见下）",
+   "ing_photo": "img/shuzuixia-ing.jpg"
+  },
+  {
+   "id": "t1",
    "name": "油闷大虾（带壳🦐）",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t2",
    "name": "蒜蓉粉丝虾滑煲",
    "note": "",
    "link": "http://xhslink.com/a/tVOtKAO9AFs3",
    "details": "[小红书 · DABAI食记](http://xhslink.com/a/tVOtKAO9AFs3)"
   },
   {
+   "id": "t3",
    "name": "凉拌手撕鸡",
    "note": "",
    "link": "http://xhslink.com/a/CflUX2V5U2lW",
    "details": "[小红书 · Jrake](http://xhslink.com/a/CflUX2V5U2lW)"
   },
   {
+   "id": "t4",
    "name": "三鲜菌菇汤",
    "note": "",
    "link": "http://xhslink.com/a/27oNtNI1hGs3",
    "details": "[小红书 · 杨小咩](http://xhslink.com/a/27oNtNI1hGs3)"
   },
   {
+   "id": "t5",
    "name": "Chicken Katsu",
    "note": "Mochi Mommy",
    "link": "https://t.co/WnmllowJ1K",
    "details": "[The Best Chicken Katsu Recipe - Mochi Mommy](https://t.co/WnmllowJ1K)"
   },
   {
+   "id": "t6",
    "name": "虎虾莴笋醋冻",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t7",
    "name": "上海冷面",
    "note": "",
    "link": null,
    "details": ""
   },
   {
-   "name": "凉拌猪耳",
-   "note": "",
-   "link": null,
-   "details": ""
-  },
-  {
+   "id": "t9",
    "name": "肉末酸豆角",
    "note": "",
    "link": null,
    "details": ""
   },
   {
-   "name": "蒸鸡蛋",
-   "note": "",
-   "link": null,
-   "details": ""
-  },
-  {
+   "id": "t11",
    "name": "素什锦",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t12",
    "name": "广东汤",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t13",
    "name": "鱼子乌冬",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t14",
    "name": "香辣虾",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t15",
    "name": "水晶虾仁",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t16",
    "name": "八宝辣酱",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t17",
    "name": "白斩鸡",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t18",
    "name": "鱼肝酱",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t19",
    "name": "凉拌鸡蛋羹",
    "note": "",
    "link": "http://xhslink.com/m/131IiGnrfVP",
    "details": ""
   },
   {
+   "id": "t20",
    "name": "高汤鸡",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t21",
    "name": "窝蛋牛肉煲仔饭",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t22",
    "name": "西班牙风味章鱼",
    "note": "章鱼买好了",
    "link": null,
    "details": ""
   },
   {
+   "id": "t23",
    "name": "青花椒黄花鱼",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t24",
    "name": "彩椒烧鱿鱼",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t25",
    "name": "笋干烧肉百叶结",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t26",
    "name": "居酒屋牛腱萝卜",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t27",
    "name": "栗子红烧肉",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t28",
    "name": "避风塘炒虾",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t29",
    "name": "丝瓜肉沫蛋汤",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t30",
    "name": "凉拌蘑菇",
    "note": "",
    "link": null,
    "details": ""
   },
   {
-   "name": "Hotn juicy cajun style",
-   "note": "",
-   "link": null,
-   "details": ""
-  },
-  {
+   "id": "t32",
    "name": "金汤猪脚鸡",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t33",
    "name": "一饭封神烧椒牛肉taco",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t34",
    "name": "墨西哥玉米",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t35",
    "name": "Locomoco拌饭",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t36",
    "name": "三杯鸡",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t37",
    "name": "鲜虾豆腐菌菇煲",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t38",
    "name": "咖喱鸡",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t39",
    "name": "酸辣笋丁",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t40",
    "name": "蘑菇黑椒牛肉粒(清淡一些)",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t41",
    "name": "辣猪肚",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t42",
    "name": "花胶鸡汤",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t43",
    "name": "糖藕",
    "note": "",
    "link": null,
    "details": ""
   },
   {
+   "id": "t44",
    "name": "茭白毛豆肉丁",
    "note": "",
    "link": null,
@@ -1437,9 +1497,18 @@
   "page": "https://app.notion.com/p/d4a373f265764fdbbb72f754b2ed546e",
   "fetched": "2026-10-04",
   "page_last_edited": "2026-08-23 PT",
-  "note": "9/28, 10/1 (eaten) and 10/5 (planned) entries logged by Melody directly (2026-10-04)"
+  "note": "9/28, 10/1 (eaten) and 10/5 (planned) entries logged by Melody directly (2026-10-04); 10/8 (planned) logged 2026-10-04"
  },
  "history": [
+  {
+   "date": "2026-10-08",
+   "dishes": [
+    "蒜泥白肉",
+    "水煮牛肉(少辣)",
+    "凉拌芝麻豆苗金针菇"
+   ],
+   "planned": true
+  },
   {
    "date": "2026-10-05",
    "dishes": [
