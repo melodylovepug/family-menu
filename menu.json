@@ -188,6 +188,50 @@
      "links": [],
      "photo": null,
      "recipe": ""
+    },
+    {
+     "id": "d61",
+     "name": "狮子头",
+     "tag": null,
+     "meat": "猪",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
+    },
+    {
+     "id": "d63",
+     "name": "牛肉脯",
+     "tag": null,
+     "meat": "牛",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
+    },
+    {
+     "id": "d68",
+     "name": "日式炸猪排",
+     "tag": null,
+     "meat": "猪",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
+    },
+    {
+     "id": "d69",
+     "name": "蒜香骨",
+     "tag": null,
+     "meat": "猪",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
     }
    ]
   },
@@ -396,6 +440,17 @@
      "links": [],
      "photo": null,
      "recipe": ""
+    },
+    {
+     "id": "d65",
+     "name": "捞汁海鲜",
+     "tag": null,
+     "meat": "龙虾/虾",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
     }
    ]
   },
@@ -499,6 +554,50 @@
     {
      "id": "d55",
      "name": "凉拌芝麻豆苗金针菇",
+     "tag": null,
+     "meat": "素",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
+    },
+    {
+     "id": "d62",
+     "name": "炒藕丁",
+     "tag": null,
+     "meat": "素",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
+    },
+    {
+     "id": "d64",
+     "name": "凉拌茄子",
+     "tag": null,
+     "meat": "素",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
+    },
+    {
+     "id": "d66",
+     "name": "糖番茄",
+     "tag": null,
+     "meat": "素",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
+    },
+    {
+     "id": "d67",
+     "name": "荷塘月色",
      "tag": null,
      "meat": "素",
      "ingredients": "",
@@ -798,6 +897,24 @@
    "note": "Mochi Mommy",
    "link": "https://t.co/WnmllowJ1K",
    "details": "[The Best Chicken Katsu Recipe - Mochi Mommy](https://t.co/WnmllowJ1K)"
+  },
+  {
+   "name": "虎虾莴笋醋冻",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "上海冷面",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "黄豆猪脚",
+   "note": "",
+   "link": null,
+   "details": ""
   }
  ],
  "weeks": [
