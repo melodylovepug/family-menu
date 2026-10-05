@@ -75,7 +75,11 @@ background:repeating-linear-gradient(90deg,var(--ca) 0 6px,rgba(255,255,255,.75)
 .wk .d{display:inline-block;font-weight:800;color:#fff;background:#8394a3;border-radius:999px;padding:2px 12px;font-size:14px;margin-bottom:6px}
 .wk .l{display:flex;gap:10px;font-size:14px;padding:6px 0;border-top:2px dotted #e4e8ec;line-height:1.5}
 .wk .l:first-of-type{border-top:0}
-.wk .l span:first-child{flex:0 0 62px;white-space:nowrap;color:#66778a;font-weight:700}
+.wk .l>span:first-child{flex:0 0 auto;min-width:62px;white-space:nowrap;color:#66778a;font-weight:700}
+.wkd{color:inherit;text-decoration:none;border-bottom:1px dotted #b7c1ca;cursor:pointer}
+.wkd:hover{border-bottom-style:solid}
+.dish.flash{animation:flash 1.6s ease-out}
+@keyframes flash{0%,40%{background:rgba(255,255,255,.95);box-shadow:0 0 0 2px var(--cd)}100%{background:none;box-shadow:none}}
 .tipbox{background:#f8f5ec;border:2px solid #e2d8bc;border-radius:20px;padding:14px 16px;box-shadow:0 4px 0 #e8e0c9;font-size:13.5px;line-height:1.7;color:#5e544a}
 .tipbox b{color:#8c7a4e}
 details.past{background:#fff;border:2px solid #dce3d6;border-radius:20px;padding:12px 16px;box-shadow:0 4px 0 #e3e8de}
@@ -425,6 +429,8 @@ span.pr-th{display:flex;align-items:center;justify-content:center;font-size:24px
 <div class="dish empty" id="t44" data-cat="todo" data-s="茭白毛豆肉丁 "><div class="row"><span class="dth ic" aria-hidden="true">🌸</span><span class="name">茭白毛豆肉丁</span></div></div>
 </div></section>
 <section class="sec" id="weeks"><h3 style="--hc:#d5dde4"><span>📅 最近每周菜单</span><small>Recent weekly menus · こんしゅう</small></h3><div class="weeks">
+<div class="wk"><div class="d">10.5.26</div><div class="l plan"><span>周一 10/5 · 计划</span><span><a class="wkd" href="#d53" data-d="d53">云片虾</a> · <a class="wkd" href="#d46" data-d="d46">大盘鸡(加面的)</a> · <a class="wkd" href="#d25" data-d="d25">冬瓜丸子汤</a></span></div></div>
+<div class="wk"><div class="d">9.28.26</div><div class="l"><span>周一 9/28</span><span><span class="wkx">Monie</span> · <a class="wkd" href="#d44" data-d="d44">排骨土豆炖豆角</a> · <a class="wkd" href="#d4" data-d="d4">牛肋条蘸酱</a> · <a class="wkd" href="#d59" data-d="d59">黄芽菜肉丝年糕</a> · <a class="wkd" href="#d71" data-d="d71">凉拌莴笋</a></span></div><div class="l"><span>周四 10/1</span><span><a class="wkd" href="#d56" data-d="d56">牛腩卷心菜土豆罗宋汤</a> · <a class="wkd" href="#d49" data-d="d49">泰式酸辣鸡腿</a> · <a class="wkd" href="#d70" data-d="d70">东北大拌菜</a></span></div></div>
 <div class="wk"><div class="d">8.24.26</div><div class="l"><span>周一</span><span>白菜胡椒鸡腿 · 芦笋炒芋艿</span></div><div class="l"><span>周四</span><span>红烧玉子豆腐 · 上次的整条鱼</span></div><details class="more"><summary>原始笔记</summary><div class="rcp"><p>周一 白菜胡椒鸡腿 + 芦笋炒芋艿</p><p class="tip">芦笋和芋艿都削皮，芋艿先水里煮熟，之后放一起葱香炒一炒</p><h4>白菜胡椒鸡腿</h4><p>食材：带骨鸡腿，白胡椒，黑胡椒。</p><p>配菜：白菜，鸡腿菇，豆腐</p><p>调料：大蒜，洋葱，生姜</p><ol><li>鸡腿切成中块。用白色的铸铁锅</li><li>准备切块的 大蒜，洋葱，生姜，黑胡椒白胡椒，热油稍微炒一下</li><li>加入调料：一勺蚝油，两勺老抽，白勺汁</li><li>热锅热油翻炒葱姜蒜出香味</li><li>放入 白菜，豆腐，上面铺上鸡腿。稍微加一些水</li><li>闷住5分钟后放入酱料</li><li>再焖煮10分钟，撒上葱</li></ol><p>周四 红烧玉子豆腐 · 上次的整条鱼</p></div></details></div>
 <div class="wk"><div class="d">7.13.26</div><div class="l"><span>周三</span><span>牛肋条罗宋汤（洋葱 西芹 番茄 土豆 包菜）</span></div><div class="l"><span>周四</span><span>藕炒牛肉</span></div></div>
 <div class="wk"><div class="d">7.6.26</div><div class="l"><span>周一</span><span>贵妃鸡 · 蒜台肉丝</span></div><div class="l"><span>周二</span><span>肉饼蒸蛋 · 煲仔饭 · short rib</span></div><div class="l"><span>周四</span><span>鸭腿 · 牛肋条罗宋汤</span></div></div>
@@ -455,6 +461,8 @@ function closeDish(){ov.classList.remove('on');ov.setAttribute('aria-hidden','tr
 document.querySelectorAll('.dish').forEach(d=>d.addEventListener('click',e=>{if(e.target.closest('a'))return;openDish(d);}));
 document.getElementById('sh-x').addEventListener('click',closeDish);
 ov.addEventListener('click',e=>{if(e.target===ov)closeDish();});
+document.querySelectorAll('a.wkd').forEach(a=>a.addEventListener('click',e=>{const d=document.getElementById(a.dataset.d);if(!d)return;e.preventDefault();
+ if(d.querySelector('.rcp-src'))openDish(d);else{d.scrollIntoView({behavior:'smooth',block:'center'});d.classList.remove('flash');void d.offsetWidth;d.classList.add('flash');}}));
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDish();});
 /* 帮我选菜: N dishes (2-8) = exactly 1 cold/veg + (N-1) meat/seafood mains; no protein repeated across ALL picks
    (the cold dish's protein counts unless it is 素), <=1 soup, no dessert,

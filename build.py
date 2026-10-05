@@ -2,6 +2,7 @@
 """Build index.html for the family menu site from menu.json (no Notion dependency).
 Usage: python3 build.py   (run from the repo root; writes index.html next to this file)"""
 import html, json, os, re
+from datetime import date, timedelta
 ROOT = os.path.dirname(os.path.abspath(__file__))
 D = json.load(open(os.path.join(ROOT, 'menu.json'), encoding='utf-8'))
 E = html.escape
@@ -121,6 +122,30 @@ def last_eaten():
             if nm and h['date'] > last.get(nm, ''): last[nm] = h['date']
     return last
 LAST = last_eaten()
+
+# 📅 最近每周菜单 is derived from D['history'] (the same log the picker uses), grouped by week (Monday start), newest first.
+# A week that also has a hand-written entry in D['weeks'] (older Notion weeks with extra notes) renders that entry verbatim.
+WD = '一二三四五六日'
+def week_key(iso): return (date.fromisoformat(iso) - timedelta(days=date.fromisoformat(iso).weekday())).isoformat()
+def week_label(iso): x = date.fromisoformat(iso); return f'{x.month}.{x.day}.{x.year % 100}'
+def build_weeks():
+    curated = {w['date']: w for w in D['weeks']}
+    groups = {}
+    for h in D.get('history', []): groups.setdefault(week_key(h['date']), []).append(h)
+    for w in D['weeks']:   # curated weeks without any history entry still show
+        mo, dd, yy = map(int, w['date'].split('.')); groups.setdefault(date(2000 + yy, mo, dd).isoformat(), [])
+    weeks = []
+    for wk in sorted(groups, reverse=True):
+        lab = week_label(wk)
+        if lab in curated: weeks.append(dict(curated[lab], src='weeks')); continue
+        lines = []
+        for h in sorted(groups[wk], key=lambda h: (h['date'], h.get('who', ''))):
+            x = date.fromisoformat(h['date'])
+            day = f'{(h["who"] + " ") if h.get("who") else ""}周{WD[x.weekday()]} {x.month}/{x.day}' + (' · 计划' if h.get('planned') else '')
+            lines.append(dict(day=day, items=h['dishes'], planned=bool(h.get('planned'))))
+        weeks.append(dict(date=lab, lines=lines, src='history'))
+    return weeks
+WEEKS = build_weeks()
 def has_recipe(d): return bool(re.sub(r'^\s*\[[^\]]+\]\([^)]+\)\s*$', '', d['recipe'], flags=re.M).strip())
 def has_body(d):
     """Real recipe content: anything besides link lines, photo markers and '>' tips."""
@@ -234,7 +259,11 @@ background:repeating-linear-gradient(90deg,var(--ca) 0 6px,rgba(255,255,255,.75)
 .wk .d{{display:inline-block;font-weight:800;color:#fff;background:#8394a3;border-radius:999px;padding:2px 12px;font-size:14px;margin-bottom:6px}}
 .wk .l{{display:flex;gap:10px;font-size:14px;padding:6px 0;border-top:2px dotted #e4e8ec;line-height:1.5}}
 .wk .l:first-of-type{{border-top:0}}
-.wk .l span:first-child{{flex:0 0 62px;white-space:nowrap;color:#66778a;font-weight:700}}
+.wk .l>span:first-child{{flex:0 0 auto;min-width:62px;white-space:nowrap;color:#66778a;font-weight:700}}
+.wkd{{color:inherit;text-decoration:none;border-bottom:1px dotted #b7c1ca;cursor:pointer}}
+.wkd:hover{{border-bottom-style:solid}}
+.dish.flash{{animation:flash 1.6s ease-out}}
+@keyframes flash{{0%,40%{{background:rgba(255,255,255,.95);box-shadow:0 0 0 2px var(--cd)}}100%{{background:none;box-shadow:none}}}}
 .tipbox{{background:#f8f5ec;border:2px solid #e2d8bc;border-radius:20px;padding:14px 16px;box-shadow:0 4px 0 #e8e0c9;font-size:13.5px;line-height:1.7;color:#5e544a}}
 .tipbox b{{color:#8c7a4e}}
 details.past{{background:#fff;border:2px solid #dce3d6;border-radius:20px;padding:12px 16px;box-shadow:0 4px 0 #e3e8de}}
@@ -467,8 +496,16 @@ for i, t in enumerate(D['todo'], 1):   # same card component as the menu; a shee
 out.append('</div></section>')
 
 out.append('<section class="sec" id="weeks"><h3 style="--hc:#d5dde4"><span>📅 最近每周菜单</span><small>Recent weekly menus · こんしゅう</small></h3><div class="weeks">')
-for w in D['weeks']:
-    s = f'<div class="wk"><div class="d">{E(w["date"])}</div>' + ''.join(f'<div class="l"><span>{E(l["day"])}</span><span>{E(l["dishes"])}</span></div>' for l in w['lines'])
+ALIAS_ID = {norm(k): DID[id(d)] for c in CATS for d in c['dishes'] for k in [d['name']] + d.get('aliases', [])}
+def wk_dish(raw):
+    i = ALIAS_ID.get(norm(raw))
+    return f'<a class="wkd" href="#{i}" data-d="{i}">{E(raw)}</a>' if i else f'<span class="wkx">{E(raw)}</span>'
+for w in WEEKS:
+    if w['src'] == 'history':
+        rows = ''.join(f'<div class="l{" plan" if l["planned"] else ""}"><span>{E(l["day"])}</span><span>{" · ".join(wk_dish(x) for x in l["items"])}</span></div>' for l in w['lines'])
+    else:
+        rows = ''.join(f'<div class="l"><span>{E(l["day"])}</span><span>{E(l["dishes"])}</span></div>' for l in w['lines'])
+    s = f'<div class="wk"><div class="d">{E(w["date"])}</div>' + rows
     if w.get('details'): s += f'<details class="more"><summary>原始笔记</summary><div class="rcp">{md(w["details"])}</div></details>'
     out.append(s + '</div>')
 out.append('</div></section>')
@@ -502,6 +539,8 @@ function closeDish(){ov.classList.remove('on');ov.setAttribute('aria-hidden','tr
 document.querySelectorAll('.dish').forEach(d=>d.addEventListener('click',e=>{if(e.target.closest('a'))return;openDish(d);}));
 document.getElementById('sh-x').addEventListener('click',closeDish);
 ov.addEventListener('click',e=>{if(e.target===ov)closeDish();});
+document.querySelectorAll('a.wkd').forEach(a=>a.addEventListener('click',e=>{const d=document.getElementById(a.dataset.d);if(!d)return;e.preventDefault();
+ if(d.querySelector('.rcp-src'))openDish(d);else{d.scrollIntoView({behavior:'smooth',block:'center'});d.classList.remove('flash');void d.offsetWidth;d.classList.add('flash');}}));
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDish();});
 /* 帮我选菜: N dishes (2-8) = exactly 1 cold/veg + (N-1) meat/seafood mains; no protein repeated across ALL picks
    (the cold dish's protein counts unless it is 素), <=1 soup, no dessert,
