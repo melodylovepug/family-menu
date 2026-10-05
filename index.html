@@ -1,0 +1,194 @@
+<!doctype html><html lang="zh"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>家庭菜单 · Family Menu</title>
+<style>
+:root{--bg:#f6f2ec;--card:#fcfaf6;--ink:#4a403a;--mute:#958a80;--line:#e6ded3;--pink:#b8928e;--pinkbg:#efe3e1;--matcha:#8f9e87;--sky:#d5dde4;--yel:#ede6d3;
+--round:"Hiragino Maru Gothic ProN","Hiragino Maru Gothic Pro","M PLUS Rounded 1c","Kosugi Maru","Yuanti SC","YouYuan","Arial Rounded MT Bold","PingFang SC","Noto Sans CJK SC","Noto Sans CJK JP","Microsoft YaHei",sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;color:var(--ink);font-family:var(--round);-webkit-text-size-adjust:100%;
+background-color:var(--bg);background-image:radial-gradient(#e6ddd2 1.3px,transparent 1.4px);background-size:22px 22px}
+.wrap{max-width:980px;margin:0 auto;padding:0 14px 40px}
+/* noren curtain */
+.noren{display:flex;gap:6px;justify-content:center;padding:0 6px;margin:0 -14px}
+.noren::before{content:"";position:absolute}
+.rod{height:10px;margin:0 -14px;background:linear-gradient(#a89580,#857260);border-radius:0 0 6px 6px;box-shadow:0 2px 0 rgba(0,0,0,.06)}
+.noren span{flex:1;max-width:96px;height:58px;border-radius:0 0 16px 16px;display:flex;align-items:center;justify-content:center;
+font-size:22px;font-weight:800;color:#fff;letter-spacing:0;box-shadow:inset 0 -6px 0 rgba(255,255,255,.18)}
+.noren span:nth-child(1){background:#b8928e}.noren span:nth-child(2){background:#8f9e87}.noren span:nth-child(3){background:#8394a3}.noren span:nth-child(4){background:#b5a273}
+header{position:relative;text-align:center;padding:16px 8px 6px}
+.hero{position:relative;display:inline-block;padding:6px 10px 0}
+.oni{width:74px;height:68px;display:block;margin:0 auto -2px;animation:bob 3s ease-in-out infinite}
+.steam{width:40px;height:26px;position:absolute;left:50%;top:-18px;transform:translateX(-50%);opacity:.8;animation:puff 2.6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-3px) rotate(-2deg)}}
+@keyframes puff{0%,100%{opacity:.35;transform:translate(-50%,2px)}50%{opacity:.9;transform:translate(-50%,-3px)}}
+h1{margin:4px 0 0;font-size:36px;font-weight:800;letter-spacing:.12em;color:var(--ink);text-shadow:3px 3px 0 #e6d6d3}
+.jp{display:inline-block;margin-top:6px;font-size:15px;color:#9c7773;background:#fff;border:2px dashed #d9c1be;border-radius:999px;padding:3px 14px;letter-spacing:.12em}
+.sub{color:var(--mute);font-size:12.5px;margin-top:8px}
+.hanko{position:absolute;right:-50px;top:44px;width:44px;height:44px;border:2.5px solid #a65e4e;color:#a65e4e;border-radius:10px;
+display:flex;align-items:center;justify-content:center;font-size:12px;line-height:1.05;font-weight:800;transform:rotate(12deg);background:rgba(255,255,255,.7);
+font-family:"Songti SC","Noto Serif CJK SC","Noto Serif CJK JP",serif;text-align:center;opacity:.9}
+.petal{position:absolute;width:24px;height:24px;opacity:.95}
+.p1{left:4%;top:20px;transform:rotate(-15deg)}.p2{right:6%;top:6px;width:18px;height:18px}.p3{left:14%;top:112px;width:16px;height:16px;transform:rotate(30deg)}.p4{right:14%;top:120px;width:20px;height:20px}
+.washi{height:14px;margin:12px auto 4px;max-width:260px;border-radius:2px;opacity:.85;transform:rotate(-1.2deg);
+background:repeating-linear-gradient(45deg,#ddcbc8 0 8px,#fff 8px 14px)}
+nav{position:sticky;top:0;z-index:5;padding:10px 2px 10px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;
+background:linear-gradient(var(--bg) 78%,rgba(246,242,236,0))}
+nav::-webkit-scrollbar{display:none}
+nav a{flex:0 0 auto;text-decoration:none;color:var(--ink);background:#fff;border:2px solid var(--c,#e6d3d0);padding:6px 13px;border-radius:999px;font-size:14px;font-weight:700;white-space:nowrap;box-shadow:0 3px 0 var(--c,#e6d3d0)}
+nav a:active{transform:translateY(2px);box-shadow:0 1px 0 var(--c,#e6d3d0)}
+.search{width:100%;padding:12px 16px;border-radius:999px;border:2px solid #e3d7d2;background:#fff;font-size:16px;color:var(--ink);margin:4px 0 18px;font-family:inherit;outline:none;box-shadow:0 3px 0 #e8ded8}
+.search:focus{border-color:var(--pink)}
+.grid{display:grid;grid-template-columns:1fr;gap:24px;align-items:start}
+@media(min-width:760px){.grid{grid-template-columns:1fr 1fr} h1{font-size:44px} .noren span{max-width:130px;height:74px;font-size:28px} .oni{width:90px;height:82px}}
+@media(max-width:420px){.hanko{right:-40px;top:40px;width:38px;height:38px;font-size:11px}}
+.card{position:relative;background:var(--cb);border:2px solid var(--ca);border-radius:26px;padding:0 14px 6px;box-shadow:0 6px 0 var(--ca),0 12px 22px -14px rgba(90,75,60,.22)}
+.card::before{content:"";position:absolute;top:-9px;left:50%;width:84px;height:18px;transform:translateX(-50%) rotate(-3deg);border-radius:2px;opacity:.9;
+background:repeating-linear-gradient(90deg,var(--ca) 0 6px,rgba(255,255,255,.75) 6px 12px)}
+.card h2{margin:0 -14px 4px;padding:16px 16px 10px;background:var(--ca);border-radius:24px 24px 0 0;font-size:20px;font-weight:800;display:flex;align-items:center;gap:8px}
+.card h2 .ic{display:inline-flex;width:36px;height:36px;border-radius:50%;background:#fff;align-items:center;justify-content:center;font-size:20px;box-shadow:0 2px 0 var(--cd)}
+.card h2 small{font-size:10.5px;letter-spacing:.14em;color:var(--cd);text-transform:uppercase;font-weight:700}
+.card h2 .n{margin-left:auto;font-size:12px;color:#fff;background:var(--cd);border-radius:999px;min-width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;padding:0 8px}
+.dish{border-top:2px dotted var(--ca);padding:11px 2px}
+.dish:first-of-type{border-top:0}
+.row{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.row::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--cd);opacity:.55;flex:0 0 8px}
+.name{font-size:17px;font-weight:800;color:var(--ink);text-decoration:none}
+.tag{font-size:11px;padding:1px 8px;border-radius:999px;background:#fff;color:var(--cd);border:1.5px solid var(--cd);font-weight:700}
+.ing{font-size:13.5px;color:#6e625a;margin-top:4px;line-height:1.55;padding-left:15px}
+.note{font-size:12.5px;color:var(--mute);margin-top:3px;padding-left:15px}
+.links{margin-top:7px;display:flex;gap:6px;flex-wrap:wrap;padding-left:15px}
+.lnk{font-size:12px;font-weight:700;text-decoration:none;color:#8f6560;background:#f3e9e7;padding:4px 10px;border-radius:999px;border:1.5px solid #e3d2cf}
+.lnk.nt{color:#66778a;background:#ebeff2;border-color:#d5dde4}
+.sec{margin-top:34px}
+.sec h3{font-size:22px;font-weight:800;margin:0 0 14px;text-align:center}
+.sec h3 span{display:inline-block;background:#fff;border:2px solid var(--hc,#e6d3d0);border-radius:999px;padding:6px 18px;box-shadow:0 4px 0 var(--hc,#e6d3d0)}
+.sec h3 small{display:block;font-size:10.5px;letter-spacing:.24em;color:var(--mute);text-transform:uppercase;font-weight:700;margin-top:8px}
+.todo{display:grid;grid-template-columns:1fr;gap:10px}
+@media(min-width:760px){.todo{grid-template-columns:1fr 1fr}}
+.ti{position:relative;background:#fff;border:2px solid #e8d8d5;border-radius:18px;padding:11px 14px 11px 44px;box-shadow:0 4px 0 #eadfdc}
+.ti::before{content:"🌸";position:absolute;left:13px;top:11px;font-size:18px}
+.ti b{font-size:16px;font-weight:800}
+.ti .note,.ti .links{padding-left:0}
+.weeks{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:760px){.weeks{grid-template-columns:1fr 1fr}}
+.wk{background:#fff;border:2px solid #d5dde4;border-radius:20px;padding:12px 16px;box-shadow:0 4px 0 #dde3e9}
+.wk .d{display:inline-block;font-weight:800;color:#fff;background:#8394a3;border-radius:999px;padding:2px 12px;font-size:14px;margin-bottom:6px}
+.wk .l{display:flex;gap:10px;font-size:14px;padding:6px 0;border-top:2px dotted #e4e8ec;line-height:1.5}
+.wk .l:first-of-type{border-top:0}
+.wk .l span:first-child{flex:0 0 62px;white-space:nowrap;color:#66778a;font-weight:700}
+.tipbox{background:#f8f5ec;border:2px solid #e2d8bc;border-radius:20px;padding:14px 16px;box-shadow:0 4px 0 #e8e0c9;font-size:13.5px;line-height:1.7;color:#5e544a}
+.tipbox b{color:#8c7a4e}
+details.past{background:#fff;border:2px solid #dce3d6;border-radius:20px;padding:12px 16px;box-shadow:0 4px 0 #e3e8de}
+details.past summary{cursor:pointer;font-weight:800;color:#6f7f67;list-style:none}
+details.past summary::before{content:"🍙 "}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.chips span{font-size:13px;background:#f1f4ee;border:1.5px solid #dce3d6;border-radius:999px;padding:4px 10px}
+.chips span:nth-child(3n+2){background:#f5edeb;border-color:#e8d8d5}.chips span:nth-child(3n){background:#eef1f4;border-color:#d5dde4}
+footer{text-align:center;color:var(--mute);font-size:12px;margin-top:30px}
+footer::before{content:"🍙 🍡 🍵";display:block;font-size:18px;margin-bottom:6px;letter-spacing:.3em}
+.hide{display:none!important}
+</style></head><body><div class="wrap">
+<div class="rod"></div><div class="noren"><span>家</span><span>庭</span><span>菜</span><span>单</span></div>
+<header><svg class="petal p1" viewBox="0 0 40 40" aria-hidden="true"><g fill="#e3cbc7" stroke="#c9a9a6" stroke-width="1"><path d="M20 20C14 10 16 3 20 6c4-3 6 4 0 14z"/><path d="M20 20C14 10 16 3 20 6c4-3 6 4 0 14z" transform="rotate(72 20 20)"/><path d="M20 20C14 10 16 3 20 6c4-3 6 4 0 14z" transform="rotate(144 20 20)"/><path d="M20 20C14 10 16 3 20 6c4-3 6 4 0 14z" transform="rotate(216 20 20)"/><path d="M20 20C14 10 16 3 20 6c4-3 6 4 0 14z" transform="rotate(288 20 20)"/></g><circle cx="20" cy="20" r="2.6" fill="#c8b78e"/></svg><svg class="petal p2" viewBox="0 0 40 40" aria-hidden="true"><g fill="#e3cbc7" stroke="#c9a9a6" stroke-width="1"><path d="M20 20C14 10 16 3 20 6c4-3 6 4 0 14z"/><path d="M20 20C14 10 16 3 20 6c4-3 6 4 0 14z" transform="rotate(72 20 20)"/><path d="M20 20C14 10 16 3 20 6c4-3 6 4 0 14z" transform="rotate(144 20 20)"/><path d="M20 20C14 10 16 3 20 6c4-3 6 4 0 14z" transform="rotate(216 20 20)"/><path d="M20 20C14 10 16 3 20 6c4-3 6 4 0 14z" transform="rotate(288 20 20)"/></g><circle cx="20" cy="20" r="2.6" fill="#c8b78e"/></svg><svg class="petal p3" viewBox="0 0 40 40" aria-hidden="true"><g fill="#e3cbc7" stroke="#c9a9a6" stroke-width="1"><path d="M20 20C14 10 16 3 20 6c4-3 6 4 0 14z"/><path d="M20 20C14 10 16 3 20 6c4-3 6 4 0 14z" transform="rotate(72 20 20)"/><path d="M20 20C14 10 16 3 20 6c4-3 6 4 0 14z" transform="rotate(144 20 20)"/><path d="M20 20C14 10 16 3 20 6c4-3 6 4 0 14z" transform="rotate(216 20 20)"/><path d="M20 20C14 10 16 3 20 6c4-3 6 4 0 14z" transform="rotate(288 20 20)"/></g><circle cx="20" cy="20" r="2.6" fill="#c8b78e"/></svg><svg class="petal p4" viewBox="0 0 40 40" aria-hidden="true"><g fill="#e3cbc7" stroke="#c9a9a6" stroke-width="1"><path d="M20 20C14 10 16 3 20 6c4-3 6 4 0 14z"/><path d="M20 20C14 10 16 3 20 6c4-3 6 4 0 14z" transform="rotate(72 20 20)"/><path d="M20 20C14 10 16 3 20 6c4-3 6 4 0 14z" transform="rotate(144 20 20)"/><path d="M20 20C14 10 16 3 20 6c4-3 6 4 0 14z" transform="rotate(216 20 20)"/><path d="M20 20C14 10 16 3 20 6c4-3 6 4 0 14z" transform="rotate(288 20 20)"/></g><circle cx="20" cy="20" r="2.6" fill="#c8b78e"/></svg>
+<div class="hero"><svg class="steam" viewBox="0 0 60 40" aria-hidden="true"><path d="M12 36c-6-8 6-12 0-20s4-12 0-14M30 36c-6-8 6-12 0-20s4-12 0-14M48 36c-6-8 6-12 0-20s4-12 0-14" fill="none" stroke="#c9c0b8" stroke-width="3" stroke-linecap="round"/></svg><svg class="oni" viewBox="0 0 120 110" aria-hidden="true">
+<path d="M60 8C40 8 10 58 10 80c0 16 12 24 50 24s50-8 50-24C110 58 80 8 60 8z" fill="#fff" stroke="#4a403a" stroke-width="3.5" stroke-linejoin="round"/>
+<rect x="34" y="70" width="52" height="34" rx="6" fill="#4a4e46"/>
+<path d="M40 70h40" stroke="#5a5e55" stroke-width="2"/>
+<circle cx="45" cy="56" r="4" fill="#4a403a"/><circle cx="75" cy="56" r="4" fill="#4a403a"/>
+<circle cx="46.5" cy="54.5" r="1.3" fill="#fff"/><circle cx="76.5" cy="54.5" r="1.3" fill="#fff"/>
+<ellipse cx="37" cy="64" rx="6" ry="3.5" fill="#e2bdb8"/><ellipse cx="83" cy="64" rx="6" ry="3.5" fill="#e2bdb8"/>
+<path d="M54 62q6 6 12 0" fill="none" stroke="#4a403a" stroke-width="3" stroke-linecap="round"/>
+</svg><div class="hanko">おい<br>しい</div></div>
+<h1>家庭菜单</h1><div class="jp">「おうちごはん」</div>
+<div class="sub">Home Menu · 37 道拿手菜 · 7 类</div><div class="washi"></div></header>
+<nav>
+<a href="#meat" style="--c:#9c777355">🥩 牛·猪</a>
+<a href="#poultry" style="--c:#8c7a4e55">🐔 鸡</a>
+<a href="#sea" style="--c:#66778a55">🐟 海鲜</a>
+<a href="#cold" style="--c:#6f7f6755">🥗 凉菜·蔬菜</a>
+<a href="#soup" style="--c:#93705a55">🍲 汤</a>
+<a href="#staple" style="--c:#8e7b6255">🍚 饭·面包</a>
+<a href="#sweet" style="--c:#7d6a7d55">🍰 甜品·饮料</a>
+<a href="#todo" style="--c:#c9a9a666">📝 待做</a><a href="#weeks" style="--c:#9aa8b566">📅 每周</a><a href="#past" style="--c:#a8b5a066">📚 之前做的</a></nav>
+<input class="search" id="q" type="search" placeholder="🔍 搜菜名或食材，比如 冬瓜、鸡腿…">
+<div class="grid">
+<section class="card" id="meat" style="--ca:#e8d6d3;--cd:#9c7773;--cb:#f7f0ee"><h2><span class="ic">🥩</span>牛·猪 <small>Beef &amp; Pork</small><span class="n">7</span></h2>
+<div class="dish" data-s="葱爆牛肉片 牛肉片 · 葱姜蒜 · 洋葱 · 白胡椒 · 酱油 "><div class="row"><a class="name" href="https://app.notion.com/p/10c74549cb3d8096888aefb545d9ac86" target="_blank" rel="noopener">葱爆牛肉片</a></div><div class="ing">牛肉片 · 葱姜蒜 · 洋葱 · 白胡椒 · 酱油</div><div class="links"><a class="lnk" href="https://www.youtube.com/watch?v=Etf9zxVjhKM" target="_blank" rel="noopener">▶️ YouTube</a><a class="lnk nt" href="https://app.notion.com/p/10c74549cb3d8096888aefb545d9ac86" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="青椒牛肉豆腐煲  "><div class="row"><a class="name" href="https://app.notion.com/p/12e74549cb3d80d9853ef548b66604d7" target="_blank" rel="noopener">青椒牛肉豆腐煲</a></div><div class="links"><a class="lnk" href="http://xhslink.com/a/KTKZHS3mvxKW" target="_blank" rel="noopener">📕 小红书</a><a class="lnk nt" href="https://app.notion.com/p/12e74549cb3d80d9853ef548b66604d7" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="韩式炖short rib 带骨short rib · 苹果 · 梨 · 萝卜 · 年糕 · 土豆 · 韩式辣椒酱 "><div class="row"><a class="name" href="https://app.notion.com/p/14874549cb3d80d5af53e43996add276" target="_blank" rel="noopener">韩式炖short rib</a></div><div class="ing">带骨short rib · 苹果 · 梨 · 萝卜 · 年糕 · 土豆 · 韩式辣椒酱</div><div class="links"><a class="lnk" href="http://xhslink.com/a/Iztz3omDT9n0" target="_blank" rel="noopener">📕 小红书</a><a class="lnk nt" href="https://app.notion.com/p/14874549cb3d80d5af53e43996add276" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="清炖牛肋骨条 牛肋 · 生姜 · 大葱 · 洋葱 · 桂皮 · 花椒 清炖2小时"><div class="row"><a class="name" href="https://app.notion.com/p/21474549cb3d809592deeb63b2e6e6e4" target="_blank" rel="noopener">清炖牛肋骨条</a></div><div class="ing">牛肋 · 生姜 · 大葱 · 洋葱 · 桂皮 · 花椒</div><div class="note">⏱ 清炖2小时</div><div class="links"><a class="lnk" href="http://xhslink.com/a/dUFRUOUBQaV3" target="_blank" rel="noopener">📕 小红书</a><a class="lnk nt" href="https://app.notion.com/p/21474549cb3d809592deeb63b2e6e6e4" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="holiday prim rib + chimichurri prime rib · kosher salt · avocado oil 250°f 慢烤至内部118°f"><div class="row"><a class="name" href="https://app.notion.com/p/84f3801b19e14714afc5afeab220c2fb" target="_blank" rel="noopener">Holiday Prim Rib + Chimichurri</a></div><div class="ing">Prime rib · Kosher salt · avocado oil</div><div class="note">⏱ 250°F 慢烤至内部118°F</div><div class="links"><a class="lnk nt" href="https://app.notion.com/p/84f3801b19e14714afc5afeab220c2fb" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="土豆排骨  "><div class="row"><a class="name" href="https://app.notion.com/p/13274549cb3d8020acf5f6cafdd1d3b2" target="_blank" rel="noopener">土豆排骨</a></div><div class="links"><a class="lnk nt" href="https://app.notion.com/p/13274549cb3d8020acf5f6cafdd1d3b2" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="麻婆豆腐 猪肉末 · soft豆腐 · 葱 · 豆瓣酱 "><div class="row"><a class="name" href="https://app.notion.com/p/14874549cb3d803799d9c35e0fd5aed5" target="_blank" rel="noopener">麻婆豆腐</a></div><div class="ing">猪肉末 · soft豆腐 · 葱 · 豆瓣酱</div><div class="links"><a class="lnk nt" href="https://app.notion.com/p/14874549cb3d803799d9c35e0fd5aed5" target="_blank" rel="noopener">📝 做法</a></div></div>
+</section>
+<section class="card" id="poultry" style="--ca:#e8dfc8;--cd:#8c7a4e;--cb:#f8f5ec"><h2><span class="ic">🐔</span>鸡 <small>Poultry</small><span class="n">4</span></h2>
+<div class="dish" data-s="胡椒鸡腿白菜煲 带骨鸡腿 · 黑白胡椒 · 白菜 · 鸡腿菇 · 豆腐 白色铸铁锅"><div class="row"><a class="name" href="https://app.notion.com/p/10c74549cb3d8098b508fe66f259e934" target="_blank" rel="noopener">胡椒鸡腿白菜煲</a></div><div class="ing">带骨鸡腿 · 黑白胡椒 · 白菜 · 鸡腿菇 · 豆腐</div><div class="note">⏱ 白色铸铁锅</div><div class="links"><a class="lnk" href="http://xhslink.com/a/WxugKJ8Q3cpW" target="_blank" rel="noopener">📕 小红书</a><a class="lnk nt" href="https://app.notion.com/p/10c74549cb3d8098b508fe66f259e934" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="香菜柠檬鸡 鸡腿肉 · 香菜 · 柠檬 · 蘑菇 "><div class="row"><a class="name" href="https://app.notion.com/p/10c74549cb3d8032888bf785449af5bf" target="_blank" rel="noopener">香菜柠檬鸡</a></div><div class="ing">鸡腿肉 · 香菜 · 柠檬 · 蘑菇</div><div class="links"><a class="lnk" href="http://xhslink.com/a/M0luEBOdXRBW" target="_blank" rel="noopener">📕 小红书</a><a class="lnk nt" href="https://app.notion.com/p/10c74549cb3d8032888bf785449af5bf" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="水煮/清蒸 鸡胸肉 鸡胸肉 · 盐水+苏打 泡12hr+ · 蒸8分钟"><div class="row"><a class="name" href="https://app.notion.com/p/17e74549cb3d80b99a53f7d14f4872c5" target="_blank" rel="noopener">水煮/清蒸 鸡胸肉</a></div><div class="ing">鸡胸肉 · 盐水+苏打</div><div class="note">⏱ 泡12hr+ · 蒸8分钟</div><div class="links"><a class="lnk nt" href="https://app.notion.com/p/17e74549cb3d80b99a53f7d14f4872c5" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="空气炸锅鸡脆骨 鸡脆骨 空气炸锅8分钟"><div class="row"><a class="name" href="https://app.notion.com/p/1d774549cb3d80978fefcbea8067657e" target="_blank" rel="noopener">空气炸锅鸡脆骨</a></div><div class="ing">鸡脆骨</div><div class="note">⏱ 空气炸锅8分钟</div><div class="links"><a class="lnk nt" href="https://app.notion.com/p/1d774549cb3d80978fefcbea8067657e" target="_blank" rel="noopener">📝 做法</a></div></div>
+</section>
+<section class="card" id="sea" style="--ca:#d9e0e7;--cd:#66778a;--cb:#f2f4f6"><h2><span class="ic">🐟</span>海鲜 <small>Seafood</small><span class="n">5</span></h2>
+<div class="dish" data-s="miso鳕鱼 鳕鱼 · miso · 米林 · sake 腌2小时+ · 400°f 15–20分钟"><div class="row"><a class="name" href="https://app.notion.com/p/14474549cb3d8029b36ad5b534578c31" target="_blank" rel="noopener">Miso鳕鱼</a></div><div class="ing">鳕鱼 · miso · 米林 · sake</div><div class="note">⏱ 腌2小时+ · 400°F 15–20分钟</div><div class="links"><a class="lnk nt" href="https://app.notion.com/p/14474549cb3d8029b36ad5b534578c31" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="盐曲黑鳕鱼 黑鳕鱼 · 盐曲 铸铁锅中小火15分钟"><div class="row"><a class="name" href="https://app.notion.com/p/21c74549cb3d808f94d5daccbf3ed6ce" target="_blank" rel="noopener">盐曲黑鳕鱼</a></div><div class="ing">黑鳕鱼 · 盐曲</div><div class="note">⏱ 铸铁锅中小火15分钟</div><div class="links"><a class="lnk nt" href="https://app.notion.com/p/21c74549cb3d808f94d5daccbf3ed6ce" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="砂锅红烧鱼  "><div class="row"><a class="name" href="https://app.notion.com/p/13274549cb3d80229e5cc4949ecd89a4" target="_blank" rel="noopener">砂锅红烧鱼</a></div><div class="links"><a class="lnk nt" href="https://app.notion.com/p/13274549cb3d80229e5cc4949ecd89a4" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="黄油白酒蛤蜊 蛤蜊 · 黄油 · 白葡萄酒 · 洋葱 · 大蒜 · 干辣椒 配法棍"><div class="row"><a class="name" href="https://app.notion.com/p/3aa74549cb3d8020bdf2d403175ae598" target="_blank" rel="noopener">黄油白酒蛤蜊</a></div><div class="ing">蛤蜊 · 黄油 · 白葡萄酒 · 洋葱 · 大蒜 · 干辣椒</div><div class="note">⏱ 配法棍</div><div class="links"><a class="lnk nt" href="https://app.notion.com/p/3aa74549cb3d8020bdf2d403175ae598" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="刀蚬 刀蚬 · 葱 · 辣椒 热水烫30秒 · 油爆1分钟内"><div class="row"><a class="name" href="https://app.notion.com/p/4ae0e49ca75f428ba7efa663d4b22a49" target="_blank" rel="noopener">刀蚬</a></div><div class="ing">刀蚬 · 葱 · 辣椒</div><div class="note">⏱ 热水烫30秒 · 油爆1分钟内</div><div class="links"><a class="lnk nt" href="https://app.notion.com/p/4ae0e49ca75f428ba7efa663d4b22a49" target="_blank" rel="noopener">📝 做法</a></div></div>
+</section>
+<section class="card" id="cold" style="--ca:#dbe2d4;--cd:#6f7f67;--cb:#f3f5f0"><h2><span class="ic">🥗</span>凉菜·蔬菜 <small>Cold &amp; Veg</small><span class="n">7</span></h2>
+<div class="dish" data-s="糟卤毛豆  "><div class="row"><a class="name" href="https://app.notion.com/p/21a74549cb3d80a68d02fcff9b9d6a43" target="_blank" rel="noopener">糟卤毛豆</a><span class="tag">凉菜</span></div><div class="links"><a class="lnk nt" href="https://app.notion.com/p/21a74549cb3d80a68d02fcff9b9d6a43" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="凉拌秋葵 秋葵 · 蒜 · 葱 · 小米辣 · 白灼汁 "><div class="row"><a class="name" href="https://app.notion.com/p/21c74549cb3d80d7973de6d2273b0e36" target="_blank" rel="noopener">凉拌秋葵</a><span class="tag">凉菜</span></div><div class="ing">秋葵 · 蒜 · 葱 · 小米辣 · 白灼汁</div><div class="links"><a class="lnk nt" href="https://app.notion.com/p/21c74549cb3d80d7973de6d2273b0e36" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="蒜泥白肉  "><div class="row"><a class="name" href="https://app.notion.com/p/1ae74549cb3d80e99e99fef3e18aa58f" target="_blank" rel="noopener">蒜泥白肉</a></div><div class="links"><a class="lnk" href="http://xhslink.com/a/53t2gEyx3Ic7" target="_blank" rel="noopener">📕 小红书</a><a class="lnk nt" href="https://app.notion.com/p/1ae74549cb3d80e99e99fef3e18aa58f" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="小葱拌豆腐 山水豆腐 · 榨菜 · 小葱 "><div class="row"><a class="name" href="https://app.notion.com/p/13274549cb3d80d7917dc99f7b3ceb73" target="_blank" rel="noopener">小葱拌豆腐</a></div><div class="ing">山水豆腐 · 榨菜 · 小葱</div><div class="links"><a class="lnk nt" href="https://app.notion.com/p/13274549cb3d80d7917dc99f7b3ceb73" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="白醋脆藕 藕 · 白醋 · 芝麻 · 香油 "><div class="row"><a class="name" href="https://app.notion.com/p/3aa74549cb3d80548b27e6fa6a8b9fee" target="_blank" rel="noopener">白醋脆藕</a></div><div class="ing">藕 · 白醋 · 芝麻 · 香油</div><div class="links"><a class="lnk nt" href="https://app.notion.com/p/3aa74549cb3d80548b27e6fa6a8b9fee" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="微波炉凉拌黄豆芽 黄豆芽 · 青椒 · 芝麻油 · 蒜末 "><div class="row"><a class="name" href="https://app.notion.com/p/14474549cb3d802ba44ade61303e30ff" target="_blank" rel="noopener">微波炉凉拌黄豆芽</a></div><div class="ing">黄豆芽 · 青椒 · 芝麻油 · 蒜末</div><div class="links"><a class="lnk nt" href="https://app.notion.com/p/14474549cb3d802ba44ade61303e30ff" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="和风芦笋 芦笋 · 酱油 · 味淋 · 白味增 · 白芝麻 "><div class="row"><a class="name" href="https://app.notion.com/p/10e74549cb3d80d1873bd1ca4cfab17a" target="_blank" rel="noopener">和风芦笋</a></div><div class="ing">芦笋 · 酱油 · 味淋 · 白味增 · 白芝麻</div><div class="links"><a class="lnk" href="http://xhslink.com/a/YdtqtbqH01lW" target="_blank" rel="noopener">📕 小红书</a><a class="lnk nt" href="https://app.notion.com/p/10e74549cb3d80d1873bd1ca4cfab17a" target="_blank" rel="noopener">📝 做法</a></div></div>
+</section>
+<section class="card" id="soup" style="--ca:#ead8cc;--cd:#93705a;--cb:#f8f1ec"><h2><span class="ic">🍲</span>汤 <small>Soups</small><span class="n">5</span></h2>
+<div class="dish" data-s="排骨冬瓜汤 排骨 · 冬瓜/藕片 "><div class="row"><a class="name" href="https://app.notion.com/p/17e74549cb3d8031a03de3d2ba83341f" target="_blank" rel="noopener">排骨冬瓜汤</a></div><div class="ing">排骨 · 冬瓜/藕片</div><div class="links"><a class="lnk" href="http://xhslink.com/a/7nLnhELx67U3" target="_blank" rel="noopener">📕 小红书</a><a class="lnk nt" href="https://app.notion.com/p/17e74549cb3d8031a03de3d2ba83341f" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="冬瓜丸子汤 冬瓜 · 黑豚猪肉末 · 葱姜蒜 "><div class="row"><a class="name" href="https://app.notion.com/p/13274549cb3d80d5bff5ef85aad04a72" target="_blank" rel="noopener">冬瓜丸子汤</a></div><div class="ing">冬瓜 · 黑豚猪肉末 · 葱姜蒜</div><div class="links"><a class="lnk nt" href="https://app.notion.com/p/13274549cb3d80d5bff5ef85aad04a72" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="冬瓜蘑菇汤 冬瓜 · 蘑菇 · 葱 "><div class="row"><a class="name" href="https://app.notion.com/p/10e74549cb3d80c48125f9ea9df8ebe7" target="_blank" rel="noopener">冬瓜蘑菇汤</a></div><div class="ing">冬瓜 · 蘑菇 · 葱</div><div class="links"><a class="lnk nt" href="https://app.notion.com/p/10e74549cb3d80c48125f9ea9df8ebe7" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="虫草花鸡汤 鸡 · 虫草花 · 羊肚菌 小火炖3小时"><div class="row"><a class="name" href="https://app.notion.com/p/21274549cb3d80c7b350e683b5fb9005" target="_blank" rel="noopener">虫草花鸡汤</a></div><div class="ing">鸡 · 虫草花 · 羊肚菌</div><div class="note">⏱ 小火炖3小时</div><div class="links"><a class="lnk nt" href="https://app.notion.com/p/21274549cb3d80c7b350e683b5fb9005" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="牛尾汤 牛尾 · 番茄 · 番茄酱 · 芹菜 "><div class="row"><a class="name" href="https://app.notion.com/p/bf02882d863b4689a4a7e3ea14e23b19" target="_blank" rel="noopener">牛尾汤</a></div><div class="ing">牛尾 · 番茄 · 番茄酱 · 芹菜</div><div class="links"><a class="lnk nt" href="https://app.notion.com/p/bf02882d863b4689a4a7e3ea14e23b19" target="_blank" rel="noopener">📝 做法</a></div></div>
+</section>
+<section class="card" id="staple" style="--ca:#e6dccd;--cd:#8e7b62;--cb:#f8f4ee"><h2><span class="ic">🍚</span>饭·面包 <small>Rice &amp; Bread</small><span class="n">5</span></h2>
+<div class="dish" data-s="煲仔饭 米 · 腊肠 · 青菜 米提前泡1小时"><div class="row"><a class="name" href="https://app.notion.com/p/1ae74549cb3d809ab9f7e06a97fa7ff9" target="_blank" rel="noopener">煲仔饭</a></div><div class="ing">米 · 腊肠 · 青菜</div><div class="note">⏱ 米提前泡1小时</div><div class="links"><a class="lnk" href="http://xhslink.com/a/G9TzmAKd8Ic7" target="_blank" rel="noopener">📕 小红书</a><a class="lnk nt" href="https://app.notion.com/p/1ae74549cb3d809ab9f7e06a97fa7ff9" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="滑蛋鸡肉饭  "><div class="row"><a class="name" href="https://app.notion.com/p/12e74549cb3d80d6b099d319f4a6c2dc" target="_blank" rel="noopener">滑蛋鸡肉饭</a></div><div class="links"><a class="lnk" href="http://xhslink.com/a/nP1TYhD6yxKW" target="_blank" rel="noopener">📕 小红书</a><a class="lnk nt" href="https://app.notion.com/p/12e74549cb3d80d6b099d319f4a6c2dc" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="三文鱼烩饭 三文鱼 · 蘑菇 · 意大利白酱 · 洋葱 "><div class="row"><a class="name" href="https://app.notion.com/p/b2e58bb8fde9417c9d4fb96eef9cdd64" target="_blank" rel="noopener">三文鱼烩饭</a></div><div class="ing">三文鱼 · 蘑菇 · 意大利白酱 · 洋葱</div><div class="links"><a class="lnk nt" href="https://app.notion.com/p/b2e58bb8fde9417c9d4fb96eef9cdd64" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="🍅 意大利番茄佛卡夏 高筋面粉 · 小番茄 · 橄榄油 · 迷迭香 当天版 · 450°f"><div class="row"><a class="name" href="https://app.notion.com/p/38d74549cb3d80a8826cf71c28a56310" target="_blank" rel="noopener">🍅 意大利番茄佛卡夏</a></div><div class="ing">高筋面粉 · 小番茄 · 橄榄油 · 迷迭香</div><div class="note">⏱ 当天版 · 450°F</div><div class="links"><a class="lnk nt" href="https://app.notion.com/p/38d74549cb3d80a8826cf71c28a56310" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="日式生吐司 汤种 · 牛奶 · 黄油 · 酵母 "><div class="row"><a class="name" href="https://app.notion.com/p/14874549cb3d80e886edc8c460554161" target="_blank" rel="noopener">日式生吐司</a></div><div class="ing">汤种 · 牛奶 · 黄油 · 酵母</div><div class="links"><a class="lnk nt" href="https://app.notion.com/p/14874549cb3d80e886edc8c460554161" target="_blank" rel="noopener">📝 做法</a></div></div>
+</section>
+<section class="card" id="sweet" style="--ca:#e2d8e2;--cd:#7d6a7d;--cb:#f6f2f6"><h2><span class="ic">🍰</span>甜品·饮料 <small>Desserts &amp; Drinks</small><span class="n">4</span></h2>
+<div class="dish" data-s="朗姆葡萄干磅蛋糕 黄油 · 糖 · 鸡蛋 · 面粉 · 葡萄干 295°f 40分钟 · 冷藏24hr+"><div class="row"><a class="name" href="https://app.notion.com/p/14f74549cb3d80fd9b8bd3210debbede" target="_blank" rel="noopener">朗姆葡萄干磅蛋糕</a><span class="tag">甜品</span></div><div class="ing">黄油 · 糖 · 鸡蛋 · 面粉 · 葡萄干</div><div class="note">⏱ 295°F 40分钟 · 冷藏24hr+</div><div class="links"><a class="lnk nt" href="https://app.notion.com/p/14f74549cb3d80fd9b8bd3210debbede" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="青柠渍菠萝 菠萝 · 青柠皮/汁 · 白兰地/白朗姆 冷藏30分钟–2小时"><div class="row"><a class="name" href="https://app.notion.com/p/21a74549cb3d8005bdf6d0676d72f836" target="_blank" rel="noopener">青柠渍菠萝</a><span class="tag">甜品</span></div><div class="ing">菠萝 · 青柠皮/汁 · 白兰地/白朗姆</div><div class="note">⏱ 冷藏30分钟–2小时</div><div class="links"><a class="lnk nt" href="https://app.notion.com/p/21a74549cb3d8005bdf6d0676d72f836" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="无花果brie 无花果 · brie · 坚果碎 · prosciutto · 蜂蜜 350°f 20分钟"><div class="row"><a class="name" href="https://app.notion.com/p/3aa74549cb3d80b68179d8a4390334a3" target="_blank" rel="noopener">无花果brie</a></div><div class="ing">无花果 · brie · 坚果碎 · prosciutto · 蜂蜜</div><div class="note">⏱ 350°F 20分钟</div><div class="links"><a class="lnk nt" href="https://app.notion.com/p/3aa74549cb3d80b68179d8a4390334a3" target="_blank" rel="noopener">📝 做法</a></div></div>
+<div class="dish" data-s="巴西青柠水 薄皮青柠 · 炼奶 · 糖水 搅拌8–10秒，别多"><div class="row"><a class="name" href="https://app.notion.com/p/21474549cb3d8003bdfcfd143628531a" target="_blank" rel="noopener">巴西青柠水</a><span class="tag">饮料</span></div><div class="ing">薄皮青柠 · 炼奶 · 糖水</div><div class="note">⏱ 搅拌8–10秒，别多</div><div class="links"><a class="lnk nt" href="https://app.notion.com/p/21474549cb3d8003bdfcfd143628531a" target="_blank" rel="noopener">📝 做法</a></div></div>
+</section>
+</div>
+<section class="sec" id="todo"><h3 style="--hc:#e8d8d5"><span>📝 待做</span><small>To try · やってみたい</small></h3><div class="todo">
+<div class="ti" data-s="油闷大虾（带壳🦐） "><b>油闷大虾（带壳🦐）</b></div>
+<div class="ti" data-s="蒜泥白肉 已在菜单里"><b>蒜泥白肉</b><div class="note">已在菜单里</div><div class="links"><a class="lnk" href="http://xhslink.com/a/53t2gEyx3Ic7" target="_blank" rel="noopener">📕 小红书</a></div></div>
+<div class="ti" data-s="牛肉炒饭 "><b>牛肉炒饭</b></div>
+<div class="ti" data-s="上海菜饭 "><b>上海菜饭</b></div>
+<div class="ti" data-s="蒜蓉粉丝虾滑煲 "><b>蒜蓉粉丝虾滑煲</b><div class="links"><a class="lnk" href="http://xhslink.com/a/tVOtKAO9AFs3" target="_blank" rel="noopener">📕 小红书</a></div></div>
+<div class="ti" data-s="凉拌手撕鸡 "><b>凉拌手撕鸡</b><div class="links"><a class="lnk" href="http://xhslink.com/a/CflUX2V5U2lW" target="_blank" rel="noopener">📕 小红书</a></div></div>
+<div class="ti" data-s="小鸡炖蘑菇 "><b>小鸡炖蘑菇</b><div class="links"><a class="lnk" href="http://xhslink.com/a/OJC58CsBXFs3" target="_blank" rel="noopener">📕 小红书</a></div></div>
+<div class="ti" data-s="三鲜菌菇汤 "><b>三鲜菌菇汤</b><div class="links"><a class="lnk" href="http://xhslink.com/a/27oNtNI1hGs3" target="_blank" rel="noopener">📕 小红书</a></div></div>
+<div class="ti" data-s="清炖牛肋骨条（带面版） 生姜 大葱 洋葱 桂皮 花椒 炖1.5小时 → 辣椒粉 白萝卜 15分钟 → 面条"><b>清炖牛肋骨条（带面版）</b><div class="note">生姜 大葱 洋葱 桂皮 花椒 炖1.5小时 → 辣椒粉 白萝卜 15分钟 → 面条</div><div class="links"><a class="lnk" href="http://xhslink.com/a/dUFRUOUBQaV3" target="_blank" rel="noopener">📕 小红书</a></div></div>
+<div class="ti" data-s="chicken katsu mochi mommy"><b>Chicken Katsu</b><div class="note">Mochi Mommy</div><div class="links"><a class="lnk" href="https://t.co/WnmllowJ1K" target="_blank" rel="noopener">🔗 食谱</a></div></div>
+</div></section>
+<section class="sec" id="weeks"><h3 style="--hc:#d5dde4"><span>📅 最近每周菜单</span><small>Recent weekly menus · こんしゅう</small></h3><div class="weeks">
+<div class="wk"><div class="d">8.24.26</div><div class="l"><span>周一</span><span>白菜胡椒鸡腿 · 芦笋炒芋艿</span></div><div class="l"><span>周四</span><span>红烧玉子豆腐 · 上次的整条鱼</span></div></div>
+<div class="wk"><div class="d">7.13.26</div><div class="l"><span>周三</span><span>牛肋条罗宋汤（洋葱 西芹 番茄 土豆 包菜）</span></div><div class="l"><span>周四</span><span>藕炒牛肉</span></div></div>
+<div class="wk"><div class="d">7.6.26</div><div class="l"><span>周一</span><span>贵妃鸡 · 蒜台肉丝</span></div><div class="l"><span>周二</span><span>肉饼蒸蛋 · 煲仔饭 · short rib</span></div><div class="l"><span>周四</span><span>鸭腿 · 牛肋条罗宋汤</span></div></div>
+<div class="wk"><div class="d">6.29.26</div><div class="l"><span>本周</span><span>羊肉烧麦 · 豆苗 · 肉饼子炖蛋 · 鸭腿 · 泰式酸辣鸡腿 · 煲仔饭</span></div><div class="l"><span>娃 周一</span><span>白鱼ricotta</span></div><div class="l"><span>娃 周二</span><span>Ricotta 桃子 三文鱼</span></div><div class="l"><span>娃 周三</span><span>牛肉山药条</span></div></div>
+</div></section>
+<section class="sec"><h3 style="--hc:#e2d8bc"><span>🍗 处理鸡肉小贴士</span><small>Chicken prep · コツ</small></h3><div class="tipbox"><b>盐水 Brine：</b>4 cups 水 + 1/4 cup kosher salt（+2 tbsp 糖可选）；鸡胸/鸡腿 30分钟–2小时，整鸡 4–12小时，之后冲洗擦干。<br><b>腌料 Marinade：</b>橄榄油 + 柠檬汁 + 蒜 + 盐胡椒，30分钟–4小时。<br><b>小苏打：</b>1 tsp / 1 cup 水，泡15–20分钟（别更久），冲洗擦干。<br><b>熟度：</b>内部 165°F (74°C)，出锅静置几分钟。</div></section>
+<section class="sec" id="past"><h3 style="--hc:#dce3d6"><span>📚 之前做的</span><small>Idea bank · 130</small></h3><details class="past"><summary>展开看看以前做过的菜</summary><div class="chips"><span data-s="鸡汁百叶包">鸡汁百叶包</span><span data-s="土豆牛腩">土豆牛腩</span><span data-s="凉拌猪耳">凉拌猪耳</span><span data-s="猪脚">猪脚</span><span data-s="茄子">茄子</span><span data-s="肉末酸豆角">肉末酸豆角</span><span data-s="黄芽菜肉丝年糕">黄芽菜肉丝年糕</span><span data-s="酱大骨">酱大骨</span><span data-s="鸡翅">鸡翅</span><span data-s="牛排">牛排</span><span data-s="韩式short rib">韩式short rib</span><span data-s="蒜泥白肉">蒜泥白肉</span><span data-s="蒸鸡蛋">蒸鸡蛋</span><span data-s="干锅+蒜苔+藕片">干锅+蒜苔+藕片</span><span data-s="处理乌骨鸡">处理乌骨鸡</span><span data-s="素什锦">素什锦</span><span data-s="南瓜炒饭">南瓜炒饭</span><span data-s="广东汤">广东汤</span><span data-s="鱼子乌冬">鱼子乌冬</span><span data-s="大盘鸡">大盘鸡</span><span data-s="水煮牛肉(少辣)">水煮牛肉(少辣)</span><span data-s="酸菜炖粉条">酸菜炖粉条</span><span data-s="香辣虾">香辣虾</span><span data-s="羊肉烧麦">羊肉烧麦</span><span data-s="水晶虾仁">水晶虾仁</span><span data-s="肉饼子炖蛋">肉饼子炖蛋</span><span data-s="八宝辣酱">八宝辣酱</span><span data-s="白斩鸡">白斩鸡</span><span data-s="罗宋汤">罗宋汤</span><span data-s="葱油芋艿">葱油芋艿</span><span data-s="葱油龙虾+泡饭">葱油龙虾+泡饭</span><span data-s="象拔蚌">象拔蚌</span><span data-s="茶碗蒸">茶碗蒸</span><span data-s="家里的black trout">家里的black trout</span><span data-s="牛肉三明治">牛肉三明治</span><span data-s="猪颈肉">猪颈肉</span><span data-s="爆炒鸡胗">爆炒鸡胗</span><span data-s="龙虾泡饭">龙虾泡饭</span><span data-s="泰式酸辣鸡腿">泰式酸辣鸡腿</span><span data-s="虾米冬瓜">虾米冬瓜</span><span data-s="牛肉豆腐煲">牛肉豆腐煲</span><span data-s="鲍鱼汁">鲍鱼汁</span><span data-s="鱼肝酱">鱼肝酱</span><span data-s="油泼辣子">油泼辣子</span><span data-s="三文鱼头">三文鱼头</span><span data-s="小黄鱼">小黄鱼</span><span data-s="牛蛙">牛蛙</span><span data-s="兔肉">兔肉</span><span data-s="乌骨鸡汤">乌骨鸡汤</span><span data-s="番茄牛腩">番茄牛腩</span><span data-s="凉拌鸡蛋羹">凉拌鸡蛋羹</span><span data-s="章鱼">章鱼</span><span data-s="爆炒鸡腿菇鸡胗">爆炒鸡腿菇鸡胗</span><span data-s="咖喱土豆牛肉">咖喱土豆牛肉</span><span data-s="茭白肉丝">茭白肉丝</span><span data-s="鲍鱼">鲍鱼</span><span data-s="costco的trout">costco的trout</span><span data-s="羊肉烧卖">羊肉烧卖</span><span data-s="煲仔饭">煲仔饭</span><span data-s="上海冷面">上海冷面</span><span data-s="猪肉干">猪肉干</span><span data-s="牛脆脆">牛脆脆</span><span data-s="厚切牛舌">厚切牛舌</span><span data-s="牛肉清汤加芹菜">牛肉清汤加芹菜</span><span data-s="高汤鸡">高汤鸡</span><span data-s="冬瓜桑拿鸡">冬瓜桑拿鸡</span><span data-s="清炖牛肋条">清炖牛肋条</span><span data-s="排骨炖豆角">排骨炖豆角</span><span data-s="凉拌莴笋">凉拌莴笋</span><span data-s="窝蛋牛肉煲仔饭">窝蛋牛肉煲仔饭</span><span data-s="凉拌茄子">凉拌茄子</span><span data-s="麻婆豆腐">麻婆豆腐</span><span data-s="black trout">Black Trout</span><span data-s="洋葱炒牛肉">洋葱炒牛肉</span><span data-s="蒜香骨">蒜香骨</span><span data-s="blueberry lemon scone">Blueberry lemon scone</span><span data-s="狮子头">狮子头</span><span data-s="西班牙风味章鱼">西班牙风味章鱼</span><span data-s="陕西大盘鸡">陕西大盘鸡</span><span data-s="日式炸猪排">日式炸猪排</span><span data-s="凉拌芝麻豆苗金针菇">凉拌芝麻豆苗金针菇</span><span data-s="虎虾莴笋醋冻">虎虾莴笋醋冻</span><span data-s="青花椒黄花鱼">青花椒黄花鱼</span><span data-s="彩椒烧鱿鱼">彩椒烧鱿鱼</span><span data-s="荷塘月色">荷塘月色</span><span data-s="笋干烧肉百叶结">笋干烧肉百叶结</span><span data-s="乌骨鸡菌菇汤">乌骨鸡菌菇汤</span><span data-s="居酒屋牛腱萝卜">居酒屋牛腱萝卜</span><span data-s="crying tiger">Crying tiger</span><span data-s="青花椒小黄鱼">青花椒小黄鱼</span><span data-s="栗子红烧肉">栗子红烧肉</span><span data-s="冬笋炒什么？">冬笋炒什么？</span><span data-s="避风塘炒虾">避风塘炒虾</span><span data-s="藕丁">藕丁</span><span data-s="腌笃鲜">腌笃鲜</span><span data-s="捞汁海鲜">捞汁海鲜</span><span data-s="糖柿子">糖柿子</span><span data-s="丝瓜肉沫蛋汤">丝瓜肉沫蛋汤</span><span data-s="小炒肉">小炒肉</span><span data-s="凉拌蘑菇">凉拌蘑菇</span><span data-s="hotn juicy cajun style">Hotn juicy cajun style</span><span data-s="金汤猪脚鸡">金汤猪脚鸡</span><span data-s="猪肚">猪肚</span><span data-s="一饭封神烧椒牛肉taco">一饭封神烧椒牛肉taco</span><span data-s="墨西哥玉米">墨西哥玉米</span><span data-s="guacamole +chips">guacamole +chips</span><span data-s="salsa">Salsa</span><span data-s="pisa">pisa</span><span data-s="locomoco拌饭">Locomoco拌饭</span><span data-s="莲藕排骨汤">莲藕排骨汤</span><span data-s="三杯鸡">三杯鸡</span><span data-s="椒麻云片虾">椒麻云片虾</span><span data-s="鲜虾豆腐菌菇煲">鲜虾豆腐菌菇煲</span><span data-s="咖喱鸡">咖喱鸡</span><span data-s="酸辣笋丁">酸辣笋丁</span><span data-s="蘑菇黑椒牛肉粒(清淡一些)">蘑菇黑椒牛肉粒(清淡一些)</span><span data-s="辣猪肚">辣猪肚</span><span data-s="花胶鸡汤">花胶鸡汤</span><span data-s="牛肉脯">牛肉脯</span><span data-s="糖藕">糖藕</span><span data-s="日本🥚">日本🥚</span><span data-s="茨菇">茨菇</span><span data-s="芋艿">芋艿</span><span data-s="茭白毛豆肉丁">茭白毛豆肉丁</span><span data-s="咸蛋黄鸡翅">咸蛋黄鸡翅</span><span data-s="羊腩">羊腩</span><span data-s="泉水牛肉">泉水牛肉</span><span data-s="三文鱼茶泡饭">三文鱼茶泡饭</span><span data-s="牛尾">牛尾</span><span data-s="溏心蛋">溏心蛋</span></div></details></section>
+<footer>数据来自 Family Menu · Menu 数据库（以数据库为准）</footer></div>
+<script>
+const q=document.getElementById('q');
+q.addEventListener('input',()=>{const v=q.value.trim().toLowerCase();
+document.querySelectorAll('[data-s]').forEach(el=>el.classList.toggle('hide',v&&!el.dataset.s.includes(v)));
+document.querySelectorAll('.card').forEach(c=>c.classList.toggle('hide',v&&!c.querySelector('.dish:not(.hide)')));
+if(v)document.querySelector('details.past').open=true;});
+</script></body></html>
