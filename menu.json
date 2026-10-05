@@ -111,7 +111,7 @@
      "name": "水煮牛肉(少辣)",
      "tag": null,
      "meat": "牛",
-     "ingredients": "",
+     "ingredients": "牛肉里脊 · 配菜 · 火锅调料包/水煮牛肉调料包",
      "note": "",
      "links": [],
      "photo": null,
@@ -268,7 +268,7 @@
      "name": "蒜泥白肉",
      "tag": null,
      "meat": "猪",
-     "ingredients": "",
+     "ingredients": "五花肉或梅花肉 · 葱姜蒜",
      "note": "",
      "links": [
       {
@@ -650,7 +650,7 @@
      "name": "凉拌芝麻豆苗金针菇",
      "tag": null,
      "meat": "素",
-     "ingredients": "",
+     "ingredients": "嫩豆苗 · 金针菇 · 芝麻 · 蚝油",
      "note": "",
      "links": [],
      "photo": null,
