@@ -27,6 +27,9 @@
      "name": "青椒牛肉豆腐煲",
      "tag": null,
      "meat": "牛",
+     "aliases": [
+      "牛肉豆腐煲"
+     ],
      "ingredients": "",
      "note": "",
      "links": [
@@ -53,7 +56,8 @@
      "photo": "img/14874549add276.jpg",
      "recipe": "主料：short rib 带骨的最好. 5lb\n## 配料\n1. 苹果2\n2. 🍐 梨 1\n3. 葱姜蒜\n4. 洋葱\n5. 萝卜\n6. 年糕\n7. 土豆\n## 调料\n1. 韩式辣椒酱\n2. 韩式辣椒粉\n3. 红糖\n## 步骤\n1. 牛仔骨放锅里，加水 葱姜料酒 凉水，焯水\n2. 切大块萝卜（红白都行）土豆 洋葱 备用\n3. 切苹果 梨 葱 姜 8瓣蒜 一个洋葱 2片姜 切碎放入破壁机加一点水打成糊\n4. 排骨和糊糊都放高压锅里，加调料（4勺生抽 1勺红糖 2勺韩式辣酱 1勺韩式辣椒粉）高压一起炖 20分钟\n5. 排骨和调料加入切好的配菜放锅里，尝一下味道，根据口味补加辣酱，辣椒粉，盐，生抽，煮 20分钟。加年糕煮 5分钟，加青辣椒，葱花\n![](img:韩式炖short rib)\n[小红书 · 芝加哥的肥面猫](http://xhslink.com/a/Iztz3omDT9n0)",
      "aliases": [
-      "short rib"
+      "short rib",
+      "韩式short rib"
      ]
     },
     {
@@ -61,9 +65,11 @@
      "tag": null,
      "meat": "牛",
      "aliases": [
-      "牛肋条蘸酱"
+      "牛肋条蘸酱",
+      "清炖牛肋条",
+      "清炖牛肋骨条（带面版）"
      ],
-     "ingredients": "牛肋 · 生姜 · 大葱 · 洋葱 · 桂皮 · 花椒",
+     "ingredients": "牛肋 · 生姜 · 大葱 · 洋葱 · 桂皮 · 花椒 · 面（可选）",
      "note": "清炖2小时",
      "links": [
       {
@@ -72,7 +78,7 @@
       }
      ],
      "photo": null,
-     "recipe": "1. 牛肋焯水\n2. 生姜大葱洋葱桂皮花椒+热水\n3. 清炖2小时\n## 调蘸酱\n1. 蒜末和葱花淋入热油（油不用很多）\n2. 加入2-3勺牛肋排汤\n3. 加入1勺生抽，1勺蚝油，适量白糖和香菜，搅拌均匀\n> 参考：小红书「Costco 食谱：清炖牛肋排 原汁原味」· 十七夏DD"
+     "recipe": "1. 牛肋焯水\n2. 生姜大葱洋葱桂皮花椒+热水\n3. 清炖2小时\n## 调蘸酱\n1. 蒜末和葱花淋入热油（油不用很多）\n2. 加入2-3勺牛肋排汤\n3. 加入1勺生抽，1勺蚝油，适量白糖和香菜，搅拌均匀\n> 带面版：生姜 大葱 洋葱 香叶 桂皮 花椒 炖1.5小时 → 辣椒粉 白萝卜 15分钟 → 加面条\n> 参考：小红书「Costco 食谱：清炖牛肋排 原汁原味」· 十七夏DD"
     },
     {
      "name": "Holiday Prim Rib + Chimichurri",
@@ -244,7 +250,7 @@
   {
    "id": "poultry",
    "icon": "🐔",
-   "zh": "鸡",
+   "zh": "鸡·鸭",
    "en": "Poultry",
    "dishes": [
     {
@@ -307,13 +313,14 @@
      "tag": null,
      "meat": "鸡",
      "aliases": [
-      "大盘鸡(加面的)"
+      "大盘鸡(加面的)",
+      "陕西大盘鸡"
      ],
      "ingredients": "鸡肉 · 土豆 · 青红椒 · 洋葱 · 面 · 郫县豆瓣酱 · 葱姜蒜 · 干辣椒 · 花椒 · 八角 · 桂皮 · 香叶",
      "note": "",
      "links": [],
      "photo": null,
-     "recipe": ""
+     "recipe": "> 陕西大盘鸡：鸡肉weee买就行，干一点的那种，有一点汤汁不多，铺上宽面"
     },
     {
      "id": "d47",
@@ -331,6 +338,9 @@
      "name": "爆炒鸡胗",
      "tag": null,
      "meat": "鸡",
+     "aliases": [
+      "爆炒鸡腿菇鸡胗"
+     ],
      "ingredients": "",
      "note": "",
      "links": [],
@@ -364,6 +374,17 @@
      "name": "咸蛋黄鸡翅",
      "tag": null,
      "meat": "鸡",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
+    },
+    {
+     "id": "d72",
+     "name": "南京盐水鸭",
+     "tag": null,
+     "meat": "鸭",
      "ingredients": "",
      "note": "",
      "links": [],
@@ -433,6 +454,9 @@
      "name": "葱油龙虾+泡饭",
      "tag": null,
      "meat": "龙虾/虾",
+     "aliases": [
+      "龙虾泡饭"
+     ],
      "ingredients": "",
      "note": "",
      "links": [],
@@ -458,7 +482,7 @@
      "name": "捞汁海鲜",
      "tag": null,
      "meat": "龙虾/虾",
-     "ingredients": "",
+     "ingredients": "莴笋 · 黄瓜",
      "note": "",
      "links": [],
      "photo": null,
@@ -557,6 +581,9 @@
      "name": "干锅蒜苔",
      "tag": null,
      "meat": "猪",
+     "aliases": [
+      "干锅+蒜苔+藕片"
+     ],
      "ingredients": "",
      "note": "",
      "links": [],
@@ -579,6 +606,9 @@
      "name": "炒藕丁",
      "tag": null,
      "meat": "素",
+     "aliases": [
+      "藕丁"
+     ],
      "ingredients": "",
      "note": "",
      "links": [],
@@ -601,6 +631,9 @@
      "name": "糖番茄",
      "tag": null,
      "meat": "素",
+     "aliases": [
+      "糖柿子"
+     ],
      "ingredients": "",
      "note": "",
      "links": [],
@@ -710,7 +743,8 @@
      "meat": "牛",
      "aliases": [
       "牛腩卷心菜土豆罗宋汤",
-      "牛肋条罗宋汤"
+      "牛肋条罗宋汤",
+      "罗宋汤"
      ],
      "ingredients": "",
      "note": "",
@@ -723,6 +757,9 @@
      "name": "乌骨鸡汤",
      "tag": null,
      "meat": "鸡",
+     "aliases": [
+      "乌骨鸡菌菇汤"
+     ],
      "ingredients": "",
      "note": "",
      "links": [],
@@ -824,11 +861,14 @@
      "name": "羊肉烧麦",
      "tag": null,
      "meat": "羊",
+     "aliases": [
+      "羊肉烧卖"
+     ],
      "ingredients": "",
      "note": "",
      "links": [],
      "photo": null,
-     "recipe": ""
+     "recipe": "> 皮用最薄的烧卖皮就行，羊肉的话可以选羊肩肉，要稍微肥一点的比较香。馅儿里加紫洋葱碎，黑白胡椒粉，五香粉or十三香，咖喱粉，和酱油，看情况补点盐就行了"
     }
    ]
   },
@@ -925,12 +965,6 @@
    "details": "[小红书 · 杨小咩](http://xhslink.com/a/27oNtNI1hGs3)"
   },
   {
-   "name": "清炖牛肋骨条（带面版）",
-   "note": "生姜 大葱 洋葱 桂皮 花椒 炖1.5小时 → 辣椒粉 白萝卜 15分钟 → 面条",
-   "link": "http://xhslink.com/a/dUFRUOUBQaV3",
-   "details": "1. 生姜，大葱，洋葱，香叶，桂皮，花椒 炖一小时半\n2. 辣椒粉 白萝卜 15分钟\n3. 面条\n[小红书 · 燕子的小食堂](http://xhslink.com/a/dUFRUOUBQaV3)"
-  },
-  {
    "name": "Chicken Katsu",
    "note": "Mochi Mommy",
    "link": "https://t.co/WnmllowJ1K",
@@ -950,6 +984,348 @@
   },
   {
    "name": "黄豆猪脚",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "凉拌猪耳",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "肉末酸豆角",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "酱大骨",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "蒸鸡蛋",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "素什锦",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "南瓜炒饭",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "广东汤",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "鱼子乌冬",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "香辣虾",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "水晶虾仁",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "肉饼子炖蛋",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "八宝辣酱",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "白斩鸡",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "葱油芋艿",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "牛肉三明治",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "虾米冬瓜",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "鱼肝酱",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "油泼辣子",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "番茄牛腩",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "凉拌鸡蛋羹",
+   "note": "",
+   "link": "http://xhslink.com/m/131IiGnrfVP",
+   "details": ""
+  },
+  {
+   "name": "猪肉干",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "牛肉清汤加芹菜",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "高汤鸡",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "窝蛋牛肉煲仔饭",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "洋葱炒牛肉",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "Blueberry lemon scone",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "西班牙风味章鱼",
+   "note": "章鱼买好了",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "青花椒黄花鱼",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "彩椒烧鱿鱼",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "笋干烧肉百叶结",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "居酒屋牛腱萝卜",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "栗子红烧肉",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "避风塘炒虾",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "腌笃鲜",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "丝瓜肉沫蛋汤",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "小炒肉",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "凉拌蘑菇",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "Hotn juicy cajun style",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "金汤猪脚鸡",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "一饭封神烧椒牛肉taco",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "墨西哥玉米",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "guacamole +chips",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "Salsa",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "pisa",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "Locomoco拌饭",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "三杯鸡",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "鲜虾豆腐菌菇煲",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "咖喱鸡",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "酸辣笋丁",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "蘑菇黑椒牛肉粒(清淡一些)",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "辣猪肚",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "花胶鸡汤",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "糖藕",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "茭白毛豆肉丁",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "泉水牛肉",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "三文鱼茶泡饭",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "溏心蛋",
    "note": "",
    "link": null,
    "details": ""
@@ -1046,658 +1422,6 @@
   ],
   "full": "If you enjoy the tender and juicy texture of the chicken you purchased, you can easily replicate the process at home using natural methods like brining and marinating. Here's a step-by-step guide to help you achieve similar results:\n## 1. Brining (Water + Salt Solution)\nBrining is one of the best ways to ensure your chicken stays moist and tender. Here's how you can do it:\n**Basic Brine Recipe · Ingredients**\n- 4 cups (1 liter) of water\n- 1/4 cup kosher salt (or 3 tablespoons table salt)\n- 2 tablespoons sugar (optional, helps with caramelization and adds flavor)\n- Optional: add flavorings such as lemon juice, garlic cloves, bay leaves, peppercorns, or herbs (like thyme or rosemary)\n**Instructions**\n1. **Dissolve salt and sugar**: In a saucepan, heat 1 cup of the water and dissolve the salt and sugar. If you're using additional flavorings, add them now. Once dissolved, remove from heat and let it cool.\n2. **Add cold water**: Once the brine base is cool, add the remaining 3 cups of cold water to cool the mixture completely. You don't want to add chicken to a warm brine, as it could start cooking it.\n3. **Brine the chicken**: Submerge the chicken in the brine solution. You can brine for **30 minutes to 12 hours**, depending on how much time you have and how strong you want the brine to be. A good rule of thumb: **30 minutes to 2 hours** for smaller cuts like breasts or thighs; **4-12 hours** for whole chickens or larger pieces.\n4. **Rinse and dry**: After brining, remove the chicken and rinse it briefly under cold water to remove excess salt. Pat it dry with paper towels before cooking.\n> Why it works: The salt in the brine helps the chicken retain moisture, keeping it juicy during cooking. It also breaks down proteins slightly, tenderizing the meat. Sugar adds a touch of sweetness and helps with browning.\n## 2. Marinating (Acid + Oil + Seasonings)\nIf you want to further enhance the flavor and texture, you can marinate the chicken. A marinade typically includes an acid (like lemon juice or vinegar), oil, and seasonings. The acid helps tenderize the meat, while the oil keeps it moist.\n**Basic Marinade Recipe · Ingredients**\n- 1/4 cup olive oil\n- 2 tablespoons lemon juice (or any acid like vinegar)\n- 2 cloves garlic, minced\n- 1 teaspoon salt\n- 1/2 teaspoon pepper\n- Optional: herbs (rosemary, thyme, or oregano), honey for sweetness, or soy sauce for umami\n**Instructions**\n1. **Mix ingredients**: In a small bowl, whisk together the oil, lemon juice, garlic, salt, pepper, and any additional herbs or flavorings.\n2. **Marinate the chicken**: Place the chicken in a resealable plastic bag or a shallow dish. Pour the marinade over the chicken, ensuring it's evenly coated. Refrigerate and marinate for **30 minutes to 4 hours**.\n3. **Cook as desired**: Remove the chicken from the marinade, letting any excess drip off, and cook using your preferred method (grilling, baking, pan-searing, etc.).\n> Why it works: The acid (lemon juice) helps break down the proteins on the surface of the chicken, tenderizing it. The oil helps keep the chicken moist, and the garlic and herbs add flavor.\n## 3. Tenderizing Alternatives (Optional)\nIf you want to replicate the tenderizing effects of sodium carbonate (used in commercial tenderizing), you can use **baking soda** or natural tenderizers like **buttermilk**:\n**Baking Soda Method** — Baking soda raises the pH of the meat, making it harder for proteins to bond together, which keeps the meat tender and moist.\n1. Dissolve 1 teaspoon of **baking soda** in 1 cup of water.\n2. Submerge the chicken in the solution for **15-20 minutes** (no longer, or the texture may become too soft).\n3. Rinse thoroughly and pat dry before cooking.\n**Buttermilk Method** — Buttermilk's mild acidity also helps tenderize chicken while adding a slight tangy flavor.\n1. Submerge the chicken in **buttermilk** for 2 to 12 hours.\n2. Remove from the buttermilk, shake off the excess, and cook.\n## 4. Cooking Methods to Retain Moisture\nRegardless of how you prepare your chicken, **cooking it properly** is key to maintaining its tender texture. Here are a few cooking tips:\n- **Use moderate heat**: Cook chicken over medium heat to avoid drying it out too quickly.\n- **Monitor internal temperature**: Chicken is fully cooked when it reaches an internal temperature of **165°F (74°C)**. Overcooking can make it dry, so use a meat thermometer for precision.\n- **Rest the meat**: Let the chicken rest for a few minutes after cooking to allow the juices to redistribute, keeping it moist.\n## Conclusion\nBy brining and/or marinating your chicken at home, you can easily achieve the tender, juicy texture you enjoy from store-bought chicken. Start with a simple saltwater brine, and you can add herbs or acids like lemon juice to further tenderize and flavor the meat. If you're looking for a more advanced tenderizing method, you can experiment with baking soda or buttermilk. With these steps, you can have consistently tender and flavorful chicken just like the kind you'd buy from the store!"
  },
- "past": [
-  {
-   "name": "鸡汁百叶包",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "土豆牛腩",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "凉拌猪耳",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "猪脚",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "茄子",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "肉末酸豆角",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "黄芽菜肉丝年糕",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "酱大骨",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "鸡翅",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "牛排",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "韩式short rib",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "蒜泥白肉",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "蒸鸡蛋",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "干锅+蒜苔+藕片",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "处理乌骨鸡",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "素什锦",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "南瓜炒饭",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "广东汤",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "鱼子乌冬",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "大盘鸡",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "水煮牛肉(少辣)",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "酸菜炖粉条",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "香辣虾",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "羊肉烧麦",
-   "note": "皮用最薄的烧卖皮就行，羊肉的话可以选羊肩肉，要稍微肥一点的比较香。馅儿里加紫洋葱碎，黑白胡椒粉，五香粉or十三香，咖喱粉，和酱油，看情况补点盐就行了",
-   "link": null
-  },
-  {
-   "name": "水晶虾仁",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "肉饼子炖蛋",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "八宝辣酱",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "白斩鸡",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "罗宋汤",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "葱油芋艿",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "葱油龙虾+泡饭",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "象拔蚌",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "茶碗蒸",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "家里的black trout",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "牛肉三明治",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "猪颈肉",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "爆炒鸡胗",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "龙虾泡饭",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "泰式酸辣鸡腿",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "虾米冬瓜",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "牛肉豆腐煲",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "鲍鱼汁",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "鱼肝酱",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "油泼辣子",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "三文鱼头",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "小黄鱼",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "牛蛙",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "兔肉",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "乌骨鸡汤",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "番茄牛腩",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "凉拌鸡蛋羹",
-   "note": "",
-   "link": "http://xhslink.com/m/131IiGnrfVP"
-  },
-  {
-   "name": "章鱼",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "爆炒鸡腿菇鸡胗",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "咖喱土豆牛肉",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "茭白肉丝",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "鲍鱼",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "costco的trout",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "羊肉烧卖",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "煲仔饭",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "上海冷面",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "猪肉干",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "牛脆脆",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "厚切牛舌",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "牛肉清汤加芹菜",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "高汤鸡",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "冬瓜桑拿鸡",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "清炖牛肋条",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "排骨炖豆角",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "凉拌莴笋",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "窝蛋牛肉煲仔饭",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "凉拌茄子",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "麻婆豆腐",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "Black Trout",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "洋葱炒牛肉",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "蒜香骨",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "Blueberry lemon scone",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "狮子头",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "西班牙风味章鱼",
-   "note": "章鱼买好了",
-   "link": null
-  },
-  {
-   "name": "陕西大盘鸡",
-   "note": "鸡肉weee买就行，干一点的那种，有一点汤汁不多，铺上宽面",
-   "link": null
-  },
-  {
-   "name": "日式炸猪排",
-   "note": "猪排买好了",
-   "link": null
-  },
-  {
-   "name": "凉拌芝麻豆苗金针菇",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "虎虾莴笋醋冻",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "青花椒黄花鱼",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "彩椒烧鱿鱼",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "荷塘月色",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "笋干烧肉百叶结",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "乌骨鸡菌菇汤",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "居酒屋牛腱萝卜",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "Crying tiger",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "青花椒小黄鱼",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "栗子红烧肉",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "冬笋炒什么？",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "避风塘炒虾",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "藕丁",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "腌笃鲜",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "捞汁海鲜",
-   "note": "莴笋 黄瓜",
-   "link": null
-  },
-  {
-   "name": "糖柿子",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "丝瓜肉沫蛋汤",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "小炒肉",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "凉拌蘑菇",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "Hotn juicy cajun style",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "金汤猪脚鸡",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "猪肚",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "一饭封神烧椒牛肉taco",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "墨西哥玉米",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "guacamole +chips",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "Salsa",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "pisa",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "Locomoco拌饭",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "莲藕排骨汤",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "三杯鸡",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "椒麻云片虾",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "鲜虾豆腐菌菇煲",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "咖喱鸡",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "酸辣笋丁",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "蘑菇黑椒牛肉粒(清淡一些)",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "辣猪肚",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "花胶鸡汤",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "牛肉脯",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "糖藕",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "日本🥚",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "茨菇",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "芋艿",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "茭白毛豆肉丁",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "咸蛋黄鸡翅",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "羊腩",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "泉水牛肉",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "三文鱼茶泡饭",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "牛尾",
-   "note": "",
-   "link": null
-  },
-  {
-   "name": "溏心蛋",
-   "note": "",
-   "link": null
-  }
- ],
  "history_source": {
   "page": "https://app.notion.com/p/d4a373f265764fdbbb72f754b2ed546e",
   "fetched": "2026-10-04",

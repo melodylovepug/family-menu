@@ -122,6 +122,9 @@ def last_eaten():
     return last
 LAST = last_eaten()
 def has_recipe(d): return bool(re.sub(r'^\s*\[[^\]]+\]\([^)]+\)\s*$', '', d['recipe'], flags=re.M).strip())
+def has_body(d):
+    """Real recipe content: anything besides link lines, photo markers and '>' tips."""
+    return any(l.strip() and not re.fullmatch(r'\[[^\]]+\]\([^)]+\)|!\[\]\([^)]*\)|>.*', l.strip()) for l in d['recipe'].splitlines())
 # Stable card ids (#d<n> deep links): dishes without an explicit 'id' are numbered in page order;
 # newer dishes carry their own 'id' so adding them never renumbers existing links.
 DID, _n = {}, 0
@@ -138,7 +141,7 @@ for c in CATS:
         kind = 'cold' if c['id'] == 'cold' else ('main' if m and m != '素' else None)
         if not kind: continue                                                    # veg-only mains/staples are skipped
         PICK.append(dict(id=DID[id(d)], n=d['name'], k=kind, m=m, s=(c['id'] == 'soup' or '汤' in d['name']),
-                         r=has_recipe(d), o=bool(has_recipe(d) or d['ingredients'] or d['note'] or d['links'] or d.get('photo')), p=d.get('photo') or '', i=c['icon'], c=c['id'], l=LAST.get(d['name'], '')))
+                         r=has_body(d), o=bool(has_recipe(d) or d['ingredients'] or d['note'] or d['links'] or d.get('photo')), p=d.get('photo') or '', i=c['icon'], c=c['id'], l=LAST.get(d['name'], '')))
 total = sum(len(c['dishes']) for c in CATS)
 out = []
 PAL = {"meat":("#e8d6d3","#9c7773","#f7f0ee"),"poultry":("#e8dfc8","#8c7a4e","#f8f5ec"),"sea":("#d9e0e7","#66778a","#f2f4f6"),
@@ -253,6 +256,8 @@ footer::before{{content:"🍙 🍡 🍵";display:block;font-size:18px;margin-bot
 .dish.bare{{padding-top:9px;padding-bottom:9px}}
 .dish.bare .name{{font-weight:700;color:#5e544a}}
 .rcp-src{{display:none}}
+.todo-card{{margin-top:34px}}
+.todo-card h2 .ic{{font-size:18px}}
 /* v6: simple cards (thumb + name), link tags at the top of the sheet */
 .dish .row{{flex-wrap:nowrap;gap:10px}}
 .dish .row::before{{display:none}}
@@ -393,7 +398,7 @@ span.pr-th{{display:flex;align-items:center;justify-content:center;font-size:24p
 <script type="application/json" id="pick-data">{json.dumps(PICK, ensure_ascii=False).replace("</", "<\\/")}</script>
 <nav>''')
 for c in CATS: out.append(f'<a href="#{c["id"]}" style="--c:{PAL[c["id"]][1]}55">{c["icon"]} {E(c["zh"])}</a>')
-out.append('<a href="#todo" style="--c:#c9a9a666">📝 待做</a><a href="#weeks" style="--c:#9aa8b566">📅 每周</a><a href="#past" style="--c:#a8b5a066">📚 之前做的</a></nav>')
+out.append('<a href="#todo" style="--c:#c9a9a666">📝 待做</a><a href="#weeks" style="--c:#9aa8b566">📅 每周</a></nav>')
 out.append('<input class="search" id="q" type="search" placeholder="🔍 搜菜名或食材，比如 冬瓜、鸡腿…">')
 out.append('<div class="grid">')
 n = 0
@@ -418,26 +423,24 @@ for c in CATS:
             if d['note']: summ += f'<div class="note">⏱ {E(d["note"])}</div>'
             if summ: summ = f'<div class="sh-sum">{summ}</div>'
             steps = md(body, d.get("photo"), d.get("photo_ai"))
-            if not has and (d['ingredients'] or d['note']): steps += '<p class="tbd-steps">做法步骤 待补充</p>'
+            if not has_body(d) and (d['ingredients'] or d['note'] or has): steps += '<p class="tbd-steps">做法步骤 待补充</p>'
             s += (f'<div class="rcp-src" data-ic="{c["icon"]}" data-cat="{E(c["zh"])} · {E(c["en"])}">'
                   f'{ref_html(refs, d["name"])}{summ}{steps}</div>')
         out.append(s + '</div>')
     out.append('</section>')
 out.append('</div>')
 
-out.append('<section class="sec" id="todo"><h3 style="--hc:#e8d8d5"><span>📝 待做</span><small>To try · やってみたい</small></h3><div class="todo">')
-for t in D['todo']:
-    s = f'<div class="ti" data-s="{E((t["name"]+" "+t["note"]+" "+plain(t["details"])).lower())}"><b>{E(t["name"])}</b>'
-    if t['note']: s += f'<div class="note">{E(t["note"])}</div>'
-    det = t['details']
-    if det:
-        body = md(det)
-        if re.fullmatch(r'\s*\[[^\]]+\]\([^)]+\)\s*', det): s += f'<div class="rcp">{body}</div>'
-        else: s += f'<details class="more"><summary>展开</summary><div class="rcp">{body}</div></details>'
-    elif t.get('link'):
-        s += f'<div class="links">{link(t["link"], "📕 小红书" if "xhslink" in t["link"] else "🔗 食谱")}</div>'
+TODO_PAL = ("#ead9d6", "#9c7773", "#faf4f2")
+out.append(f'<section class="card todo-card" id="todo" style="--ca:{TODO_PAL[0]};--cd:{TODO_PAL[1]};--cb:{TODO_PAL[2]}">'
+           f'<h2><span class="ic">📝</span>待做 <small>To try</small><span class="n">{len(D["todo"])}</span></h2>')
+for i, t in enumerate(D['todo'], 1):   # same card component as the menu; a sheet only when there is a link
+    links = [dict(label='小红书' if 'xhslink' in t['link'] else '食谱', url=t['link'])] if t.get('link') else []
+    _, refs = split_refs(t['details'], links)
+    s = (f'<div class="dish{"" if refs else " empty"}" id="t{i}" data-cat="todo" data-s="{E((t["name"]+" "+t["note"]).lower())}">'
+         f'<div class="row"><span class="dth ic" aria-hidden="true">🌸</span><span class="name">{E(t["name"])}</span></div>')
+    if refs: s += f'<div class="rcp-src" data-ic="📝" data-cat="待做 · To try">{ref_html(refs, "待做:" + t["name"])}</div>'
     out.append(s + '</div>')
-out.append('</div></section>')
+out.append('</section>')
 
 out.append('<section class="sec" id="weeks"><h3 style="--hc:#d5dde4"><span>📅 最近每周菜单</span><small>Recent weekly menus · こんしゅう</small></h3><div class="weeks">')
 for w in D['weeks']:
@@ -451,16 +454,6 @@ out.append('<section class="sec"><h3 style="--hc:#e2d8bc"><span>🍗 处理鸡�
            + '<br>'.join(f'<b>{E(k)}：</b>{E(v)}' for k, v in cp['summary'])
            + f'<details class="more"><summary>完整指南 Full guide</summary><div class="rcp">{md(cp["full"])}</div></details></div></section>')
 
-P = D['past']
-chips = []
-for p in P:
-    cls = ' class="hasn"' if (p['note'] or p.get('link')) else ''
-    chips.append(f'<span{cls} data-s="{E((p["name"]+" "+p["note"]).lower())}"{" title=%s" % chr(34)+E(p["note"])+chr(34) if p["note"] else ""}>{E(p["name"])}</span>')
-notes = ''.join(f'<div><b>{E(p["name"])}</b>：{E(p["note"])}</div>' for p in P if p['note'])
-notes += ''.join(f'<div><b>{E(p["name"])}</b>：{link(p["link"], "📕 小红书")}</div>' for p in P if p.get('link'))
-out.append(f'<section class="sec" id="past"><h3 style="--hc:#dce3d6"><span>📚 之前做的</span><small>Idea bank · {len(P)}</small></h3><details class="past"><summary>展开看看以前做过的菜</summary><div class="chips">'
-           + ''.join(chips) + f'</div><div class="pnote">{notes}</div></details></section>')
-
 out.append('''<footer>家庭菜单 · 自家食谱 · おうちごはん</footer></div>
 <div class="ov" id="ov" aria-hidden="true"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sh-t">
 <div class="sh-top"><div class="cat" id="sh-c"></div><h3 id="sh-t"></h3><button class="x" id="sh-x" type="button" aria-label="关闭">×</button></div>
@@ -470,7 +463,7 @@ const q=document.getElementById('q');
 q.addEventListener('input',()=>{const v=q.value.trim().toLowerCase();
 document.querySelectorAll('[data-s]').forEach(el=>el.classList.toggle('hide',v&&!el.dataset.s.includes(v)));
 document.querySelectorAll('.card').forEach(c=>c.classList.toggle('hide',v&&!c.querySelector('.dish:not(.hide)')));
-if(v)document.querySelector('details.past').open=true;});
+});
 const ov=document.getElementById('ov'),sh=ov.querySelector('.sheet');
 function openDish(d){const src=d.querySelector('.rcp-src');if(!src)return;
  const card=d.closest('.card');['--ca','--cd','--cb'].forEach(k=>sh.style.setProperty(k,card.style.getPropertyValue(k)));
@@ -481,7 +474,7 @@ function openDish(d){const src=d.querySelector('.rcp-src');if(!src)return;
  sh.scrollTop=0;ov.classList.add('on');ov.setAttribute('aria-hidden','false');document.body.classList.add('lock');
  if(location.hash!=='#'+d.id)history.replaceState(null,'','#'+d.id);}
 function closeDish(){ov.classList.remove('on');ov.setAttribute('aria-hidden','true');document.body.classList.remove('lock');
- if(/^#d\\d+$/.test(location.hash))history.replaceState(null,'',location.pathname+location.search);}
+ if(/^#[dt]\\d+$/.test(location.hash))history.replaceState(null,'',location.pathname+location.search);}
 document.querySelectorAll('.dish').forEach(d=>d.addEventListener('click',e=>{if(e.target.closest('a'))return;openDish(d);}));
 document.getElementById('sh-x').addEventListener('click',closeDish);
 ov.addEventListener('click',e=>{if(e.target===ov)closeDish();});
@@ -578,9 +571,9 @@ document.getElementById('pick-go').addEventListener('click',showPick);
 document.getElementById('pick-re').addEventListener('click',showPick);
 document.getElementById('pick-sel').addEventListener('click',()=>{selMode=!selMode;marked=new Set();fresh=[];renderPick(document.getElementById('pick-foot').textContent);});
 document.getElementById('pick-swap').addEventListener('click',()=>{if(marked.size)doSwap([...marked]);});
-const h=location.hash.match(/^#(d\\d+)$/)||(location.search.match(/[?&]dish=(d\\d+)/));if(h){const d=document.getElementById(h[1]);if(d){ov.style.transition='none';sh.style.transition='none';openDish(d);requestAnimationFrame(()=>{ov.style.transition='';sh.style.transition='';});}}
+const h=location.hash.match(/^#([dt]\\d+)$/)||(location.search.match(/[?&]dish=([dt]\\d+)/));if(h){const d=document.getElementById(h[1]);if(d){ov.style.transition='none';sh.style.transition='none';openDish(d);requestAnimationFrame(()=>{ov.style.transition='';sh.style.transition='';});}}
 </script></body></html>''')
 open(os.path.join(ROOT, 'index.html'), 'w', encoding='utf-8').write("\n".join(out))
-print(total, len(CATS), len(P), len("\n".join(out).encode()))
+print(total, len(CATS), 'todo', len(D['todo']), len("\n".join(out).encode()))
 print('sheet link tags:', len(REF_STATS['linked']), REF_STATS['linked'])
 if REF_STATS['nourl']: print('参考 lines without a URL:', REF_STATS['nourl'])
