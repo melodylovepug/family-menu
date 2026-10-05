@@ -52,6 +52,49 @@ def md(text, photos=None):
     close(); flush_links()
     return ''.join(out)
 
+LINK_SVG = ('<svg class="ri" viewBox="0 0 16 16" aria-hidden="true"><path d="M6.7 9.3a2.5 2.5 0 0 0 3.5 0l2.4-2.4a2.5 2.5 0 0 0-3.5-3.5l-.8.8'
+            'M9.3 6.7a2.5 2.5 0 0 0-3.5 0L3.4 9.1a2.5 2.5 0 0 0 3.5 3.5l.8-.8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>')
+REF_STATS = {'linked': [], 'nourl': []}
+
+def pick_url(text, links):
+    """Best card link for a '参考' line: match the platform it names, else the first card link."""
+    t = text.lower()
+    for l in links:
+        u = l['url']
+        if ('小红书' in text and 'xhslink' in u) or ('youtube' in t and ('youtube' in u or 'youtu.be' in u)): return u
+    return links[0]['url'] if links else None
+
+def split_refs(recipe, links):
+    """Pull source lines out of a dish recipe ('[label](url)' lines and '> 参考：…' lines).
+    Returns (recipe without them, [(url or None, text)]). Card links not mentioned anywhere get a fallback line."""
+    keep, refs = [], {}
+    for raw in recipe.splitlines():
+        s = raw.strip()
+        m = re.fullmatch(r'\[([^\]]+)\]\(([^)]+)\)', s)
+        if m:
+            label, url = m.group(1).lstrip('📕▶🔗\ufe0f '), m.group(2)
+            if ('youtube' in url or 'youtu.be' in url) and not label.lower().startswith('youtube'): label = f'YouTube「{label}」'
+            refs.setdefault(url, '参考：' + label); continue
+        m = re.fullmatch(r'>\s*参考\s*[：:]\s*(.+)', s)
+        if m:
+            refs[pick_url(m.group(1), links) or ('nourl', len(refs))] = '参考：' + m.group(1); continue   # 参考 text wins
+        keep.append(raw)
+    for l in links:
+        if l['url'] not in refs: refs[l['url']] = '参考：' + link_label(l['label'], l['url']).lstrip('📕▶🔗\ufe0f ')
+    return '\n'.join(keep), [(u if isinstance(u, str) else None, t) for u, t in refs.items()]
+
+def ref_html(refs, name):
+    if not refs: return ''
+    out = []
+    for url, text in refs:
+        if url:
+            REF_STATS['linked'].append(name)
+            out.append(f'<a class="ref" href="{E(url)}" target="_blank" rel="noopener">{LINK_SVG}<span class="rt">{E(text)}</span><span class="ext" aria-hidden="true">↗</span></a>')
+        else:
+            REF_STATS['nourl'].append(name)
+            out.append(f'<p class="ref nolink">{LINK_SVG}<span class="rt">{E(text)}</span></p>')
+    return '<div class="refs">' + ''.join(out) + '</div>'
+
 def plain(text):
     t = re.sub(r'!\[\]\([^)]*\)|\]\([^)]*\)|[#>*\[\]]', ' ', text)
     return re.sub(r'\s+', ' ', t).lower()
@@ -197,6 +240,14 @@ footer::before{{content:"🍙 🍡 🍵";display:block;font-size:18px;margin-bot
 .rcp .ph{{display:block;width:100%;aspect-ratio:4/3;max-height:300px;object-fit:cover;border-radius:20px;border:3px solid #fff;box-shadow:0 4px 0 var(--ca,#e6ded3);margin:4px 0 12px;background:#eee}}
 .rcp .links{{padding-left:0;margin:10px 0}}
 .rcp b{{color:var(--ink)}}
+/* in-sheet source reference (参考) */
+.rcp .refs{{margin:18px 0 0;padding-top:12px;border-top:1.5px dashed var(--ca,#e6ded3);display:flex;flex-direction:column;gap:6px}}
+.rcp .ref{{display:flex;align-items:flex-start;gap:6px;margin:0;font-size:12.5px;line-height:1.6;color:var(--cd,#958a80);text-decoration:none;opacity:.9;-webkit-tap-highlight-color:transparent}}
+.rcp a.ref .rt{{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;text-decoration-color:rgba(149,138,128,.45);text-decoration-color:color-mix(in srgb,currentColor 40%,transparent)}}
+.rcp .ref .ri{{flex:0 0 14px;width:14px;height:14px;margin-top:3px}}
+.rcp .ref .ext{{flex:0 0 auto;font-size:11px;opacity:.55}}
+.rcp a.ref:hover,.rcp a.ref:active{{opacity:1}}
+.rcp .ref.nolink{{color:var(--mute)}}
 details.more{{margin-top:8px}}
 details.more summary{{cursor:pointer;font-size:12.5px;font-weight:700;color:var(--mute);list-style:none}}
 details.more summary::-webkit-details-marker{{display:none}}
@@ -244,7 +295,8 @@ for c in CATS:
         if has: s += '<button class="open" type="button">📖 看做法</button>'
         s += '</div>'
         if has:
-            s += f'<div class="rcp-src" data-ic="{c["icon"]}" data-cat="{E(c["zh"])} · {E(c["en"])}">{md(d["recipe"], d.get("photo"))}</div>'
+            body, refs = split_refs(d['recipe'], d['links'])
+            s += f'<div class="rcp-src" data-ic="{c["icon"]}" data-cat="{E(c["zh"])} · {E(c["en"])}">{md(body, d.get("photo"))}{ref_html(refs, d["name"])}</div>'
         out.append(s + '</div>')
     out.append('</section>')
 out.append('</div>')
@@ -315,3 +367,5 @@ const h=location.hash.match(/^#(d\\d+)$/)||(location.search.match(/[?&]dish=(d\\
 </script></body></html>''')
 open(os.path.join(ROOT, 'index.html'), 'w', encoding='utf-8').write("\n".join(out))
 print(total, len(CATS), len(P), len("\n".join(out).encode()))
+print('in-sheet 参考 links:', len(REF_STATS['linked']), REF_STATS['linked'])
+if REF_STATS['nourl']: print('参考 lines without a URL:', REF_STATS['nourl'])
