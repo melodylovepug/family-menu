@@ -144,7 +144,7 @@ for c in CATS:
                          r=has_body(d), o=bool(has_recipe(d) or d['ingredients'] or d['note'] or d['links'] or d.get('photo')), p=d.get('photo') or '', i=c['icon'], c=c['id'], l=LAST.get(d['name'], '')))
 total = sum(len(c['dishes']) for c in CATS)
 out = []
-PAL = {"meat":("#e8d6d3","#9c7773","#f7f0ee"),"poultry":("#e8dfc8","#8c7a4e","#f8f5ec"),"sea":("#d9e0e7","#66778a","#f2f4f6"),
+PAL = {"beef":("#e2cdc4","#8a5f4f","#f6efeb"),"pork":("#efd9dc","#a36f78","#fbf2f3"),"poultry":("#e8dfc8","#8c7a4e","#f8f5ec"),"sea":("#d9e0e7","#66778a","#f2f4f6"),
  "cold":("#dbe2d4","#6f7f67","#f3f5f0"),"soup":("#ead8cc","#93705a","#f8f1ec"),"staple":("#e6dccd","#8e7b62","#f8f4ee"),"sweet":("#e2d8e2","#7d6a7d","#f6f2f6")}
 ONI = '''<svg class="oni" viewBox="0 0 120 110" aria-hidden="true">
 <path d="M60 8C40 8 10 58 10 80c0 16 12 24 50 24s50-8 50-24C110 58 80 8 60 8z" fill="#fff" stroke="#4a403a" stroke-width="3.5" stroke-linejoin="round"/>
@@ -430,7 +430,7 @@ for c in CATS:
     out.append('</section>')
 out.append('</div>')
 
-TODO_PAL = ("#ead9d6", "#9c7773", "#faf4f2")
+TODO_PAL = ("#e3ddd5", "#7d7468", "#f7f5f2")
 out.append(f'<section class="card todo-card" id="todo" style="--ca:{TODO_PAL[0]};--cd:{TODO_PAL[1]};--cb:{TODO_PAL[2]}">'
            f'<h2><span class="ic">📝</span>待做 <small>To try</small><span class="n">{len(D["todo"])}</span></h2>')
 for i, t in enumerate(D['todo'], 1):   # same card component as the menu; a sheet only when there is a link
@@ -483,7 +483,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDish();});
    (the cold dish's protein counts unless it is 素), <=1 soup, no dessert,
    skip dishes eaten <=14 days ago. Relax order: the 2-week rule first; protein repeats only if there aren't enough proteins. */
 const PK=JSON.parse(document.getElementById('pick-data').textContent);
-const PAL_JS={meat:["#e8d6d3","#9c7773","#f7f0ee"],poultry:["#e8dfc8","#8c7a4e","#f8f5ec"],sea:["#d9e0e7","#66778a","#f2f4f6"],cold:["#dbe2d4","#6f7f67","#f3f5f0"],soup:["#ead8cc","#93705a","#f8f1ec"],staple:["#e6dccd","#8e7b62","#f8f4ee"]};
+const PAL_JS={beef:["#e2cdc4","#8a5f4f","#f6efeb"],pork:["#efd9dc","#a36f78","#fbf2f3"],poultry:["#e8dfc8","#8c7a4e","#f8f5ec"],sea:["#d9e0e7","#66778a","#f2f4f6"],cold:["#dbe2d4","#6f7f67","#f3f5f0"],soup:["#ead8cc","#93705a","#f8f1ec"],staple:["#e6dccd","#8e7b62","#f8f4ee"]};
 function daysAgo(iso,today){if(!iso)return Infinity;const p=iso.split('-').map(Number);
  const t=Date.UTC(today.getFullYear(),today.getMonth(),today.getDate());return Math.round((t-Date.UTC(p[0],p[1]-1,p[2]))/864e5);}
 function wOrder(arr,w,rnd){return arr.map(x=>[Math.pow(rnd(),1/w(x)),x]).sort((p,q)=>q[0]-p[0]).map(p=>p[1]);}
@@ -541,7 +541,7 @@ pickN.addEventListener('change',()=>{syncN();try{localStorage.setItem('pickN',pi
 function noteFor(res){return res.relaxedProtein?'荤菜的种类不够分，这次有主蛋白重复':res.relaxed?'近 2 周吃过的太多，这次放宽了「避开近 2 周」这一条':(res.skipped.length?'已避开近 2 周吃过的：'+res.skipped.join('、'):'');}
 function renderPick(note){const L=document.getElementById('pick-list');L.innerHTML='';
  const box=document.getElementById('pick-res');box.classList.toggle('sel',selMode);
- cur.forEach((x,i)=>{const pal=PAL_JS[x.c]||PAL_JS.meat;const row=document.createElement('div');
+ cur.forEach((x,i)=>{const pal=PAL_JS[x.c]||PAL_JS.beef;const row=document.createElement('div');
   row.className='pr-row'+(marked.has(i)?' on':'')+(fresh.includes(i)?' new':'');row.dataset.id=x.id;row.dataset.i=i;
   row.style.cssText='--ca:'+pal[0]+';--cd:'+pal[1]+';--cb:'+pal[2];
   const th=x.p?'<img class="pr-th" src="'+x.p+'" alt="" loading="lazy">':'<span class="pr-th">'+x.i+'</span>';
