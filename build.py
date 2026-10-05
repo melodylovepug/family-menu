@@ -158,11 +158,12 @@ for c in CATS:
         if d.get('id'): DID[id(d)] = d['id']
         else: _n += 1; DID[id(d)] = f'd{_n}'
 assert len(set(DID.values())) == len(DID), 'duplicate dish ids'
+NO_PICK = {'sweet', 'lunch', 'other'}   # sections the picker never draws from
 PICK = []
 for c in CATS:
     for d in c['dishes']:
         m = d.get('meat')
-        if c['id'] == 'sweet' or m == '甜品' or d.get('tag') == '甜品': continue      # never dessert
+        if c['id'] in NO_PICK or m == '甜品' or d.get('tag') == '甜品': continue      # never 午餐 / 其他 / dessert
         kind = 'cold' if c['id'] == 'cold' else ('main' if m and m != '素' else None)
         if not kind: continue                                                    # veg-only mains/staples are skipped
         PICK.append(dict(id=DID[id(d)], n=d['name'], k=kind, m=m, s=(c['id'] == 'soup' or '汤' in d['name']),
@@ -170,7 +171,8 @@ for c in CATS:
 total = sum(len(c['dishes']) for c in CATS)
 out = []
 PAL = {"beef":("#e2cdc4","#8a5f4f","#f6efeb"),"pork":("#efd9dc","#a36f78","#fbf2f3"),"poultry":("#e8dfc8","#8c7a4e","#f8f5ec"),"sea":("#d9e0e7","#66778a","#f2f4f6"),
- "cold":("#dbe2d4","#6f7f67","#f3f5f0"),"soup":("#ead8cc","#93705a","#f8f1ec"),"staple":("#e6dccd","#8e7b62","#f8f4ee"),"sweet":("#e2d8e2","#7d6a7d","#f6f2f6")}
+ "cold":("#dbe2d4","#6f7f67","#f3f5f0"),"soup":("#ead8cc","#93705a","#f8f1ec"),"staple":("#e6dccd","#8e7b62","#f8f4ee"),"sweet":("#e2d8e2","#7d6a7d","#f6f2f6"),
+ "lunch":("#cfe0dd","#4f7d76","#eef5f4"),"other":("#d8d6e8","#67658f","#f3f3f9")}
 ONI = '''<svg class="oni" viewBox="0 0 120 110" aria-hidden="true">
 <path d="M60 8C40 8 10 58 10 80c0 16 12 24 50 24s50-8 50-24C110 58 80 8 60 8z" fill="#fff" stroke="#4a403a" stroke-width="3.5" stroke-linejoin="round"/>
 <rect x="34" y="70" width="52" height="34" rx="6" fill="#4a4e46"/>
@@ -443,7 +445,7 @@ span.pr-th{{display:flex;align-items:center;justify-content:center;font-size:24p
 <h1>{E(D["title"])}</h1><div class="jp">「{E(D["subtitle"])}」</div>
 <div class="sub">Home Menu · {total} 道拿手菜 · {len(CATS)} 类 · 点菜名看做法</div><div class="washi"></div></header>
 <section class="pick" id="pick"><div class="pick-row"><select class="pick-n" id="pick-n" aria-label="选几道菜">{"".join(f'<option value="{i}"{" selected" if i == 4 else ""}>{i} 道</option>' for i in range(2, 9))}</select><button class="pick-btn" id="pick-go" type="button">🎲 帮我选 4 道菜</button></div>
-<div class="pick-cap"><span id="pick-capn">1 道凉菜/蔬菜 + 3 道荤菜</span> · <span>主蛋白不重复</span> · <span>最多 1 个汤</span> · <span>不选甜品</span> · <span>尽量避开近 2 周吃过的</span></div>
+<div class="pick-cap"><span id="pick-capn">1 道凉菜/蔬菜 + 3 道荤菜</span> · <span>主蛋白不重复</span> · <span>最多 1 个汤</span> · <span>不选午餐/其他/甜品</span> · <span>尽量避开近 2 周吃过的</span></div>
 <div class="pick-res hide" id="pick-res" aria-live="polite"><div class="pr-head"><span>🍱 今日菜单 <small>きょうのこんだて</small></span><button class="pr-re" id="pick-re" type="button">🔄 换一组</button></div>
 <div class="pr-list" id="pick-list"></div>
 <div class="pr-bar"><span class="pr-hint" id="pick-hint"></span><button class="pr-tool" id="pick-sel" type="button">☑️ 多选换菜</button><button class="pr-tool pr-do" id="pick-swap" type="button" disabled>换掉选中的</button></div>
