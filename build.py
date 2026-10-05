@@ -19,7 +19,7 @@ def link_label(label, url):
     if 'youtube' in url and not label.startswith('▶️'): return label if label.startswith('▶') else '▶️ ' + label
     return label if label[:1] in '📕▶🔗' else '🔗 ' + label
 
-def md(text, photos=None):
+def md(text, photos=None, photo_ai=None):
     """Tiny markdown: ## h, > tip, - ul, 1. ol, ![](img:..), [label](url), **bold**."""
     out, lst, links = [], None, []
     def close():
@@ -37,7 +37,11 @@ def md(text, photos=None):
         flush_links()
         if m_img:
             close()
-            if photos: out.insert(0, f'<img class="ph" src="{E(photos)}" alt="" loading="lazy">')  # photo first
+            if photos and photo_ai:   # real vs AI-enhanced, side by side
+                fig = lambda src, cap, cls: (f'<figure class="{cls}"><a href="{E(src)}" target="_blank" rel="noopener">'
+                                             f'<img class="ph" src="{E(src)}" alt="{cap}" loading="lazy"></a><figcaption>{cap}</figcaption></figure>')
+                out.insert(0, '<div class="phc">' + fig(photos, '实拍', 'real') + fig(photo_ai, 'AI 美化', 'ai') + '</div>')
+            elif photos: out.insert(0, f'<img class="ph" src="{E(photos)}" alt="" loading="lazy">')  # photo first
             continue
         if s.startswith('## '): close(); out.append(f'<h4>{inline(s[3:])}</h4>'); continue
         if s.startswith('> '): close(); out.append(f'<p class="tip">{inline(s[2:])}</p>'); continue
@@ -100,6 +104,39 @@ def plain(text):
     return re.sub(r'\s+', ' ', t).lower()
 
 CATS = D['categories']
+
+def norm(t): return re.sub(r'\s+', '', t).lower()
+def last_eaten():
+    """Most recent date each menu dish appears in D['history'] (matched on name or 'aka')."""
+    idx = {}
+    for c in CATS:
+        for d in c['dishes']:
+            for k in [d['name']] + d.get('aka', []): idx[norm(k)] = d['name']
+    last = {}
+    for h in D.get('history', []):
+        for raw in h['dishes']:
+            nm = idx.get(norm(raw))
+            if nm and h['date'] > last.get(nm, ''): last[nm] = h['date']
+    return last
+LAST = last_eaten()
+def has_recipe(d): return bool(re.sub(r'^\s*\[[^\]]+\]\([^)]+\)\s*$', '', d['recipe'], flags=re.M).strip())
+# Stable card ids (#d<n> deep links): dishes without an explicit 'id' are numbered in page order;
+# newer dishes carry their own 'id' so adding them never renumbers existing links.
+DID, _n = {}, 0
+for c in CATS:
+    for d in c['dishes']:
+        if d.get('id'): DID[id(d)] = d['id']
+        else: _n += 1; DID[id(d)] = f'd{_n}'
+assert len(set(DID.values())) == len(DID), 'duplicate dish ids'
+PICK = []
+for c in CATS:
+    for d in c['dishes']:
+        m = d.get('meat')
+        if c['id'] == 'sweet' or m == '甜品' or d.get('tag') == '甜品': continue      # never dessert
+        kind = 'cold' if c['id'] == 'cold' else ('main' if m and m != '素' else None)
+        if not kind: continue                                                    # veg-only mains/staples are skipped
+        PICK.append(dict(id=DID[id(d)], n=d['name'], k=kind, m=m, s=(c['id'] == 'soup' or '汤' in d['name']),
+                         r=has_recipe(d), p=d.get('photo') or '', i=c['icon'], c=c['id'], l=LAST.get(d['name'], '')))
 total = sum(len(c['dishes']) for c in CATS)
 out = []
 PAL = {"meat":("#e8d6d3","#9c7773","#f7f0ee"),"poultry":("#e8dfc8","#8c7a4e","#f8f5ec"),"sea":("#d9e0e7","#66778a","#f2f4f6"),
@@ -210,6 +247,9 @@ footer::before{{content:"🍙 🍡 🍵";display:block;font-size:18px;margin-bot
 .dish.empty{{cursor:default}}.dish.empty:hover{{background:none}}
 .open{{font-size:12px;font-weight:700;color:var(--cd);background:#fff;border:1.5px solid var(--ca);padding:4px 10px;border-radius:999px;font-family:inherit;cursor:pointer}}
 .cam{{font-size:12px;opacity:.75}}
+.tbd{{font-size:10.5px;font-weight:700;color:var(--mute);border:1.2px dashed #d6ccc2;border-radius:999px;padding:0 7px;line-height:1.6;background:rgba(255,255,255,.6)}}
+.dish.bare{{padding-top:9px;padding-bottom:9px}}
+.dish.bare .name{{font-weight:700;color:#5e544a}}
 .rcp-src{{display:none}}
 .ov{{position:fixed;inset:0;z-index:50;background:rgba(74,64,58,.46);display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}}
 .ov.on{{opacity:1;pointer-events:auto}}
@@ -262,12 +302,52 @@ details.more summary::before{{content:"▸ "}}details.more[open] summary::before
 .pnote b{{color:#6f7f67}}
 .pnote .lnk{{padding:2px 8px}}
 body.lock{{overflow:hidden}}
+/* photo compare (real vs AI) */
+.rcp .phc{{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:4px 0 14px}}
+.rcp .phc figure{{margin:0;text-align:center}}
+.rcp .phc a{{display:block}}
+.rcp .phc .ph{{aspect-ratio:4/5;max-height:none;margin:0 0 7px}}
+.rcp .phc figcaption{{display:inline-block;font-size:12px;font-weight:700;line-height:1.4;color:var(--cd,#8f6560);background:#fff;border:1.5px solid var(--ca,#e6ded3);border-radius:999px;padding:2px 11px}}
+.rcp .phc .ai figcaption::before{{content:"✨ "}}
+/* v5: 帮我选菜 picker */
+.pick{{margin:2px 0 16px;text-align:center}}
+.pick-btn{{font-family:inherit;font-size:17px;font-weight:800;letter-spacing:.06em;color:#fff;background:#b8928e;border:2px solid #a8817d;border-radius:999px;padding:11px 26px;box-shadow:0 4px 0 #9c7773;cursor:pointer;-webkit-tap-highlight-color:transparent}}
+.pick-btn:active,.pr-re:active{{transform:translateY(3px);box-shadow:0 1px 0 #9c7773}}
+.pick-cap span{{white-space:nowrap}}
+.pick-cap{{font-size:11.5px;color:var(--mute);margin:9px auto 0;max-width:330px;line-height:1.55}}
+.pick-res{{position:relative;margin:18px auto 0;max-width:560px;text-align:left;background:#fffdf9;border:2px solid #e8d8d5;border-radius:24px;padding:14px 14px 10px;box-shadow:0 5px 0 #eadfdc,0 12px 22px -14px rgba(90,75,60,.22);animation:pop .25s ease-out}}
+.pick-res::before{{content:"";position:absolute;top:-9px;left:50%;width:84px;height:18px;transform:translateX(-50%) rotate(2deg);border-radius:2px;opacity:.9;background:repeating-linear-gradient(90deg,#ddcbc8 0 6px,rgba(255,255,255,.8) 6px 12px)}}
+@keyframes pop{{0%{{transform:translateY(6px) scale(.98);opacity:0}}100%{{transform:none;opacity:1}}}}
+.pr-head{{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:2px 2px 8px}}
+.pr-head span{{font-size:15.5px;font-weight:800}}
+.pr-head small{{font-size:10.5px;color:var(--mute);letter-spacing:.14em;font-weight:700;margin-left:4px}}
+.pr-re{{font-family:inherit;font-size:12.5px;font-weight:700;color:#9c7773;background:#fff;border:1.5px solid #e3d2cf;border-radius:999px;padding:5px 12px;box-shadow:0 3px 0 #eadfdc;cursor:pointer;white-space:nowrap}}
+.pr-list{{display:flex;flex-direction:column;gap:8px}}
+.pr-item{{display:flex;align-items:center;gap:11px;width:100%;text-align:left;font-family:inherit;color:var(--ink);background:var(--cb);border:1.5px solid var(--ca);border-radius:16px;padding:7px 10px 7px 7px;cursor:pointer;-webkit-tap-highlight-color:transparent}}
+.pr-item:active{{transform:translateY(1px)}}
+.pr-th{{flex:0 0 52px;width:52px;height:52px;border-radius:13px;object-fit:cover;border:2px solid #fff;box-shadow:0 2px 0 var(--ca);background:#fff}}
+span.pr-th{{display:flex;align-items:center;justify-content:center;font-size:24px;background:var(--ca)}}
+.pr-tx{{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}}
+.pr-n{{font-size:15.5px;font-weight:800;line-height:1.3}}
+.pr-tags{{display:flex;flex-wrap:wrap;gap:4px;align-items:center}}
+.pr-tags span{{font-size:10.5px;font-weight:700;padding:0 7px;border-radius:999px;background:#fff;color:var(--cd);border:1.2px solid var(--ca);line-height:1.6}}
+.pr-tags .pr-last{{border:0;background:none;padding:0 2px;color:var(--mute);font-weight:500}}
+.pr-go{{flex:0 0 auto;font-size:11.5px;font-weight:700;color:var(--cd)}}
+.pr-foot{{font-size:11px;color:var(--mute);text-align:center;margin:8px 0 2px;line-height:1.5}}
+.pr-foot:empty{{display:none}}
+.dish.flash{{animation:flash 1.4s ease-out}}
+@keyframes flash{{0%,40%{{background:rgba(255,255,255,.95);box-shadow:0 0 0 2px var(--cd)}}100%{{background:none;box-shadow:none}}}}
 </style></head><body><div class="wrap">
 <div class="rod"></div><div class="noren"><span>家</span><span>庭</span><span>菜</span><span>单</span></div>
 <header>{PETAL.format(c="p1")}{PETAL.format(c="p2")}{PETAL.format(c="p3")}{PETAL.format(c="p4")}
 <div class="hero">{STEAM}{ONI}<div class="hanko">おい<br>しい</div></div>
 <h1>{E(D["title"])}</h1><div class="jp">「{E(D["subtitle"])}」</div>
 <div class="sub">Home Menu · {total} 道拿手菜 · {len(CATS)} 类 · 点菜名看做法</div><div class="washi"></div></header>
+<section class="pick" id="pick"><button class="pick-btn" id="pick-go" type="button">🎲 帮我选 4 道菜</button>
+<div class="pick-cap"><span>1 道凉菜/蔬菜 + 3 道荤菜</span> · <span>主蛋白不重复</span> · <span>最多 1 个汤</span> · <span>不选甜品</span> · <span>尽量避开近 2 周吃过的</span></div>
+<div class="pick-res hide" id="pick-res" aria-live="polite"><div class="pr-head"><span>🍱 今日菜单 <small>きょうのこんだて</small></span><button class="pr-re" id="pick-re" type="button">🔄 换一组</button></div>
+<div class="pr-list" id="pick-list"></div><div class="pr-foot" id="pick-foot"></div></div></section>
+<script type="application/json" id="pick-data">{json.dumps(PICK, ensure_ascii=False).replace("</", "<\\/")}</script>
 <nav>''')
 for c in CATS: out.append(f'<a href="#{c["id"]}" style="--c:{PAL[c["id"]][1]}55">{c["icon"]} {E(c["zh"])}</a>')
 out.append('<a href="#todo" style="--c:#c9a9a666">📝 待做</a><a href="#weeks" style="--c:#9aa8b566">📅 每周</a><a href="#past" style="--c:#a8b5a066">📚 之前做的</a></nav>')
@@ -283,20 +363,24 @@ for c in CATS:
         has = bool(re.sub(r'^\s*\[[^\]]+\]\([^)]+\)\s*$', '', d['recipe'], flags=re.M).strip())
         tag = d.get('tag')
         if tag and tag in c['zh']: tag = None   # never repeat the section name as a pill
-        s = (f'<div class="dish{"" if has else " empty"}" id="d{n}" data-cat="{c["id"]}" '
+        bare = not (has or d['ingredients'] or d['note'] or d['links'] or d.get('photo'))
+        s = (f'<div class="dish{"" if has else " empty"}{" bare" if bare else ""}" id="{DID[id(d)]}" data-cat="{c["id"]}" '
              f'data-s="{E((d["name"]+" "+d["ingredients"]+" "+d["note"]+" "+plain(d["recipe"])).lower())}">'
              f'<div class="row"><span class="name">{E(d["name"])}</span>')
         if tag: s += f'<span class="tag">{E(tag)}</span>'
         if d.get('photo'): s += '<span class="cam" title="有照片">📷</span>'
+        bare = not (has or d['ingredients'] or d['note'] or d['links'] or d.get('photo'))
+        if bare: s += '<span class="tbd" title="做法待补充">待补充</span>'
         s += '</div>'
         if d['ingredients']: s += f'<div class="ing">{E(d["ingredients"])}</div>'
         if d['note']: s += f'<div class="note">⏱ {E(d["note"])}</div>'
-        s += '<div class="links">' + ''.join(link(l['url'], link_label(l['label'], l['url'])) for l in d['links'])
-        if has: s += '<button class="open" type="button">📖 看做法</button>'
-        s += '</div>'
+        if d['links'] or has:   # name-only cards skip the empty link row
+            s += '<div class="links">' + ''.join(link(l['url'], link_label(l['label'], l['url'])) for l in d['links'])
+            if has: s += '<button class="open" type="button">📖 看做法</button>'
+            s += '</div>'
         if has:
             body, refs = split_refs(d['recipe'], d['links'])
-            s += f'<div class="rcp-src" data-ic="{c["icon"]}" data-cat="{E(c["zh"])} · {E(c["en"])}">{md(body, d.get("photo"))}{ref_html(refs, d["name"])}</div>'
+            s += f'<div class="rcp-src" data-ic="{c["icon"]}" data-cat="{E(c["zh"])} · {E(c["en"])}">{md(body, d.get("photo"), d.get("photo_ai"))}{ref_html(refs, d["name"])}</div>'
         out.append(s + '</div>')
     out.append('</section>')
 out.append('</div>')
@@ -363,6 +447,47 @@ document.querySelectorAll('.dish').forEach(d=>d.addEventListener('click',e=>{if(
 document.getElementById('sh-x').addEventListener('click',closeDish);
 ov.addEventListener('click',e=>{if(e.target===ov)closeDish();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDish();});
+/* 帮我选菜: 1 cold/veg + 3 meat/seafood mains, distinct proteins, <=1 soup, no dessert, skip dishes eaten <=14 days ago */
+const PK=JSON.parse(document.getElementById('pick-data').textContent);
+const PAL_JS={meat:["#e8d6d3","#9c7773","#f7f0ee"],poultry:["#e8dfc8","#8c7a4e","#f8f5ec"],sea:["#d9e0e7","#66778a","#f2f4f6"],cold:["#dbe2d4","#6f7f67","#f3f5f0"],soup:["#ead8cc","#93705a","#f8f1ec"],staple:["#e6dccd","#8e7b62","#f8f4ee"]};
+function daysAgo(iso,today){if(!iso)return Infinity;const p=iso.split('-').map(Number);
+ const t=Date.UTC(today.getFullYear(),today.getMonth(),today.getDate());return Math.round((t-Date.UTC(p[0],p[1]-1,p[2]))/864e5);}
+function pickMenu(today,prevKey,rnd){today=today||new Date();rnd=rnd||Math.random;
+ const recent=x=>daysAgo(x.l,today)<=14, w=x=>x.r?3:1;
+ const cold=PK.filter(x=>x.k==='cold'), mains=PK.filter(x=>x.k==='main');
+ const combos=(cs,ms)=>{const out=[];
+  for(let a=0;a<ms.length;a++)for(let b=a+1;b<ms.length;b++){if(ms[a].m===ms[b].m)continue;
+   for(let c=b+1;c<ms.length;c++){const t=[ms[a],ms[b],ms[c]];if(ms[c].m===ms[a].m||ms[c].m===ms[b].m)continue;
+    const soups=t.filter(x=>x.s).length;if(soups>1)continue;
+    for(const x of cs){if(soups+(x.s?1:0)>1)continue;out.push([x].concat(t));}}}return out;};
+ const fc=cold.filter(x=>!recent(x)), fm=mains.filter(x=>!recent(x));
+ // relax ONLY the 2-week rule, and only as far as needed
+ const tiers=[[fc,fm,0],[cold,fm,1],[fc,mains,1],[cold,mains,1]];
+ let pool=null,relaxed=0;
+ for(const need of [2,1]){for(const [cs,ms,r] of tiers){const c=combos(cs,ms);if(c.length>=need){pool=c;relaxed=r;break;}}if(pool)break;}
+ if(!pool)return null;
+ const key=s=>s.map(x=>x.id).sort().join(',');
+ let cand=pool.length>1&&prevKey?pool.filter(s=>key(s)!==prevKey):pool;
+ const ws=cand.map(s=>s.reduce((p,x)=>p*w(x)*(relaxed&&recent(x)?.25:1),1)); /* when relaxed, still lean toward not-recent */ let r=rnd()*ws.reduce((a,b)=>a+b,0),i=0;
+ while(i<cand.length-1&&(r-=ws[i])>=0)i++;
+ return {dishes:cand[i],key:key(cand[i]),relaxed,skipped:PK.filter(recent).map(x=>x.n)};}
+let pickPrev='';
+function showPick(){const res=pickMenu(null,pickPrev);if(!res)return;pickPrev=res.key;window.__pick=res;
+ const L=document.getElementById('pick-list');L.innerHTML='';
+ res.dishes.forEach(x=>{const pal=PAL_JS[x.c]||PAL_JS.meat;const b=document.createElement('button');b.type='button';b.className='pr-item';b.dataset.id=x.id;
+  b.style.cssText='--ca:'+pal[0]+';--cd:'+pal[1]+';--cb:'+pal[2];
+  const th=x.p?'<img class="pr-th" src="'+x.p+'" alt="" loading="lazy">':'<span class="pr-th">'+x.i+'</span>';
+  const tags=[x.k==='cold'?'凉菜·蔬菜':x.m];if(x.k==='cold'&&x.m!=='素')tags.push(x.m);if(x.s)tags.push('汤');
+  const last=x.l?'<span class="pr-last">上次 '+Number(x.l.slice(5,7))+'/'+Number(x.l.slice(8))+'</span>':'';
+  b.innerHTML=th+'<span class="pr-tx"><span class="pr-n"></span><span class="pr-tags">'+tags.map(t=>'<span>'+t+'</span>').join('')+last+'</span></span><span class="pr-go">'+(x.r?'看做法 ›':'看卡片 ›')+'</span>';
+  b.querySelector('.pr-n').textContent=x.n;
+  b.addEventListener('click',()=>{const d=document.getElementById(x.id);if(!d)return;
+   if(x.r)openDish(d);else{d.scrollIntoView({behavior:'smooth',block:'center'});d.classList.remove('flash');void d.offsetWidth;d.classList.add('flash');}});
+  L.appendChild(b);});
+ document.getElementById('pick-foot').textContent=res.relaxed?'近 2 周吃过的太多，这次放宽了「避开近 2 周」这一条':(res.skipped.length?'已避开近 2 周吃过的：'+res.skipped.join('、'):'');
+ const box=document.getElementById('pick-res');box.classList.remove('hide');box.style.animation='none';void box.offsetWidth;box.style.animation='';}
+document.getElementById('pick-go').addEventListener('click',showPick);
+document.getElementById('pick-re').addEventListener('click',showPick);
 const h=location.hash.match(/^#(d\\d+)$/)||(location.search.match(/[?&]dish=(d\\d+)/));if(h){const d=document.getElementById(h[1]);if(d){ov.style.transition='none';sh.style.transition='none';openDish(d);requestAnimationFrame(()=>{ov.style.transition='';sh.style.transition='';});}}
 </script></body></html>''')
 open(os.path.join(ROOT, 'index.html'), 'w', encoding='utf-8').write("\n".join(out))

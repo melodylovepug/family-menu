@@ -11,6 +11,7 @@
     {
      "name": "葱爆牛肉片",
      "tag": null,
+     "meat": "牛",
      "ingredients": "牛肉片 · 葱姜蒜 · 洋葱 · 白胡椒 · 酱油",
      "note": "",
      "links": [
@@ -25,6 +26,7 @@
     {
      "name": "青椒牛肉豆腐煲",
      "tag": null,
+     "meat": "牛",
      "ingredients": "",
      "note": "",
      "links": [
@@ -39,6 +41,7 @@
     {
      "name": "韩式炖short rib",
      "tag": null,
+     "meat": "牛",
      "ingredients": "带骨short rib · 苹果 · 梨 · 萝卜 · 年糕 · 土豆 · 韩式辣椒酱",
      "note": "",
      "links": [
@@ -48,11 +51,15 @@
       }
      ],
      "photo": "img/14874549add276.jpg",
-     "recipe": "主料：short rib 带骨的最好. 5lb\n## 配料\n1. 苹果2\n2. 🍐 梨 1\n3. 葱姜蒜\n4. 洋葱\n5. 萝卜\n6. 年糕\n7. 土豆\n## 调料\n1. 韩式辣椒酱\n2. 韩式辣椒粉\n3. 红糖\n## 步骤\n1. 牛仔骨放锅里，加水 葱姜料酒 凉水，焯水\n2. 切大块萝卜（红白都行）土豆 洋葱 备用\n3. 切苹果 梨 葱 姜 8瓣蒜 一个洋葱 2片姜 切碎放入破壁机加一点水打成糊\n4. 排骨和糊糊都放高压锅里，加调料（4勺生抽 1勺红糖 2勺韩式辣酱 1勺韩式辣椒粉）高压一起炖 20分钟\n5. 排骨和调料加入切好的配菜放锅里，尝一下味道，根据口味补加辣酱，辣椒粉，盐，生抽，煮 20分钟。加年糕煮 5分钟，加青辣椒，葱花\n![](img:韩式炖short rib)\n[小红书 · 芝加哥的肥面猫](http://xhslink.com/a/Iztz3omDT9n0)"
+     "recipe": "主料：short rib 带骨的最好. 5lb\n## 配料\n1. 苹果2\n2. 🍐 梨 1\n3. 葱姜蒜\n4. 洋葱\n5. 萝卜\n6. 年糕\n7. 土豆\n## 调料\n1. 韩式辣椒酱\n2. 韩式辣椒粉\n3. 红糖\n## 步骤\n1. 牛仔骨放锅里，加水 葱姜料酒 凉水，焯水\n2. 切大块萝卜（红白都行）土豆 洋葱 备用\n3. 切苹果 梨 葱 姜 8瓣蒜 一个洋葱 2片姜 切碎放入破壁机加一点水打成糊\n4. 排骨和糊糊都放高压锅里，加调料（4勺生抽 1勺红糖 2勺韩式辣酱 1勺韩式辣椒粉）高压一起炖 20分钟\n5. 排骨和调料加入切好的配菜放锅里，尝一下味道，根据口味补加辣酱，辣椒粉，盐，生抽，煮 20分钟。加年糕煮 5分钟，加青辣椒，葱花\n![](img:韩式炖short rib)\n[小红书 · 芝加哥的肥面猫](http://xhslink.com/a/Iztz3omDT9n0)",
+     "aka": [
+      "short rib"
+     ]
     },
     {
      "name": "清炖牛肋骨条",
      "tag": null,
+     "meat": "牛",
      "ingredients": "牛肋 · 生姜 · 大葱 · 洋葱 · 桂皮 · 花椒",
      "note": "清炖2小时",
      "links": [
@@ -67,6 +74,7 @@
     {
      "name": "Holiday Prim Rib + Chimichurri",
      "tag": null,
+     "meat": "牛",
      "ingredients": "Prime rib · Kosher salt · avocado oil",
      "note": "250°F 慢烤至内部118°F",
      "links": [],
@@ -76,6 +84,7 @@
     {
      "name": "土豆排骨",
      "tag": null,
+     "meat": "猪",
      "ingredients": "",
      "note": "",
      "links": [],
@@ -85,11 +94,100 @@
     {
      "name": "麻婆豆腐",
      "tag": null,
+     "meat": "豆腐/蛋",
      "ingredients": "猪肉末 · soft豆腐 · 葱 · 豆瓣酱",
      "note": "",
      "links": [],
      "photo": "img/14874549d5aed5.jpg",
      "recipe": "猪肉末0.5lb\nsoft豆腐2盒\n葱\n豆瓣酱\n1. 猪肉末放黑胡椒，生抽，料酒，淀粉，腌制10分钟\n2. 料汁：生抽，老抽，盐，一勺淀粉，半碗水\n3. 起锅放葱花，豆瓣酱炒香。放肉末翻炒均匀后下料\n4. 中火2分钟撒上葱花起锅\n![](img:麻婆豆腐)"
+    },
+    {
+     "id": "d38",
+     "name": "鸡汁百叶包",
+     "tag": null,
+     "meat": "猪",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
+    },
+    {
+     "id": "d39",
+     "name": "土豆牛腩",
+     "tag": null,
+     "meat": "牛",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
+    },
+    {
+     "id": "d40",
+     "name": "水煮牛肉(少辣)",
+     "tag": null,
+     "meat": "牛",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
+    },
+    {
+     "id": "d41",
+     "name": "酸菜炖粉条",
+     "tag": null,
+     "meat": "猪",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
+    },
+    {
+     "id": "d42",
+     "name": "茭白肉丝",
+     "tag": null,
+     "meat": "猪",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
+    },
+    {
+     "id": "d43",
+     "name": "咖喱土豆牛肉",
+     "tag": null,
+     "meat": "牛",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
+    },
+    {
+     "id": "d44",
+     "name": "排骨炖豆角",
+     "tag": null,
+     "meat": "猪",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
+    },
+    {
+     "id": "d45",
+     "name": "Crying tiger",
+     "tag": null,
+     "meat": "牛",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
     }
    ]
   },
@@ -102,6 +200,7 @@
     {
      "name": "胡椒鸡腿白菜煲",
      "tag": null,
+     "meat": "鸡",
      "ingredients": "带骨鸡腿 · 黑白胡椒 · 白菜 · 鸡腿菇 · 豆腐",
      "note": "白色铸铁锅",
      "links": [
@@ -111,11 +210,16 @@
       }
      ],
      "photo": "img/10c7454959e934.jpg",
-     "recipe": "食材：带骨鸡腿，白胡椒，黑胡椒。\n配菜：白菜，鸡腿菇，豆腐\n调料：大蒜，洋葱，生姜\n[小红书 · 范范的菜](http://xhslink.com/a/WxugKJ8Q3cpW)\n## 步骤\n1. 鸡腿切成中块。用白色的铸铁锅\n2. 准备切块的 大蒜，洋葱，生姜，黑胡椒白胡椒，热油稍微炒一下\n3. 加入调料：一勺蚝油，两勺老抽，白勺汁\n4. 热锅热油翻炒葱姜蒜出香味\n5. 放入 白菜，豆腐， 上面铺上鸡腿。稍微加一些水\n6. 闷住5分钟后放入酱料\n7. 再焖煮10分钟，撒上葱\n![](img:胡椒鸡腿白菜煲)"
+     "recipe": "食材：带骨鸡腿，白胡椒，黑胡椒。\n配菜：白菜，鸡腿菇，豆腐\n调料：大蒜，洋葱，生姜\n[小红书 · 范范的菜](http://xhslink.com/a/WxugKJ8Q3cpW)\n## 步骤\n1. 鸡腿切成中块。用白色的铸铁锅\n2. 准备切块的 大蒜，洋葱，生姜，黑胡椒白胡椒，热油稍微炒一下\n3. 加入调料：一勺蚝油，两勺老抽，白勺汁\n4. 热锅热油翻炒葱姜蒜出香味\n5. 放入 白菜，豆腐， 上面铺上鸡腿。稍微加一些水\n6. 闷住5分钟后放入酱料\n7. 再焖煮10分钟，撒上葱\n![](img:胡椒鸡腿白菜煲)",
+     "aka": [
+      "白菜胡椒鸡腿"
+     ],
+     "photo_ai": "img/10c7454959e934-ai.jpg"
     },
     {
      "name": "香菜柠檬鸡",
      "tag": null,
+     "meat": "鸡",
      "ingredients": "鸡腿肉 · 香菜 · 柠檬 · 蘑菇",
      "note": "",
      "links": [
@@ -130,6 +234,7 @@
     {
      "name": "水煮/清蒸 鸡胸肉",
      "tag": null,
+     "meat": "鸡",
      "ingredients": "鸡胸肉 · 盐水+苏打",
      "note": "泡12hr+ · 蒸8分钟",
      "links": [],
@@ -139,11 +244,78 @@
     {
      "name": "空气炸锅鸡脆骨",
      "tag": null,
+     "meat": "鸡",
      "ingredients": "鸡脆骨",
      "note": "空气炸锅8分钟",
      "links": [],
      "photo": null,
      "recipe": "8分钟"
+    },
+    {
+     "id": "d46",
+     "name": "大盘鸡",
+     "tag": null,
+     "meat": "鸡",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
+    },
+    {
+     "id": "d47",
+     "name": "茶碗蒸",
+     "tag": null,
+     "meat": "蛋",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
+    },
+    {
+     "id": "d48",
+     "name": "爆炒鸡胗",
+     "tag": null,
+     "meat": "鸡",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
+    },
+    {
+     "id": "d49",
+     "name": "泰式酸辣鸡腿",
+     "tag": null,
+     "meat": "鸡",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
+    },
+    {
+     "id": "d50",
+     "name": "冬瓜桑拿鸡",
+     "tag": null,
+     "meat": "鸡",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
+    },
+    {
+     "id": "d51",
+     "name": "咸蛋黄鸡翅",
+     "tag": null,
+     "meat": "鸡",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
     }
    ]
   },
@@ -156,6 +328,7 @@
     {
      "name": "Miso鳕鱼",
      "tag": null,
+     "meat": "鱼",
      "ingredients": "鳕鱼 · miso · 米林 · sake",
      "note": "腌2小时+ · 400°F 15–20分钟",
      "links": [],
@@ -165,6 +338,7 @@
     {
      "name": "盐曲黑鳕鱼",
      "tag": null,
+     "meat": "鱼",
      "ingredients": "黑鳕鱼 · 盐曲",
      "note": "铸铁锅中小火15分钟",
      "links": [],
@@ -174,6 +348,7 @@
     {
      "name": "砂锅红烧鱼",
      "tag": null,
+     "meat": "鱼",
      "ingredients": "",
      "note": "",
      "links": [],
@@ -183,6 +358,7 @@
     {
      "name": "黄油白酒蛤蜊",
      "tag": null,
+     "meat": "蛤蜊/贝",
      "ingredients": "蛤蜊 · 黄油 · 白葡萄酒 · 洋葱 · 大蒜 · 干辣椒",
      "note": "配法棍",
      "links": [],
@@ -192,11 +368,34 @@
     {
      "name": "刀蚬",
      "tag": null,
+     "meat": "蛤蜊/贝",
      "ingredients": "刀蚬 · 葱 · 辣椒",
      "note": "热水烫30秒 · 油爆1分钟内",
      "links": [],
      "photo": "img/4ae0e49cb22a49.jpg",
      "recipe": "1. 热水烫30秒，去粘液防止僵硬\n2. 剪开，去掉所有黑色的\n3. 葱辣椒先下锅\n4. 油爆一分钟以内\n![](img:刀蚬)"
+    },
+    {
+     "id": "d52",
+     "name": "葱油龙虾+泡饭",
+     "tag": null,
+     "meat": "龙虾/虾",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
+    },
+    {
+     "id": "d53",
+     "name": "椒麻云片虾",
+     "tag": null,
+     "meat": "龙虾/虾",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
     }
    ]
   },
@@ -209,6 +408,7 @@
     {
      "name": "糟卤毛豆",
      "tag": null,
+     "meat": "素",
      "ingredients": "",
      "note": "",
      "links": [],
@@ -218,6 +418,7 @@
     {
      "name": "凉拌秋葵",
      "tag": null,
+     "meat": "素",
      "ingredients": "秋葵 · 蒜 · 葱 · 小米辣 · 白灼汁",
      "note": "",
      "links": [],
@@ -227,6 +428,7 @@
     {
      "name": "蒜泥白肉",
      "tag": null,
+     "meat": "猪",
      "ingredients": "",
      "note": "",
      "links": [
@@ -241,6 +443,7 @@
     {
      "name": "小葱拌豆腐",
      "tag": null,
+     "meat": "豆腐/蛋",
      "ingredients": "山水豆腐 · 榨菜 · 小葱",
      "note": "",
      "links": [],
@@ -250,6 +453,7 @@
     {
      "name": "白醋脆藕",
      "tag": null,
+     "meat": "素",
      "ingredients": "藕 · 白醋 · 芝麻 · 香油",
      "note": "",
      "links": [],
@@ -259,6 +463,7 @@
     {
      "name": "微波炉凉拌黄豆芽",
      "tag": null,
+     "meat": "素",
      "ingredients": "黄豆芽 · 青椒 · 芝麻油 · 蒜末",
      "note": "",
      "links": [],
@@ -268,6 +473,7 @@
     {
      "name": "和风芦笋",
      "tag": null,
+     "meat": "素",
      "ingredients": "芦笋 · 酱油 · 味淋 · 白味增 · 白芝麻",
      "note": "",
      "links": [
@@ -278,6 +484,28 @@
      ],
      "photo": null,
      "recipe": "芦笋，酱油，味淋，白味增，白芝麻一丢丢\n[小红书 · 巴黎Han师](http://xhslink.com/a/YdtqtbqH01lW)"
+    },
+    {
+     "id": "d54",
+     "name": "干锅蒜苔",
+     "tag": null,
+     "meat": "猪",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
+    },
+    {
+     "id": "d55",
+     "name": "凉拌芝麻豆苗金针菇",
+     "tag": null,
+     "meat": "素",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
     }
    ]
   },
@@ -290,6 +518,7 @@
     {
      "name": "排骨冬瓜汤",
      "tag": null,
+     "meat": "猪",
      "ingredients": "排骨 · 冬瓜/藕片",
      "note": "",
      "links": [
@@ -304,6 +533,7 @@
     {
      "name": "冬瓜丸子汤",
      "tag": null,
+     "meat": "猪",
      "ingredients": "冬瓜 · 黑豚猪肉末 · 葱姜蒜",
      "note": "",
      "links": [],
@@ -313,6 +543,7 @@
     {
      "name": "冬瓜蘑菇汤",
      "tag": null,
+     "meat": "素",
      "ingredients": "冬瓜 · 蘑菇 · 葱",
      "note": "",
      "links": [],
@@ -322,6 +553,7 @@
     {
      "name": "虫草花鸡汤",
      "tag": null,
+     "meat": "鸡",
      "ingredients": "鸡 · 虫草花 · 羊肚菌",
      "note": "小火炖3小时",
      "links": [],
@@ -331,11 +563,45 @@
     {
      "name": "牛尾汤",
      "tag": null,
+     "meat": "牛",
      "ingredients": "牛尾 · 番茄 · 番茄酱 · 芹菜",
      "note": "",
      "links": [],
      "photo": "img/bf02882de23b19.jpg",
      "recipe": "## 食材\n1. 番茄，番茄酱\n2. 牛尾\n3. *芹菜\n![](img:牛尾汤)"
+    },
+    {
+     "id": "d56",
+     "name": "牛腩/牛肋条包菜罗宋汤",
+     "tag": null,
+     "meat": "牛",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
+    },
+    {
+     "id": "d57",
+     "name": "乌骨鸡汤",
+     "tag": null,
+     "meat": "鸡",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
+    },
+    {
+     "id": "d58",
+     "name": "莲藕排骨汤",
+     "tag": null,
+     "meat": "猪",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
     }
    ]
   },
@@ -348,6 +614,7 @@
     {
      "name": "煲仔饭",
      "tag": null,
+     "meat": "猪",
      "ingredients": "米 · 腊肠 · 青菜",
      "note": "米提前泡1小时",
      "links": [
@@ -362,6 +629,7 @@
     {
      "name": "滑蛋鸡肉饭",
      "tag": null,
+     "meat": "鸡",
      "ingredients": "",
      "note": "",
      "links": [
@@ -376,6 +644,7 @@
     {
      "name": "三文鱼烩饭",
      "tag": null,
+     "meat": "鱼",
      "ingredients": "三文鱼 · 蘑菇 · 意大利白酱 · 洋葱",
      "note": "",
      "links": [],
@@ -385,6 +654,7 @@
     {
      "name": "🍅 意大利番茄佛卡夏",
      "tag": null,
+     "meat": "素",
      "ingredients": "高筋面粉 · 小番茄 · 橄榄油 · 迷迭香",
      "note": "当天版 · 450°F",
      "links": [],
@@ -394,11 +664,34 @@
     {
      "name": "日式生吐司",
      "tag": null,
+     "meat": "素",
      "ingredients": "汤种 · 牛奶 · 黄油 · 酵母",
      "note": "",
      "links": [],
      "photo": null,
      "recipe": "1. 预制粉，汤种，70g牛奶 搅拌。3档搅均匀，6档出大洞膜\n2. 放入软化黄油和水化开的酵母，低速搅匀，6档打出手套膜\n3. 面团滚圆，盖上保鲜膜，基础发酵到两倍。28-30度最佳\n4. 拿出后去大气泡放入模子里二次发酵"
+    },
+    {
+     "id": "d59",
+     "name": "黄芽菜肉丝年糕",
+     "tag": null,
+     "meat": "猪",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
+    },
+    {
+     "id": "d60",
+     "name": "羊肉烧麦",
+     "tag": null,
+     "meat": "羊",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
     }
    ]
   },
@@ -411,6 +704,7 @@
     {
      "name": "朗姆葡萄干磅蛋糕",
      "tag": null,
+     "meat": "甜品",
      "ingredients": "黄油 · 糖 · 鸡蛋 · 面粉 · 葡萄干",
      "note": "295°F 40分钟 · 冷藏24hr+",
      "links": [],
@@ -420,6 +714,7 @@
     {
      "name": "青柠渍菠萝",
      "tag": null,
+     "meat": "甜品",
      "ingredients": "菠萝 · 青柠皮/汁 · 白兰地/白朗姆",
      "note": "冷藏30分钟–2小时",
      "links": [],
@@ -429,6 +724,7 @@
     {
      "name": "无花果brie",
      "tag": null,
+     "meat": "甜品",
      "ingredients": "无花果 · brie · 坚果碎 · prosciutto · 蜂蜜",
      "note": "350°F 20分钟",
      "links": [],
@@ -438,6 +734,7 @@
     {
      "name": "巴西青柠水",
      "tag": null,
+     "meat": "甜品",
      "ingredients": "薄皮青柠 · 炼奶 · 糖水",
      "note": "搅拌8–10秒，别多",
      "links": [],
@@ -452,12 +749,6 @@
    "name": "油闷大虾（带壳🦐）",
    "note": "",
    "link": null,
-   "details": ""
-  },
-  {
-   "name": "蒜泥白肉",
-   "note": "已在菜单里",
-   "link": "http://xhslink.com/a/53t2gEyx3Ic7",
    "details": ""
   },
   {
@@ -1250,6 +1541,93 @@
    "name": "溏心蛋",
    "note": "",
    "link": null
+  }
+ ],
+ "history_source": {
+  "page": "https://app.notion.com/p/d4a373f265764fdbbb72f754b2ed546e",
+  "fetched": "2026-10-04",
+  "page_last_edited": "2026-08-23 PT"
+ },
+ "history": [
+  {
+   "date": "2026-08-24",
+   "dishes": [
+    "白菜胡椒鸡腿",
+    "芦笋炒芋艿"
+   ]
+  },
+  {
+   "date": "2026-08-27",
+   "dishes": [
+    "红烧玉子豆腐",
+    "上次的整条鱼"
+   ]
+  },
+  {
+   "date": "2026-07-15",
+   "dishes": [
+    "牛肋条罗宋汤"
+   ]
+  },
+  {
+   "date": "2026-07-16",
+   "dishes": [
+    "藕炒牛肉"
+   ]
+  },
+  {
+   "date": "2026-07-06",
+   "dishes": [
+    "贵妃鸡",
+    "蒜台肉丝"
+   ]
+  },
+  {
+   "date": "2026-07-07",
+   "dishes": [
+    "肉饼蒸蛋",
+    "煲仔饭",
+    "short rib"
+   ]
+  },
+  {
+   "date": "2026-07-09",
+   "dishes": [
+    "鸭腿",
+    "牛肋条罗宋汤"
+   ]
+  },
+  {
+   "date": "2026-06-29",
+   "dishes": [
+    "羊肉烧麦",
+    "豆苗",
+    "肉饼子炖蛋",
+    "鸭腿",
+    "泰式酸辣鸡腿",
+    "煲仔饭"
+   ]
+  },
+  {
+   "date": "2026-06-29",
+   "dishes": [
+    "白鱼ricotta"
+   ],
+   "who": "娃"
+  },
+  {
+   "date": "2026-06-30",
+   "dishes": [
+    "Ricotta 桃子 三文鱼"
+   ],
+   "who": "娃"
+  },
+  {
+   "date": "2026-07-01",
+   "dishes": [
+    "牛肉山药条"
+   ],
+   "who": "娃"
   }
  ]
 }
