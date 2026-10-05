@@ -1,0 +1,1255 @@
+{
+ "title": "家庭菜单",
+ "subtitle": "おうちごはん",
+ "categories": [
+  {
+   "id": "meat",
+   "icon": "🥩",
+   "zh": "牛·猪",
+   "en": "Beef & Pork",
+   "dishes": [
+    {
+     "name": "葱爆牛肉片",
+     "tag": null,
+     "ingredients": "牛肉片 · 葱姜蒜 · 洋葱 · 白胡椒 · 酱油",
+     "note": "",
+     "links": [
+      {
+       "label": "YouTube",
+       "url": "https://www.youtube.com/watch?v=Etf9zxVjhKM"
+      }
+     ],
+     "photo": null,
+     "recipe": "食材：牛肉片\n配料：葱姜蒜，洋葱\n调料：白胡椒，酱油\n[▶️ 葱爆羊肉 Lamb Stir Fry 肉片怎么做才嫩？](https://www.youtube.com/watch?v=Etf9zxVjhKM)\n## 步骤\n1. 牛肉泡冷水+盐+小苏打。等待15分钟出血水\n2. 牛肉挤干水，酱油，1g淀粉水. Maybe 蛋清和一点点油，锁住水分\n3. 中等温度油分批下锅，变色就捞起放在边上让牛肉自己加热\n4. 油锅放葱姜蒜洋葱炒香，下牛肉，最后放辣椒/葱"
+    },
+    {
+     "name": "青椒牛肉豆腐煲",
+     "tag": null,
+     "ingredients": "",
+     "note": "",
+     "links": [
+      {
+       "label": "小红书",
+       "url": "http://xhslink.com/a/KTKZHS3mvxKW"
+      }
+     ],
+     "photo": null,
+     "recipe": "[小红书 · 吃饭吧阿尧](http://xhslink.com/a/KTKZHS3mvxKW)"
+    },
+    {
+     "name": "韩式炖short rib",
+     "tag": null,
+     "ingredients": "带骨short rib · 苹果 · 梨 · 萝卜 · 年糕 · 土豆 · 韩式辣椒酱",
+     "note": "",
+     "links": [
+      {
+       "label": "小红书",
+       "url": "http://xhslink.com/a/Iztz3omDT9n0"
+      }
+     ],
+     "photo": "img/14874549add276.jpg",
+     "recipe": "主料：short rib 带骨的最好. 5lb\n## 配料\n1. 苹果2\n2. 🍐 梨 1\n3. 葱姜蒜\n4. 洋葱\n5. 萝卜\n6. 年糕\n7. 土豆\n## 调料\n1. 韩式辣椒酱\n2. 韩式辣椒粉\n3. 红糖\n## 步骤\n1. 牛仔骨放锅里，加水 葱姜料酒 凉水，焯水\n2. 切大块萝卜（红白都行）土豆 洋葱 备用\n3. 切苹果 梨 葱 姜 8瓣蒜 一个洋葱 2片姜 切碎放入破壁机加一点水打成糊\n4. 排骨和糊糊都放高压锅里，加调料（4勺生抽 1勺红糖 2勺韩式辣酱 1勺韩式辣椒粉）高压一起炖 20分钟\n5. 排骨和调料加入切好的配菜放锅里，尝一下味道，根据口味补加辣酱，辣椒粉，盐，生抽，煮 20分钟。加年糕煮 5分钟，加青辣椒，葱花\n![](img:韩式炖short rib)\n[小红书 · 芝加哥的肥面猫](http://xhslink.com/a/Iztz3omDT9n0)"
+    },
+    {
+     "name": "清炖牛肋骨条",
+     "tag": null,
+     "ingredients": "牛肋 · 生姜 · 大葱 · 洋葱 · 桂皮 · 花椒",
+     "note": "清炖2小时",
+     "links": [
+      {
+       "label": "小红书",
+       "url": "http://xhslink.com/a/dUFRUOUBQaV3"
+      }
+     ],
+     "photo": null,
+     "recipe": "1. 牛肋焯水\n2. 生姜大葱洋葱桂皮花椒+热水\n3. 清炖2小时\n## 调蘸酱\n1. 蒜末和葱花淋入热油（油不用很多）\n2. 加入2-3勺牛肋排汤\n3. 加入1勺生抽，1勺蚝油，适量白糖和香菜，搅拌均匀\n> 参考：小红书「Costco 食谱：清炖牛肋排 原汁原味」· 十七夏DD"
+    },
+    {
+     "name": "Holiday Prim Rib + Chimichurri",
+     "tag": null,
+     "ingredients": "Prime rib · Kosher salt · avocado oil",
+     "note": "250°F 慢烤至内部118°F",
+     "links": [],
+     "photo": null,
+     "recipe": "1. 肥肉部分十字花纹\n2. Kosher salt dry brine the rib overnight\n3. Apply avocado oil to the surface\n4. 250°F 慢烤，Internal 118°F 拿出来\n5. 包住锡纸休息45min左右\n6. （optional）apply compound butter\n7. Broiler sear 5-8 min"
+    },
+    {
+     "name": "土豆排骨",
+     "tag": null,
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
+    },
+    {
+     "name": "麻婆豆腐",
+     "tag": null,
+     "ingredients": "猪肉末 · soft豆腐 · 葱 · 豆瓣酱",
+     "note": "",
+     "links": [],
+     "photo": "img/14874549d5aed5.jpg",
+     "recipe": "猪肉末0.5lb\nsoft豆腐2盒\n葱\n豆瓣酱\n1. 猪肉末放黑胡椒，生抽，料酒，淀粉，腌制10分钟\n2. 料汁：生抽，老抽，盐，一勺淀粉，半碗水\n3. 起锅放葱花，豆瓣酱炒香。放肉末翻炒均匀后下料\n4. 中火2分钟撒上葱花起锅\n![](img:麻婆豆腐)"
+    }
+   ]
+  },
+  {
+   "id": "poultry",
+   "icon": "🐔",
+   "zh": "鸡",
+   "en": "Poultry",
+   "dishes": [
+    {
+     "name": "胡椒鸡腿白菜煲",
+     "tag": null,
+     "ingredients": "带骨鸡腿 · 黑白胡椒 · 白菜 · 鸡腿菇 · 豆腐",
+     "note": "白色铸铁锅",
+     "links": [
+      {
+       "label": "小红书",
+       "url": "http://xhslink.com/a/WxugKJ8Q3cpW"
+      }
+     ],
+     "photo": "img/10c7454959e934.jpg",
+     "recipe": "食材：带骨鸡腿，白胡椒，黑胡椒。\n配菜：白菜，鸡腿菇，豆腐\n调料：大蒜，洋葱，生姜\n[小红书 · 范范的菜](http://xhslink.com/a/WxugKJ8Q3cpW)\n## 步骤\n1. 鸡腿切成中块。用白色的铸铁锅\n2. 准备切块的 大蒜，洋葱，生姜，黑胡椒白胡椒，热油稍微炒一下\n3. 加入调料：一勺蚝油，两勺老抽，白勺汁\n4. 热锅热油翻炒葱姜蒜出香味\n5. 放入 白菜，豆腐， 上面铺上鸡腿。稍微加一些水\n6. 闷住5分钟后放入酱料\n7. 再焖煮10分钟，撒上葱\n![](img:胡椒鸡腿白菜煲)"
+    },
+    {
+     "name": "香菜柠檬鸡",
+     "tag": null,
+     "ingredients": "鸡腿肉 · 香菜 · 柠檬 · 蘑菇",
+     "note": "",
+     "links": [
+      {
+       "label": "小红书",
+       "url": "http://xhslink.com/a/M0luEBOdXRBW"
+      }
+     ],
+     "photo": "img/10c745499af5bf.jpg",
+     "recipe": "## 材料\n鸡腿肉\n## 配料\n香菜\n柠檬\n蘑菇（海鲜菇）\n## 步骤\n1. 鸡腿围着碗摆放。\n2. 在蒸锅中大火蒸20分钟（蒸箱约25分钟），从水滚上汽后开始计时。\n## 制作过程\n1. 葱白切段，锅中加入大量底油，中小火慢煎葱白。\n2. 柠檬一半切片，一半挤汁。\n3. 准备香菜末、蒜末和小米辣。\n4. 蒸好的鸡腿放入冰水，然后手撕成块。\n5. 将蒸鸡的鸡汤倒入葱油中，加入海鲜菇，小火收汁。\n6. 在大盆中加入鸡肉、大蒜、小米辣、香菜，淋上柠檬汁。\n7. 加入生抽、香油、一勺白砂糖，倒入葱油蘑菇鸡汤，拌匀。\n## 提示和建议\n- 蒸鸡的时间根据设备调整，确保鸡肉熟透且嫩滑。\n- 使用初榨橄榄油可能会影响菜肴的口感，建议选择一般的食用油。\n- 拌匀鸡肉时，最好用手抓拌，这样更入味。\n- 准备时间：20分钟 · 烹饪时间：40分钟（包括蒸鸡和后续烹饪）\n![](img:香菜柠檬鸡)\n[小红书 · Jrake](http://xhslink.com/a/M0luEBOdXRBW)"
+    },
+    {
+     "name": "水煮/清蒸 鸡胸肉",
+     "tag": null,
+     "ingredients": "鸡胸肉 · 盐水+苏打",
+     "note": "泡12hr+ · 蒸8分钟",
+     "links": [],
+     "photo": null,
+     "recipe": "1. 盐水➕苏打泡12hr+ （变嫩）\n2. 水煮开，加盐，下肉，调小火沸腾就行\n3. 切块蒸，8分钟，拿出 醒肉5分钟"
+    },
+    {
+     "name": "空气炸锅鸡脆骨",
+     "tag": null,
+     "ingredients": "鸡脆骨",
+     "note": "空气炸锅8分钟",
+     "links": [],
+     "photo": null,
+     "recipe": "8分钟"
+    }
+   ]
+  },
+  {
+   "id": "sea",
+   "icon": "🐟",
+   "zh": "海鲜",
+   "en": "Seafood",
+   "dishes": [
+    {
+     "name": "Miso鳕鱼",
+     "tag": null,
+     "ingredients": "鳕鱼 · miso · 米林 · sake",
+     "note": "腌2小时+ · 400°F 15–20分钟",
+     "links": [],
+     "photo": null,
+     "recipe": "日本超市鳕鱼\nmiso\n1. 米林：sake/料酒 = 2:1，+ miso + sugar腌制2小时以上，隔夜或者multiple days最佳\n2. 烤箱中层400度，15-20 mins。15min后开始每隔2min查看，觉得颜色差不多就可以拿出来了。"
+    },
+    {
+     "name": "盐曲黑鳕鱼",
+     "tag": null,
+     "ingredients": "黑鳕鱼 · 盐曲",
+     "note": "铸铁锅中小火15分钟",
+     "links": [],
+     "photo": null,
+     "recipe": "薄薄一层盐曲腌\n铸铁锅中小火，盖盖子 15分钟"
+    },
+    {
+     "name": "砂锅红烧鱼",
+     "tag": null,
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
+    },
+    {
+     "name": "黄油白酒蛤蜊",
+     "tag": null,
+     "ingredients": "蛤蜊 · 黄油 · 白葡萄酒 · 洋葱 · 大蒜 · 干辣椒",
+     "note": "配法棍",
+     "links": [],
+     "photo": "img/3aa745495ae598.jpg",
+     "recipe": "1. 很多洋葱切丁，一点大蒜，干辣椒\n2. 黄油下锅，放入所有小料\n3. +白葡萄酒，蛤蜊盖盖子3分钟\n4. 捞出来之后，再加点黄油，收汁，倒在隔离上\n面包：法棍切片350°F 5分钟\n![](img:黄油白酒蛤蜊)"
+    },
+    {
+     "name": "刀蚬",
+     "tag": null,
+     "ingredients": "刀蚬 · 葱 · 辣椒",
+     "note": "热水烫30秒 · 油爆1分钟内",
+     "links": [],
+     "photo": "img/4ae0e49cb22a49.jpg",
+     "recipe": "1. 热水烫30秒，去粘液防止僵硬\n2. 剪开，去掉所有黑色的\n3. 葱辣椒先下锅\n4. 油爆一分钟以内\n![](img:刀蚬)"
+    }
+   ]
+  },
+  {
+   "id": "cold",
+   "icon": "🥗",
+   "zh": "凉菜·蔬菜",
+   "en": "Cold & Veg",
+   "dishes": [
+    {
+     "name": "糟卤毛豆",
+     "tag": null,
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": ""
+    },
+    {
+     "name": "凉拌秋葵",
+     "tag": null,
+     "ingredients": "秋葵 · 蒜 · 葱 · 小米辣 · 白灼汁",
+     "note": "",
+     "links": [],
+     "photo": "img/21c745493b0e36.jpg",
+     "recipe": "![](img:凉拌秋葵)\n1. 开水下秋葵 两分半到三分钟\n2. 去头，中间切开\n3. 蒜葱小米辣，泡在白灼汁里，加点水"
+    },
+    {
+     "name": "蒜泥白肉",
+     "tag": null,
+     "ingredients": "",
+     "note": "",
+     "links": [
+      {
+       "label": "小红书",
+       "url": "http://xhslink.com/a/53t2gEyx3Ic7"
+      }
+     ],
+     "photo": "img/1ae745498aa58f.jpg",
+     "recipe": "![](img:蒜泥白肉)\n[小红书 · 17 麦三斤](http://xhslink.com/a/53t2gEyx3Ic7)"
+    },
+    {
+     "name": "小葱拌豆腐",
+     "tag": null,
+     "ingredients": "山水豆腐 · 榨菜 · 小葱",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": "## 食材\n山水豆腐\n榨菜 小葱，（肉松？）\n## 步骤\n1. 热油煸小葱，关火 放入 鱼露 白糖 藤椒油 鸡精 酱油 一点点小米辣\n2. 榨菜切碎铺在豆腐上\n3. 浇上热油酱料"
+    },
+    {
+     "name": "白醋脆藕",
+     "tag": null,
+     "ingredients": "藕 · 白醋 · 芝麻 · 香油",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": "1. 藕切炮片，用冷水洗两次\n2. 准备好白醋冰水\n3. 热水下锅30秒，有一点点透明就捞上来，泡在冰水里\n4. 蘸料 白醋，芝麻，一丢丢盐，一勺白糖，香油"
+    },
+    {
+     "name": "微波炉凉拌黄豆芽",
+     "tag": null,
+     "ingredients": "黄豆芽 · 青椒 · 芝麻油 · 蒜末",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": "青椒，黄豆芽\n1. 青椒切丝\n2. 黄豆芽，青椒 放在碗里，盖上保鲜膜 微波 4分钟\n3. 调料：一勺：芝麻油，白芝麻，蒜末，鸡精；半勺：糖，生抽。适量胡椒和盐。"
+    },
+    {
+     "name": "和风芦笋",
+     "tag": null,
+     "ingredients": "芦笋 · 酱油 · 味淋 · 白味增 · 白芝麻",
+     "note": "",
+     "links": [
+      {
+       "label": "小红书",
+       "url": "http://xhslink.com/a/YdtqtbqH01lW"
+      }
+     ],
+     "photo": null,
+     "recipe": "芦笋，酱油，味淋，白味增，白芝麻一丢丢\n[小红书 · 巴黎Han师](http://xhslink.com/a/YdtqtbqH01lW)"
+    }
+   ]
+  },
+  {
+   "id": "soup",
+   "icon": "🍲",
+   "zh": "汤",
+   "en": "Soups",
+   "dishes": [
+    {
+     "name": "排骨冬瓜汤",
+     "tag": null,
+     "ingredients": "排骨 · 冬瓜/藕片",
+     "note": "",
+     "links": [
+      {
+       "label": "小红书",
+       "url": "http://xhslink.com/a/7nLnhELx67U3"
+      }
+     ],
+     "photo": null,
+     "recipe": "1. 排骨冷水下锅，40分钟\n2. 下冬瓜/藕片 再煮10分钟\n3. 蘸料：葱，香菜，蒜末 + *辣椒粉 + *白芝麻 下热油\n4. ➕5生抽，5香醋，半勺盐，半勺糖，两勺水\n[小红书 · 花遇和风WL](http://xhslink.com/a/7nLnhELx67U3)"
+    },
+    {
+     "name": "冬瓜丸子汤",
+     "tag": null,
+     "ingredients": "冬瓜 · 黑豚猪肉末 · 葱姜蒜",
+     "note": "",
+     "links": [],
+     "photo": "img/13274549d04a72.jpg",
+     "recipe": "## 食材\n冬瓜\n黑豚猪肉末\n葱姜蒜\n## 步骤\n1. 肉沫中放入 五香粉 盐 酱油 蚝油 油 淀粉 清水2勺 鸡蛋一个 葱花，搅拌均匀，搅打出胶\n2. 热油炒葱姜蒜，放入肉丸 冬瓜，放入五香粉煮十分钟\n![](img:冬瓜丸子汤)"
+    },
+    {
+     "name": "冬瓜蘑菇汤",
+     "tag": null,
+     "ingredients": "冬瓜 · 蘑菇 · 葱",
+     "note": "",
+     "links": [],
+     "photo": "img/10e74549f8ebe7.jpg",
+     "recipe": "食材：冬瓜，蘑菇\n配料：葱\n## 步骤\n1. 热油放葱炒香\n2. 放入蘑菇冬瓜翻炒\n3. 加水煮8分钟，冬瓜软了就可以随时起锅\n![](img:冬瓜蘑菇汤)"
+    },
+    {
+     "name": "虫草花鸡汤",
+     "tag": null,
+     "ingredients": "鸡 · 虫草花 · 羊肚菌",
+     "note": "小火炖3小时",
+     "links": [],
+     "photo": "img/21274549fb9005.jpg",
+     "recipe": "1. 蒸鸡炖快\n2. 鸡擦干，油炒一炒\n3. 放入虫草花，小火炖2小时\n4. 放入羊肚菌，再炖一小时\n![](img:虫草花鸡汤)"
+    },
+    {
+     "name": "牛尾汤",
+     "tag": null,
+     "ingredients": "牛尾 · 番茄 · 番茄酱 · 芹菜",
+     "note": "",
+     "links": [],
+     "photo": "img/bf02882de23b19.jpg",
+     "recipe": "## 食材\n1. 番茄，番茄酱\n2. 牛尾\n3. *芹菜\n![](img:牛尾汤)"
+    }
+   ]
+  },
+  {
+   "id": "staple",
+   "icon": "🍚",
+   "zh": "饭·面包",
+   "en": "Rice & Bread",
+   "dishes": [
+    {
+     "name": "煲仔饭",
+     "tag": null,
+     "ingredients": "米 · 腊肠 · 青菜",
+     "note": "米提前泡1小时",
+     "links": [
+      {
+       "label": "小红书",
+       "url": "http://xhslink.com/a/G9TzmAKd8Ic7"
+      }
+     ],
+     "photo": "img/1ae74549fa7ff9.jpg",
+     "recipe": "1. 米提前一小时泡着\n2. 水没过米一个指甲盖\n3. 煮开，最最小火闷10分钟\n4. 放入腊肠，煮好的青菜，锅盖上方浇一层油\n5. 大火煮开，转小火，共20分钟\n6. 蘸料 生抽 蚝油 鱼露 蒸鱼豉油\n![](img:煲仔饭)\n[小红书 · 付钱的付付](http://xhslink.com/a/G9TzmAKd8Ic7)"
+    },
+    {
+     "name": "滑蛋鸡肉饭",
+     "tag": null,
+     "ingredients": "",
+     "note": "",
+     "links": [
+      {
+       "label": "小红书",
+       "url": "http://xhslink.com/a/nP1TYhD6yxKW"
+      }
+     ],
+     "photo": null,
+     "recipe": "[小红书 · 克里斯的食谱](http://xhslink.com/a/nP1TYhD6yxKW)"
+    },
+    {
+     "name": "三文鱼烩饭",
+     "tag": null,
+     "ingredients": "三文鱼 · 蘑菇 · 意大利白酱 · 洋葱",
+     "note": "",
+     "links": [],
+     "photo": "img/b2e58bb89cdd64.jpg",
+     "recipe": "## 食材\n1. 三文鱼\n2. 蘑菇\n3. 意大利白酱\n4. 洋葱\n![](img:三文鱼烩饭)"
+    },
+    {
+     "name": "🍅 意大利番茄佛卡夏",
+     "tag": null,
+     "ingredients": "高筋面粉 · 小番茄 · 橄榄油 · 迷迭香",
+     "note": "当天版 · 450°F",
+     "links": [],
+     "photo": null,
+     "recipe": "> 配方适用于：室温 72°F（22°C）· 烤盘 280 × 280 × 36 mm · 面粉 Bread Flour（高筋面粉）· 酵母 Fleischmann's Active Dry Yeast\n## 材料 · 面团\n- Bread Flour（高筋面粉）500g\n- 水 400g（50g 用于激活酵母，350g 用于和面）\n- Fleischmann's Active Dry Yeast 3g\n- 盐 10g\n- 特级初榨橄榄油 30g\n## 材料 · 烤盘\n- 橄榄油 2～3 大勺\n## 材料 · 表面\n- Cherry Tomatoes 小番茄 200～250g\n- 特级初榨橄榄油 2 大勺\n- Maldon 或粗海盐\n- 新鲜迷迭香（推荐）\n- （可选）牛至\n- （可选）薄蒜片\n## 第一步：激活酵母\n- 准备：温水 50g + Active Dry Yeast 3g + 一小撮糖（可选）\n- 水温：**35～40°C（95～105°F）**，静置 **5～10 分钟**\n- 判断标准：表面出现泡沫、有明显酵母香，即可开始下一步。\n## 第二步：混合面团\n- 加入：Bread Flour 500g、剩余350g水、激活好的酵母液\n- 混合到 **完全没有干粉即可**。不用揉，不用揉出膜。盖保鲜膜。\n## 第三步：自溶（Autolyse）\n- 静置 **30分钟**\n- 为什么要自溶？让面粉充分吸水、自动形成面筋、后面更容易操作高含水面团\n- 30分钟后你会发现：面团更光滑、黏性降低一点、拉起来比较有弹性\n## 第四步：加入盐和橄榄油\n- 加入：盐 10g、橄榄油 30g\n- 用湿手：抓、捏、折，约2～4分钟。\n- 刚开始会觉得很滑、像散掉一样，这是正常现象。继续抓拌，最后会重新变成一整团。盖好。\n## 第一发酵（Bulk Fermentation）\n- 室温 **72°F（22°C）**\n- 第一次折叠（30分钟后）：**Stretch & Fold**，四边往中间折。盖好。\n- 第二～四次折叠（每30分钟）：**Coil Fold**，双手从中间托起，让两端自然折到下面；转90°，重复一次。盖好。\n- 第四次折叠完成以后继续发酵 **30～60分钟**，不要只看时间。\n- 完成标准：✅ 面团增加约50～70% ✅ 表面开始出现很多小气泡 ✅ 面团摸起来很轻 ✅ 摇晃容器时有轻微果冻感。不用等翻倍。\n## 入盘 · 松弛 · 拉伸\n- 烤盘抹 2～3大勺橄榄油，底部和四周全部抹到。轻轻把面团倒进去，不要揉，不要排气。\n- 盖保鲜膜，静置30分钟。\n- 如果面团没有铺满：轻轻拉向四个角。如果已经铺满：**不用拉。**\n## 第二次发酵（Final Proof）\n- 盖保鲜膜，室温72°F，约 **1.5～2小时**，不要只看时间。\n- 完成标准：✅ 面团明显鼓起 ✅ 表面很多气泡 ✅ 手指轻按缓慢回弹 ✅ 摇晃烤盘像充气床垫\n## 预热烤箱\n- 第二发酵最后30分钟开始，**450°F（230°C）**，至少预热30分钟。烤架：中下层。\n## 处理番茄\n- 小番茄 200～250g，切半。\n- 喜欢番茄味更浓：可以把一半番茄 375°F 烤20分钟，另一半保持新鲜，混合使用风味最好。\n## 最后整形\n1. 淋橄榄油\n2. 手指压洞（压到底）\n3. 放番茄\n4. 撒粗海盐\n5. 撒迷迭香\n> 不要把番茄全部埋进去，轻轻放在凹洞即可。\n## 烘烤\n- **450°F（230°C）**，先烤20分钟，不要开门。20分钟开始检查，通常 22～25分钟完成。\n- 烤好标准：✅ 表面深金黄色 ✅ 边缘焦糖色 ✅ 番茄边缘轻微焦化\n- 如果底部颜色不够：脱模，直接放烤架，再烤3～5分钟。\n## 出炉 · 食用\n- 立即放到烤架，不要一直留在烤盘。趁热淋一点优质橄榄油，撒一点 Maldon 海盐。\n- 等待15～20分钟再切。最佳食用温度：**温热（Warm）**\n- 搭配推荐：Burrata · 帕尔玛火腿（Prosciutto）· 一小碟优质橄榄油 · 帕玛森奶酪\n## 成功关键（一定要记住）\n- ✅ 自溶30分钟不要省\n- ✅ 第一发酵不要死看时间，看面团状态\n- ✅ 第一轮 Stretch & Fold，后三轮 Coil Fold\n- ✅ 全程盖保鲜膜，避免表面变干\n- ✅ 不要排气\n- ✅ 先淋油，再压洞，再放番茄\n- ✅ 烤箱一定充分预热30分钟\n- ✅ 烤到深金黄色，不要怕颜色深\n- ✅ 出炉放凉15～20分钟再切\n## Backlog\n- 2026-06-28\n- 6.20.26：隔夜版本，冷藏了18小时"
+    },
+    {
+     "name": "日式生吐司",
+     "tag": null,
+     "ingredients": "汤种 · 牛奶 · 黄油 · 酵母",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": "1. 预制粉，汤种，70g牛奶 搅拌。3档搅均匀，6档出大洞膜\n2. 放入软化黄油和水化开的酵母，低速搅匀，6档打出手套膜\n3. 面团滚圆，盖上保鲜膜，基础发酵到两倍。28-30度最佳\n4. 拿出后去大气泡放入模子里二次发酵"
+    }
+   ]
+  },
+  {
+   "id": "sweet",
+   "icon": "🍰",
+   "zh": "甜品·饮料",
+   "en": "Desserts & Drinks",
+   "dishes": [
+    {
+     "name": "朗姆葡萄干磅蛋糕",
+     "tag": null,
+     "ingredients": "黄油 · 糖 · 鸡蛋 · 面粉 · 葡萄干",
+     "note": "295°F 40分钟 · 冷藏24hr+",
+     "links": [],
+     "photo": null,
+     "recipe": "> Speed 6 at least 5 mins\n## 材料1\n黄油100g\n糖100g\n盐 1/2 tsp\n鸡蛋2个(100g)\n## 材料2\n面粉90g\n泡打粉2-3g\n玉米淀粉10g\n## 步骤\n1. 微波炉15秒黄油，软化，戳下去有洞但是没有变成油\n2. 软化的黄油+糖+盐，6档，搅拌7分钟+，到蓬蓬白白的样子\n3. 分5次以上➕🥚搅拌10分钟，每次加很少才会不水油分离\n4. 加入香草精\n5. 加入过筛搅拌均匀的面粉，泡打粉，玉米淀粉，搅拌均匀，不要起筋\n6. 最后加入葡萄干，拍打一下打出大气泡\n7. 烤箱295度 40分钟\n8. 拿出后放置5分钟\n9. 刷上糖+酒水\n10. 包上保鲜膜放置冰箱24hr+"
+    },
+    {
+     "name": "青柠渍菠萝",
+     "tag": null,
+     "ingredients": "菠萝 · 青柠皮/汁 · 白兰地/白朗姆",
+     "note": "冷藏30分钟–2小时",
+     "links": [],
+     "photo": null,
+     "recipe": "1. 菠萝切块\n2. 青柠皮刨下来，只要绿色的部分\n3. 半个青柠汁，1/4勺盐，1/4勺糖\n4. 放入白兰地/白朗姆酒\n5. 冷藏30分钟～两小时"
+    },
+    {
+     "name": "无花果brie",
+     "tag": null,
+     "ingredients": "无花果 · brie · 坚果碎 · prosciutto · 蜂蜜",
+     "note": "350°F 20分钟",
+     "links": [],
+     "photo": "img/3aa745490334a3.jpg",
+     "recipe": "1. 无花果切十字刀\n2. 放入一小片brie，坚果碎\n3. 放一小片prosciutto\n4. 浇上一点点蜂蜜\n5. 350°F 20分钟到软\n![](img:无花果brie)"
+    },
+    {
+     "name": "巴西青柠水",
+     "tag": null,
+     "ingredients": "薄皮青柠 · 炼奶 · 糖水",
+     "note": "搅拌8–10秒，别多",
+     "links": [],
+     "photo": null,
+     "recipe": "薄皮青柠\n1. 3个小青柠切块，放入搅拌机 8-10s + 水 500ml，不能多 多了会苦\n2. 立马把水过滤出来\n3. 用鸡尾酒的shaker➕冰，炼奶，糖水，摇匀\n4. 倒出来冷藏即可"
+    }
+   ]
+  }
+ ],
+ "todo": [
+  {
+   "name": "油闷大虾（带壳🦐）",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "蒜泥白肉",
+   "note": "已在菜单里",
+   "link": "http://xhslink.com/a/53t2gEyx3Ic7",
+   "details": ""
+  },
+  {
+   "name": "牛肉炒饭",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "上海菜饭",
+   "note": "",
+   "link": null,
+   "details": ""
+  },
+  {
+   "name": "蒜蓉粉丝虾滑煲",
+   "note": "",
+   "link": "http://xhslink.com/a/tVOtKAO9AFs3",
+   "details": "[小红书 · DABAI食记](http://xhslink.com/a/tVOtKAO9AFs3)"
+  },
+  {
+   "name": "凉拌手撕鸡",
+   "note": "",
+   "link": "http://xhslink.com/a/CflUX2V5U2lW",
+   "details": "[小红书 · Jrake](http://xhslink.com/a/CflUX2V5U2lW)"
+  },
+  {
+   "name": "小鸡炖蘑菇",
+   "note": "",
+   "link": "http://xhslink.com/a/OJC58CsBXFs3",
+   "details": "[小红书 · 噗噗的做饭日记](http://xhslink.com/a/OJC58CsBXFs3)"
+  },
+  {
+   "name": "三鲜菌菇汤",
+   "note": "",
+   "link": "http://xhslink.com/a/27oNtNI1hGs3",
+   "details": "[小红书 · 杨小咩](http://xhslink.com/a/27oNtNI1hGs3)"
+  },
+  {
+   "name": "清炖牛肋骨条（带面版）",
+   "note": "生姜 大葱 洋葱 桂皮 花椒 炖1.5小时 → 辣椒粉 白萝卜 15分钟 → 面条",
+   "link": "http://xhslink.com/a/dUFRUOUBQaV3",
+   "details": "1. 生姜，大葱，洋葱，香叶，桂皮，花椒 炖一小时半\n2. 辣椒粉 白萝卜 15分钟\n3. 面条\n[小红书 · 燕子的小食堂](http://xhslink.com/a/dUFRUOUBQaV3)"
+  },
+  {
+   "name": "Chicken Katsu",
+   "note": "Mochi Mommy",
+   "link": "https://t.co/WnmllowJ1K",
+   "details": "[The Best Chicken Katsu Recipe - Mochi Mommy](https://t.co/WnmllowJ1K)"
+  }
+ ],
+ "weeks": [
+  {
+   "date": "8.24.26",
+   "lines": [
+    {
+     "day": "周一",
+     "dishes": "白菜胡椒鸡腿 · 芦笋炒芋艿"
+    },
+    {
+     "day": "周四",
+     "dishes": "红烧玉子豆腐 · 上次的整条鱼"
+    }
+   ],
+   "details": "周一 白菜胡椒鸡腿 + 芦笋炒芋艿\n> 芦笋和芋艿都削皮，芋艿先水里煮熟，之后放一起葱香炒一炒\n## 白菜胡椒鸡腿\n食材：带骨鸡腿，白胡椒，黑胡椒。\n配菜：白菜，鸡腿菇，豆腐\n调料：大蒜，洋葱，生姜\n1. 鸡腿切成中块。用白色的铸铁锅\n2. 准备切块的 大蒜，洋葱，生姜，黑胡椒白胡椒，热油稍微炒一下\n3. 加入调料：一勺蚝油，两勺老抽，白勺汁\n4. 热锅热油翻炒葱姜蒜出香味\n5. 放入 白菜，豆腐，上面铺上鸡腿。稍微加一些水\n6. 闷住5分钟后放入酱料\n7. 再焖煮10分钟，撒上葱\n周四 红烧玉子豆腐 · 上次的整条鱼"
+  },
+  {
+   "date": "7.13.26",
+   "lines": [
+    {
+     "day": "周三",
+     "dishes": "牛肋条罗宋汤（洋葱 西芹 番茄 土豆 包菜）"
+    },
+    {
+     "day": "周四",
+     "dishes": "藕炒牛肉"
+    }
+   ],
+   "details": ""
+  },
+  {
+   "date": "7.6.26",
+   "lines": [
+    {
+     "day": "周一",
+     "dishes": "贵妃鸡 · 蒜台肉丝"
+    },
+    {
+     "day": "周二",
+     "dishes": "肉饼蒸蛋 · 煲仔饭 · short rib"
+    },
+    {
+     "day": "周四",
+     "dishes": "鸭腿 · 牛肋条罗宋汤"
+    }
+   ],
+   "details": ""
+  },
+  {
+   "date": "6.29.26",
+   "lines": [
+    {
+     "day": "本周",
+     "dishes": "羊肉烧麦 · 豆苗 · 肉饼子炖蛋 · 鸭腿 · 泰式酸辣鸡腿 · 煲仔饭"
+    },
+    {
+     "day": "娃 周一",
+     "dishes": "白鱼ricotta"
+    },
+    {
+     "day": "娃 周二",
+     "dishes": "Ricotta 桃子 三文鱼"
+    },
+    {
+     "day": "娃 周三",
+     "dishes": "牛肉山药条"
+    }
+   ],
+   "details": ""
+  }
+ ],
+ "chicken_prep": {
+  "summary": [
+   [
+    "盐水 Brine",
+    "4 cups 水 + 1/4 cup kosher salt（+2 tbsp 糖可选）；鸡胸/鸡腿 30分钟–2小时，整鸡 4–12小时，之后冲洗擦干。"
+   ],
+   [
+    "腌料 Marinade",
+    "橄榄油 + 柠檬汁 + 蒜 + 盐胡椒，30分钟–4小时。"
+   ],
+   [
+    "小苏打",
+    "1 tsp / 1 cup 水，泡15–20分钟（别更久），冲洗擦干。"
+   ],
+   [
+    "熟度",
+    "内部 165°F (74°C)，出锅静置几分钟。"
+   ]
+  ],
+  "full": "If you enjoy the tender and juicy texture of the chicken you purchased, you can easily replicate the process at home using natural methods like brining and marinating. Here's a step-by-step guide to help you achieve similar results:\n## 1. Brining (Water + Salt Solution)\nBrining is one of the best ways to ensure your chicken stays moist and tender. Here's how you can do it:\n**Basic Brine Recipe · Ingredients**\n- 4 cups (1 liter) of water\n- 1/4 cup kosher salt (or 3 tablespoons table salt)\n- 2 tablespoons sugar (optional, helps with caramelization and adds flavor)\n- Optional: add flavorings such as lemon juice, garlic cloves, bay leaves, peppercorns, or herbs (like thyme or rosemary)\n**Instructions**\n1. **Dissolve salt and sugar**: In a saucepan, heat 1 cup of the water and dissolve the salt and sugar. If you're using additional flavorings, add them now. Once dissolved, remove from heat and let it cool.\n2. **Add cold water**: Once the brine base is cool, add the remaining 3 cups of cold water to cool the mixture completely. You don't want to add chicken to a warm brine, as it could start cooking it.\n3. **Brine the chicken**: Submerge the chicken in the brine solution. You can brine for **30 minutes to 12 hours**, depending on how much time you have and how strong you want the brine to be. A good rule of thumb: **30 minutes to 2 hours** for smaller cuts like breasts or thighs; **4-12 hours** for whole chickens or larger pieces.\n4. **Rinse and dry**: After brining, remove the chicken and rinse it briefly under cold water to remove excess salt. Pat it dry with paper towels before cooking.\n> Why it works: The salt in the brine helps the chicken retain moisture, keeping it juicy during cooking. It also breaks down proteins slightly, tenderizing the meat. Sugar adds a touch of sweetness and helps with browning.\n## 2. Marinating (Acid + Oil + Seasonings)\nIf you want to further enhance the flavor and texture, you can marinate the chicken. A marinade typically includes an acid (like lemon juice or vinegar), oil, and seasonings. The acid helps tenderize the meat, while the oil keeps it moist.\n**Basic Marinade Recipe · Ingredients**\n- 1/4 cup olive oil\n- 2 tablespoons lemon juice (or any acid like vinegar)\n- 2 cloves garlic, minced\n- 1 teaspoon salt\n- 1/2 teaspoon pepper\n- Optional: herbs (rosemary, thyme, or oregano), honey for sweetness, or soy sauce for umami\n**Instructions**\n1. **Mix ingredients**: In a small bowl, whisk together the oil, lemon juice, garlic, salt, pepper, and any additional herbs or flavorings.\n2. **Marinate the chicken**: Place the chicken in a resealable plastic bag or a shallow dish. Pour the marinade over the chicken, ensuring it's evenly coated. Refrigerate and marinate for **30 minutes to 4 hours**.\n3. **Cook as desired**: Remove the chicken from the marinade, letting any excess drip off, and cook using your preferred method (grilling, baking, pan-searing, etc.).\n> Why it works: The acid (lemon juice) helps break down the proteins on the surface of the chicken, tenderizing it. The oil helps keep the chicken moist, and the garlic and herbs add flavor.\n## 3. Tenderizing Alternatives (Optional)\nIf you want to replicate the tenderizing effects of sodium carbonate (used in commercial tenderizing), you can use **baking soda** or natural tenderizers like **buttermilk**:\n**Baking Soda Method** — Baking soda raises the pH of the meat, making it harder for proteins to bond together, which keeps the meat tender and moist.\n1. Dissolve 1 teaspoon of **baking soda** in 1 cup of water.\n2. Submerge the chicken in the solution for **15-20 minutes** (no longer, or the texture may become too soft).\n3. Rinse thoroughly and pat dry before cooking.\n**Buttermilk Method** — Buttermilk's mild acidity also helps tenderize chicken while adding a slight tangy flavor.\n1. Submerge the chicken in **buttermilk** for 2 to 12 hours.\n2. Remove from the buttermilk, shake off the excess, and cook.\n## 4. Cooking Methods to Retain Moisture\nRegardless of how you prepare your chicken, **cooking it properly** is key to maintaining its tender texture. Here are a few cooking tips:\n- **Use moderate heat**: Cook chicken over medium heat to avoid drying it out too quickly.\n- **Monitor internal temperature**: Chicken is fully cooked when it reaches an internal temperature of **165°F (74°C)**. Overcooking can make it dry, so use a meat thermometer for precision.\n- **Rest the meat**: Let the chicken rest for a few minutes after cooking to allow the juices to redistribute, keeping it moist.\n## Conclusion\nBy brining and/or marinating your chicken at home, you can easily achieve the tender, juicy texture you enjoy from store-bought chicken. Start with a simple saltwater brine, and you can add herbs or acids like lemon juice to further tenderize and flavor the meat. If you're looking for a more advanced tenderizing method, you can experiment with baking soda or buttermilk. With these steps, you can have consistently tender and flavorful chicken just like the kind you'd buy from the store!"
+ },
+ "past": [
+  {
+   "name": "鸡汁百叶包",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "土豆牛腩",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "凉拌猪耳",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "猪脚",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "茄子",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "肉末酸豆角",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "黄芽菜肉丝年糕",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "酱大骨",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "鸡翅",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "牛排",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "韩式short rib",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "蒜泥白肉",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "蒸鸡蛋",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "干锅+蒜苔+藕片",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "处理乌骨鸡",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "素什锦",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "南瓜炒饭",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "广东汤",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "鱼子乌冬",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "大盘鸡",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "水煮牛肉(少辣)",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "酸菜炖粉条",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "香辣虾",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "羊肉烧麦",
+   "note": "皮用最薄的烧卖皮就行，羊肉的话可以选羊肩肉，要稍微肥一点的比较香。馅儿里加紫洋葱碎，黑白胡椒粉，五香粉or十三香，咖喱粉，和酱油，看情况补点盐就行了",
+   "link": null
+  },
+  {
+   "name": "水晶虾仁",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "肉饼子炖蛋",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "八宝辣酱",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "白斩鸡",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "罗宋汤",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "葱油芋艿",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "葱油龙虾+泡饭",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "象拔蚌",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "茶碗蒸",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "家里的black trout",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "牛肉三明治",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "猪颈肉",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "爆炒鸡胗",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "龙虾泡饭",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "泰式酸辣鸡腿",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "虾米冬瓜",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "牛肉豆腐煲",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "鲍鱼汁",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "鱼肝酱",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "油泼辣子",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "三文鱼头",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "小黄鱼",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "牛蛙",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "兔肉",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "乌骨鸡汤",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "番茄牛腩",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "凉拌鸡蛋羹",
+   "note": "",
+   "link": "http://xhslink.com/m/131IiGnrfVP"
+  },
+  {
+   "name": "章鱼",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "爆炒鸡腿菇鸡胗",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "咖喱土豆牛肉",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "茭白肉丝",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "鲍鱼",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "costco的trout",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "羊肉烧卖",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "煲仔饭",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "上海冷面",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "猪肉干",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "牛脆脆",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "厚切牛舌",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "牛肉清汤加芹菜",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "高汤鸡",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "冬瓜桑拿鸡",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "清炖牛肋条",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "排骨炖豆角",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "凉拌莴笋",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "窝蛋牛肉煲仔饭",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "凉拌茄子",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "麻婆豆腐",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "Black Trout",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "洋葱炒牛肉",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "蒜香骨",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "Blueberry lemon scone",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "狮子头",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "西班牙风味章鱼",
+   "note": "章鱼买好了",
+   "link": null
+  },
+  {
+   "name": "陕西大盘鸡",
+   "note": "鸡肉weee买就行，干一点的那种，有一点汤汁不多，铺上宽面",
+   "link": null
+  },
+  {
+   "name": "日式炸猪排",
+   "note": "猪排买好了",
+   "link": null
+  },
+  {
+   "name": "凉拌芝麻豆苗金针菇",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "虎虾莴笋醋冻",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "青花椒黄花鱼",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "彩椒烧鱿鱼",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "荷塘月色",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "笋干烧肉百叶结",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "乌骨鸡菌菇汤",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "居酒屋牛腱萝卜",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "Crying tiger",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "青花椒小黄鱼",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "栗子红烧肉",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "冬笋炒什么？",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "避风塘炒虾",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "藕丁",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "腌笃鲜",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "捞汁海鲜",
+   "note": "莴笋 黄瓜",
+   "link": null
+  },
+  {
+   "name": "糖柿子",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "丝瓜肉沫蛋汤",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "小炒肉",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "凉拌蘑菇",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "Hotn juicy cajun style",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "金汤猪脚鸡",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "猪肚",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "一饭封神烧椒牛肉taco",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "墨西哥玉米",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "guacamole +chips",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "Salsa",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "pisa",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "Locomoco拌饭",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "莲藕排骨汤",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "三杯鸡",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "椒麻云片虾",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "鲜虾豆腐菌菇煲",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "咖喱鸡",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "酸辣笋丁",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "蘑菇黑椒牛肉粒(清淡一些)",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "辣猪肚",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "花胶鸡汤",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "牛肉脯",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "糖藕",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "日本🥚",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "茨菇",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "芋艿",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "茭白毛豆肉丁",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "咸蛋黄鸡翅",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "羊腩",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "泉水牛肉",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "三文鱼茶泡饭",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "牛尾",
+   "note": "",
+   "link": null
+  },
+  {
+   "name": "溏心蛋",
+   "note": "",
+   "link": null
+  }
+ ]
+}
