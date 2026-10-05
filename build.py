@@ -77,27 +77,29 @@ def split_refs(recipe, links):
         m = re.fullmatch(r'\[([^\]]+)\]\(([^)]+)\)', s)
         if m:
             label, url = m.group(1).lstrip('📕▶🔗\ufe0f '), m.group(2)
-            if ('youtube' in url or 'youtu.be' in url) and not label.lower().startswith('youtube'): label = f'YouTube「{label}」'
-            refs.setdefault(url, '参考：' + label); continue
+            if ('youtube' in url or 'youtu.be' in url) and not label.lower().startswith('youtube'): label = f'YouTube · {label}'
+            refs.setdefault(url, label); continue
         m = re.fullmatch(r'>\s*参考\s*[：:]\s*(.+)', s)
         if m:
-            refs[pick_url(m.group(1), links) or ('nourl', len(refs))] = '参考：' + m.group(1); continue   # 参考 text wins
+            refs[pick_url(m.group(1), links) or ('nourl', len(refs))] = m.group(1); continue   # 参考 text wins
         keep.append(raw)
     for l in links:
-        if l['url'] not in refs: refs[l['url']] = '参考：' + link_label(l['label'], l['url']).lstrip('📕▶🔗\ufe0f ')
+        if l['url'] not in refs: refs[l['url']] = link_label(l['label'], l['url']).lstrip('📕▶🔗\ufe0f ')
     return '\n'.join(keep), [(u if isinstance(u, str) else None, t) for u, t in refs.items()]
 
 def ref_html(refs, name):
+    """Source / tutorial links as tag pills for the top of the recipe sheet."""
     if not refs: return ''
     out = []
     for url, text in refs:
         if url:
             REF_STATS['linked'].append(name)
-            out.append(f'<a class="ref" href="{E(url)}" target="_blank" rel="noopener">{LINK_SVG}<span class="rt">{E(text)}</span><span class="ext" aria-hidden="true">↗</span></a>')
+            ic = '📕 ' if 'xhslink' in url or 'xiaohongshu' in url else ('▶ ' if 'youtube' in url or 'youtu.be' in url else '🔗 ')
+            out.append(f'<a class="lnk" href="{E(url)}" target="_blank" rel="noopener">{ic}{E(text)}</a>')
         else:
             REF_STATS['nourl'].append(name)
-            out.append(f'<p class="ref nolink">{LINK_SVG}<span class="rt">{E(text)}</span></p>')
-    return '<div class="refs">' + ''.join(out) + '</div>'
+            out.append(f'<span class="lnk nolink">📖 {E(text)}</span>')
+    return '<div class="srcs">' + ''.join(out) + '</div>'
 
 def plain(text):
     t = re.sub(r'!\[\]\([^)]*\)|\]\([^)]*\)|[#>*\[\]]', ' ', text)
@@ -136,7 +138,7 @@ for c in CATS:
         kind = 'cold' if c['id'] == 'cold' else ('main' if m and m != '素' else None)
         if not kind: continue                                                    # veg-only mains/staples are skipped
         PICK.append(dict(id=DID[id(d)], n=d['name'], k=kind, m=m, s=(c['id'] == 'soup' or '汤' in d['name']),
-                         r=has_recipe(d), p=d.get('photo') or '', i=c['icon'], c=c['id'], l=LAST.get(d['name'], '')))
+                         r=has_recipe(d), o=bool(has_recipe(d) or d['ingredients'] or d['note'] or d['links'] or d.get('photo')), p=d.get('photo') or '', i=c['icon'], c=c['id'], l=LAST.get(d['name'], '')))
 total = sum(len(c['dishes']) for c in CATS)
 out = []
 PAL = {"meat":("#e8d6d3","#9c7773","#f7f0ee"),"poultry":("#e8dfc8","#8c7a4e","#f8f5ec"),"sea":("#d9e0e7","#66778a","#f2f4f6"),
@@ -251,6 +253,18 @@ footer::before{{content:"🍙 🍡 🍵";display:block;font-size:18px;margin-bot
 .dish.bare{{padding-top:9px;padding-bottom:9px}}
 .dish.bare .name{{font-weight:700;color:#5e544a}}
 .rcp-src{{display:none}}
+/* v6: simple cards (thumb + name), link tags at the top of the sheet */
+.dish .row{{flex-wrap:nowrap;gap:10px}}
+.dish .row::before{{display:none}}
+.dish:not(.empty) .row::after{{content:"›";margin-left:auto;padding-left:6px;color:var(--cd);opacity:.45;font-size:20px;line-height:1}}
+.dth{{flex:0 0 40px;width:40px;height:40px;border-radius:12px;object-fit:cover;border:2px solid #fff;box-shadow:0 2px 0 var(--ca);background:#fff}}
+span.dth{{display:inline-flex;align-items:center;justify-content:center;font-size:19px;background:var(--ca)}}
+.dish.bare span.dth{{opacity:.55;box-shadow:none}}
+.dish{{padding-top:9px;padding-bottom:9px}}
+.rcp .srcs{{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}}
+.rcp .srcs .lnk{{display:inline-block;line-height:1.5;white-space:normal;border-radius:14px}}
+.rcp .srcs .nolink{{color:var(--mute);background:#f4f0eb;border-color:#e6ded3}}
+.rcp .tbd-steps{{margin:12px 0 0;font-size:12.5px;color:var(--mute);border:1.5px dashed var(--ca,#e6ded3);border-radius:12px;padding:7px 12px;text-align:center}}
 .ov{{position:fixed;inset:0;z-index:50;background:rgba(74,64,58,.46);display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}}
 .ov.on{{opacity:1;pointer-events:auto}}
 .sheet{{position:relative;width:100%;max-width:640px;max-height:88vh;overflow:auto;background:var(--cb,#fcfaf6);border:2px solid var(--ca,#e6ded3);border-bottom:0;border-radius:28px 28px 0 0;box-shadow:0 -10px 30px -12px rgba(74,64,58,.35);transform:translateY(24px);transition:transform .22s;-webkit-overflow-scrolling:touch}}
@@ -339,6 +353,27 @@ span.pr-th{{display:flex;align-items:center;justify-content:center;font-size:24p
 .pr-tags span{{font-size:10.5px;font-weight:700;padding:0 7px;border-radius:999px;background:#fff;color:var(--cd);border:1.2px solid var(--ca);line-height:1.6}}
 .pr-tags .pr-last{{border:0;background:none;padding:0 2px;color:var(--mute);font-weight:500}}
 .pr-go{{flex:0 0 auto;font-size:11.5px;font-weight:700;color:var(--cd)}}
+/* swap: per-row 换 + multi-select */
+.pr-row{{display:flex;align-items:stretch;gap:6px}}
+.pr-row .pr-item{{flex:1;min-width:0;width:auto}}
+.pr-sw{{flex:0 0 48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:inherit;color:var(--cd);background:#fff;border:1.5px solid var(--ca);border-radius:16px;box-shadow:0 2px 0 var(--ca);cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent}}
+.pr-sw b{{font-size:15px;line-height:1;font-weight:400}}.pr-sw small{{font-size:10.5px;font-weight:800;line-height:1}}
+.pr-sw:active{{transform:translateY(2px);box-shadow:none}}
+.pr-chk{{display:none;flex:0 0 22px;width:22px;height:22px;border-radius:50%;border:2px solid var(--ca);background:#fff;align-items:center;justify-content:center}}
+.pick-res.sel .pr-chk{{display:inline-flex}}
+.pick-res.sel .pr-go{{display:none}}
+.pr-row.on .pr-chk{{background:var(--cd);border-color:var(--cd)}}
+.pr-row.on .pr-chk::after{{content:"✓";color:#fff;font-size:12px;font-weight:800;line-height:1}}
+.pr-row.on .pr-item{{border-color:var(--cd);box-shadow:0 0 0 1.5px var(--cd);background:#fff}}
+.pr-row.new .pr-item{{animation:swapin .45s ease-out}}
+@keyframes swapin{{0%{{opacity:0;transform:translateX(12px)}}100%{{opacity:1;transform:none}}}}
+.pr-bar{{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin:12px 0 2px}}
+.pr-hint{{flex-basis:100%;text-align:center;font-size:11px;color:var(--mute)}}.pr-hint:empty{{display:none}}
+.pr-tool{{font-family:inherit;font-size:12.5px;font-weight:700;color:#9c7773;background:#fff;border:1.5px solid #e3d2cf;border-radius:999px;padding:8px 15px;min-height:40px;box-shadow:0 3px 0 #eadfdc;cursor:pointer;-webkit-tap-highlight-color:transparent}}
+.pr-tool:active{{transform:translateY(2px);box-shadow:0 1px 0 #eadfdc}}
+.pr-do{{color:#fff;background:#b8928e;border-color:#a8817d;box-shadow:0 3px 0 #9c7773}}
+.pr-do:disabled{{opacity:.45;cursor:default}}
+.pick-res:not(.sel) .pr-do{{display:none}}
 .pr-foot{{font-size:11px;color:var(--mute);text-align:center;margin:8px 0 2px;line-height:1.5}}
 .pr-foot:empty{{display:none}}
 .dish.flash{{animation:flash 1.4s ease-out}}
@@ -352,7 +387,9 @@ span.pr-th{{display:flex;align-items:center;justify-content:center;font-size:24p
 <section class="pick" id="pick"><div class="pick-row"><select class="pick-n" id="pick-n" aria-label="选几道菜">{"".join(f'<option value="{i}"{" selected" if i == 4 else ""}>{i} 道</option>' for i in range(2, 9))}</select><button class="pick-btn" id="pick-go" type="button">🎲 帮我选 4 道菜</button></div>
 <div class="pick-cap"><span id="pick-capn">1 道凉菜/蔬菜 + 3 道荤菜</span> · <span>主蛋白不重复</span> · <span>最多 1 个汤</span> · <span>不选甜品</span> · <span>尽量避开近 2 周吃过的</span></div>
 <div class="pick-res hide" id="pick-res" aria-live="polite"><div class="pr-head"><span>🍱 今日菜单 <small>きょうのこんだて</small></span><button class="pr-re" id="pick-re" type="button">🔄 换一组</button></div>
-<div class="pr-list" id="pick-list"></div><div class="pr-foot" id="pick-foot"></div></div></section>
+<div class="pr-list" id="pick-list"></div>
+<div class="pr-bar"><span class="pr-hint" id="pick-hint"></span><button class="pr-tool" id="pick-sel" type="button">☑️ 多选换菜</button><button class="pr-tool pr-do" id="pick-swap" type="button" disabled>换掉选中的</button></div>
+<div class="pr-foot" id="pick-foot"></div></div></section>
 <script type="application/json" id="pick-data">{json.dumps(PICK, ensure_ascii=False).replace("</", "<\\/")}</script>
 <nav>''')
 for c in CATS: out.append(f'<a href="#{c["id"]}" style="--c:{PAL[c["id"]][1]}55">{c["icon"]} {E(c["zh"])}</a>')
@@ -365,28 +402,25 @@ for c in CATS:
     out.append(f'<section class="card" id="{c["id"]}" style="--ca:{ca};--cd:{cd};--cb:{cb}"><h2><span class="ic">{c["icon"]}</span>{E(c["zh"])} <small>{E(c["en"])}</small><span class="n">{len(c["dishes"])}</span></h2>')
     for d in c['dishes']:
         n += 1
-        # link-only pages (no text, no photo) just show their links on the card
-        has = bool(re.sub(r'^\s*\[[^\]]+\]\([^)]+\)\s*$', '', d['recipe'], flags=re.M).strip())
-        tag = d.get('tag')
-        if tag and tag in c['zh']: tag = None   # never repeat the section name as a pill
-        bare = not (has or d['ingredients'] or d['note'] or d['links'] or d.get('photo'))
-        s = (f'<div class="dish{"" if has else " empty"}{" bare" if bare else ""}" id="{DID[id(d)]}" data-cat="{c["id"]}" '
+        has = has_recipe(d)
+        bare = not (has or d['ingredients'] or d['note'] or d['links'] or d.get('photo'))   # name only -> no sheet
+        th = (f'<img class="dth" src="{E(d["photo"])}" alt="" loading="lazy">' if d.get('photo')
+              else f'<span class="dth ic" aria-hidden="true">{c["icon"]}</span>')
+        s = (f'<div class="dish{" empty bare" if bare else ""}" id="{DID[id(d)]}" data-cat="{c["id"]}" '
              f'data-s="{E((d["name"]+" "+d["ingredients"]+" "+d["note"]+" "+plain(d["recipe"])).lower())}">'
-             f'<div class="row"><span class="name">{E(d["name"])}</span>')
-        if tag: s += f'<span class="tag">{E(tag)}</span>'
-        if d.get('photo'): s += '<span class="cam" title="有照片">📷</span>'
-        bare = not (has or d['ingredients'] or d['note'] or d['links'] or d.get('photo'))
+             f'<div class="row">{th}<span class="name">{E(d["name"])}</span>')
         if bare: s += '<span class="tbd" title="做法待补充">待补充</span>'
         s += '</div>'
-        if d['ingredients']: s += f'<div class="ing">{E(d["ingredients"])}</div>'
-        if d['note']: s += f'<div class="note">⏱ {E(d["note"])}</div>'
-        if d['links'] or has:   # name-only cards skip the empty link row
-            s += '<div class="links">' + ''.join(link(l['url'], link_label(l['label'], l['url'])) for l in d['links'])
-            if has: s += '<button class="open" type="button">📖 看做法</button>'
-            s += '</div>'
-        if has:
+        if not bare:   # sheet: link tags on top, then ingredients/notes, photo(s), steps
             body, refs = split_refs(d['recipe'], d['links'])
-            s += f'<div class="rcp-src" data-ic="{c["icon"]}" data-cat="{E(c["zh"])} · {E(c["en"])}">{md(body, d.get("photo"), d.get("photo_ai"))}{ref_html(refs, d["name"])}</div>'
+            summ = ''
+            if d['ingredients']: summ += f'<div class="ing">{E(d["ingredients"])}</div>'
+            if d['note']: summ += f'<div class="note">⏱ {E(d["note"])}</div>'
+            if summ: summ = f'<div class="sh-sum">{summ}</div>'
+            steps = md(body, d.get("photo"), d.get("photo_ai"))
+            if not has and (d['ingredients'] or d['note']): steps += '<p class="tbd-steps">做法步骤 待补充</p>'
+            s += (f'<div class="rcp-src" data-ic="{c["icon"]}" data-cat="{E(c["zh"])} · {E(c["en"])}">'
+                  f'{ref_html(refs, d["name"])}{summ}{steps}</div>')
         out.append(s + '</div>')
     out.append('</section>')
 out.append('</div>')
@@ -442,8 +476,7 @@ function openDish(d){const src=d.querySelector('.rcp-src');if(!src)return;
  const card=d.closest('.card');['--ca','--cd','--cb'].forEach(k=>sh.style.setProperty(k,card.style.getPropertyValue(k)));
  document.getElementById('sh-c').textContent=src.dataset.cat;
  document.getElementById('sh-t').innerHTML='<span class="ic">'+src.dataset.ic+'</span>'+d.querySelector('.name').innerHTML;
- const sum=[...d.querySelectorAll(':scope > .ing, :scope > .note')].map(e=>e.outerHTML).join('');
- document.getElementById('sh-s').innerHTML=sum;
+ document.getElementById('sh-s').innerHTML='';
  document.getElementById('sh-r').innerHTML=src.innerHTML;
  sh.scrollTop=0;ov.classList.add('on');ov.setAttribute('aria-hidden','false');document.body.classList.add('lock');
  if(location.hash!=='#'+d.id)history.replaceState(null,'','#'+d.id);}
@@ -461,25 +494,50 @@ const PAL_JS={meat:["#e8d6d3","#9c7773","#f7f0ee"],poultry:["#e8dfc8","#8c7a4e",
 function daysAgo(iso,today){if(!iso)return Infinity;const p=iso.split('-').map(Number);
  const t=Date.UTC(today.getFullYear(),today.getMonth(),today.getDate());return Math.round((t-Date.UTC(p[0],p[1]-1,p[2]))/864e5);}
 function wOrder(arr,w,rnd){return arr.map(x=>[Math.pow(rnd(),1/w(x)),x]).sort((p,q)=>q[0]-p[0]).map(p=>p[1]);}
-function pickMenu(today,prevKey,rnd,n){today=today||new Date();rnd=rnd||Math.random;n=Math.min(8,Math.max(2,+n||4));const k=n-1;
- const recent=x=>daysAgo(x.l,today)<=14;
- const cold=PK.filter(x=>x.k==='cold'), mains=PK.filter(x=>x.k==='main');
- const fc=cold.filter(x=>!recent(x)), fm=mains.filter(x=>!recent(x));
- const key=s=>s.map(x=>x.id).sort().join(',');
- const tiers=[[fc,fm,0,0],[cold,fm,1,0],[fc,mains,1,0],[cold,mains,1,0],[fc,fm,0,1],[cold,fm,1,1],[fc,mains,1,1],[cold,mains,1,1]];
- for(const [cs0,ms,rr,rp] of tiers){const veg=cs0.filter(x=>x.m==='素');const cs=rp&&veg.length?veg:cs0;if(!cs.length)continue;   /* if repeats must be allowed, use a 素 cold dish so it adds none */
-  const w=x=>(x.r?3:1)*(rr&&recent(x)?.25:1);   /* prefer dishes with recipes; when relaxed, still lean toward not-recent */
+const isMeat=x=>x.m&&x.m!=='素';
+/* Core: fill the given slot kinds ('cold'/'main') next to the dishes that stay (kept), never using excluded ids.
+   Rules across the WHOLE set: distinct non-素 proteins, <=1 soup; prefer recipes; skip dishes eaten <=14 days ago.
+   Loosening order: the 2-week rule first (凉菜 slot, then mains), protein repeats only if still impossible. */
+function fillSlots(kept,kinds,excl,today,rnd,accept){today=today||new Date();rnd=rnd||Math.random;
+ const recent=x=>daysAgo(x.l,today)<=14, ex=new Set(excl.concat(kept.map(x=>x.id)));
+ const nc=kinds.filter(k=>k==='cold').length, nm=kinds.length-nc;
+ const allC=PK.filter(x=>x.k==='cold'&&!ex.has(x.id)), allM=PK.filter(x=>x.k==='main'&&!ex.has(x.id));
+ const frC=allC.filter(x=>!recent(x)), frM=allM.filter(x=>!recent(x));
+ const tiers=[[0,0,0],[1,0,0],[0,1,0],[1,1,0],[0,0,1],[1,0,1],[0,1,1],[1,1,1]];
+ for(const [ca,ma,rp] of tiers){if((ca&&!nc)||(ma&&!nm))continue;   /* skip tiers that relax a slot type we aren't filling */
+  let cs=ca?allC:frC;const ms=ma?allM:frM;
+  if(rp){const veg=cs.filter(x=>!isMeat(x));if(veg.length)cs=veg;}   /* if repeats must be allowed, a 素 凉菜 adds none */
+  if(cs.length<nc||ms.length<nm)continue;
+  const w=x=>(x.r?3:1)*(recent(x)?.25:1);
   let first=null;
   for(let t=0;t<80;t++){
-   const c=wOrder(cs,w,rnd)[0],order=wOrder(ms,w,rnd),got=[],used=new Set(c.m&&c.m!=='素'?[c.m]:[]);let soups=c.s?1:0;
-   for(const x of order){if(got.length===k)break;if(used.has(x.m)||(x.s&&soups))continue;got.push(x);used.add(x.m);if(x.s)soups++;}
-   if(rp)for(const x of order){if(got.length===k)break;if(got.includes(x)||(x.s&&soups))continue;got.push(x);if(x.s)soups++;}
-   if(got.length<k)continue;
-   const res={dishes:[c].concat(got),relaxed:rr,relaxedProtein:used.size<got.length+(c.m&&c.m!=='素'?1:0)?1:0,n,skipped:PK.filter(recent).map(x=>x.n)};
-   res.key=key(res.dishes);if(res.key!==prevKey)return res;first=first||res;}
+   const used=new Set(kept.filter(isMeat).map(x=>x.m));let soups=kept.filter(x=>x.s).length;const got=[];
+   const ok=(x,strict)=>!got.includes(x)&&!(x.s&&soups)&&(!strict||!isMeat(x)||!used.has(x.m));
+   const take=x=>{got.push(x);if(isMeat(x))used.add(x.m);if(x.s)soups++;};
+   const fill=(pool,need)=>{const o=wOrder(pool,w,rnd);let c=0;
+    for(const x of o){if(c===need)break;if(ok(x,true)){take(x);c++;}}
+    if(rp)for(const x of o){if(c===need)break;if(ok(x,false)){take(x);c++;}}
+    return c===need;};
+   if(nc&&!fill(cs,nc))continue;
+   if(nm&&!fill(ms,nm))continue;
+   const prot=kept.concat(got).filter(isMeat).map(x=>x.m);
+   const res={got,relaxed:(ca||ma)?1:0,relaxedProtein:rp&&new Set(prot).size<prot.length?1:0,skipped:PK.filter(recent).map(x=>x.n)};
+   if(!accept||accept(got))return res;first=first||res;}
   if(first)return first;}
  return null;}
-let pickPrev='';
+const setKey=s=>s.map(x=>x.id).sort().join(',');
+function pickMenu(today,prevKey,rnd,n){n=Math.min(8,Math.max(2,+n||4));
+ const kinds=['cold'].concat(Array(n-1).fill('main'));
+ const r=fillSlots([],kinds,[],today,rnd,g=>setKey(g)!==prevKey);if(!r)return null;
+ return {dishes:r.got,key:setKey(r.got),relaxed:r.relaxed,relaxedProtein:r.relaxedProtein,skipped:r.skipped,n};}
+/* Replace only the dishes at idxs; slot type kept, removed dishes never come back in this swap. */
+function swapPick(cur,idxs,today,rnd){idxs=[...new Set(idxs)].filter(i=>i>=0&&i<cur.length).sort((a,b)=>a-b);if(!idxs.length)return null;
+ const kept=cur.filter((x,i)=>!idxs.includes(i)), removed=idxs.map(i=>cur[i]);
+ const r=fillSlots(kept,removed.map(x=>x.k),removed.map(x=>x.id),today,rnd);if(!r)return null;
+ const pool={cold:r.got.filter(x=>x.k==='cold'),main:r.got.filter(x=>x.k==='main')};
+ const dishes=cur.slice();idxs.forEach(i=>{dishes[i]=pool[cur[i].k].shift();});
+ return {dishes,key:setKey(dishes),relaxed:r.relaxed,relaxedProtein:r.relaxedProtein,skipped:r.skipped,n:cur.length,replaced:idxs};}
+let pickPrev='',cur=null,marked=new Set(),selMode=false,fresh=[];
 const pickN=document.getElementById('pick-n');
 function syncN(){const v=+pickN.value;document.getElementById('pick-go').textContent='🎲 帮我选 '+v+' 道菜';
  document.getElementById('pick-capn').textContent='1 道凉菜/蔬菜 + '+(v-1)+' 道荤菜';}
@@ -487,25 +545,42 @@ try{const sv=localStorage.getItem('pickN');if(sv&&+sv>=2&&+sv<=8)pickN.value=sv;
 syncN();
 pickN.addEventListener('change',()=>{syncN();try{localStorage.setItem('pickN',pickN.value)}catch(e){}
  pickPrev='';if(!document.getElementById('pick-res').classList.contains('hide'))showPick();});
-function showPick(){const res=pickMenu(null,pickPrev,null,pickN.value);if(!res)return;pickPrev=res.key;window.__pick=res;
- const L=document.getElementById('pick-list');L.innerHTML='';
- res.dishes.forEach(x=>{const pal=PAL_JS[x.c]||PAL_JS.meat;const b=document.createElement('button');b.type='button';b.className='pr-item';b.dataset.id=x.id;
-  b.style.cssText='--ca:'+pal[0]+';--cd:'+pal[1]+';--cb:'+pal[2];
+function noteFor(res){return res.relaxedProtein?'荤菜的种类不够分，这次有主蛋白重复':res.relaxed?'近 2 周吃过的太多，这次放宽了「避开近 2 周」这一条':(res.skipped.length?'已避开近 2 周吃过的：'+res.skipped.join('、'):'');}
+function renderPick(note){const L=document.getElementById('pick-list');L.innerHTML='';
+ const box=document.getElementById('pick-res');box.classList.toggle('sel',selMode);
+ cur.forEach((x,i)=>{const pal=PAL_JS[x.c]||PAL_JS.meat;const row=document.createElement('div');
+  row.className='pr-row'+(marked.has(i)?' on':'')+(fresh.includes(i)?' new':'');row.dataset.id=x.id;row.dataset.i=i;
+  row.style.cssText='--ca:'+pal[0]+';--cd:'+pal[1]+';--cb:'+pal[2];
   const th=x.p?'<img class="pr-th" src="'+x.p+'" alt="" loading="lazy">':'<span class="pr-th">'+x.i+'</span>';
   const tags=[x.k==='cold'?'凉菜·蔬菜':x.m];if(x.k==='cold'&&x.m!=='素')tags.push(x.m);if(x.s)tags.push('汤');
   const last=x.l?'<span class="pr-last">上次 '+Number(x.l.slice(5,7))+'/'+Number(x.l.slice(8))+'</span>':'';
-  b.innerHTML=th+'<span class="pr-tx"><span class="pr-n"></span><span class="pr-tags">'+tags.map(t=>'<span>'+t+'</span>').join('')+last+'</span></span><span class="pr-go">'+(x.r?'看做法 ›':'看卡片 ›')+'</span>';
-  b.querySelector('.pr-n').textContent=x.n;
-  b.addEventListener('click',()=>{const d=document.getElementById(x.id);if(!d)return;
-   if(x.r)openDish(d);else{d.scrollIntoView({behavior:'smooth',block:'center'});d.classList.remove('flash');void d.offsetWidth;d.classList.add('flash');}});
-  L.appendChild(b);});
- document.getElementById('pick-foot').textContent=res.relaxedProtein?'荤菜的种类不够分，这次有主蛋白重复':res.relaxed?'近 2 周吃过的太多，这次放宽了「避开近 2 周」这一条':(res.skipped.length?'已避开近 2 周吃过的：'+res.skipped.join('、'):'');
+  row.innerHTML='<button type="button" class="pr-item" aria-pressed="'+marked.has(i)+'"><span class="pr-chk" aria-hidden="true"></span>'+th+
+   '<span class="pr-tx"><span class="pr-n"></span><span class="pr-tags">'+tags.map(t=>'<span>'+t+'</span>').join('')+last+'</span></span>'+
+   '<span class="pr-go">'+(x.o?'做法 ›':'卡片 ›')+'</span></button><button type="button" class="pr-sw" aria-label="换掉这道"><b>🔄</b><small>换</small></button>';
+  row.querySelector('.pr-n').textContent=x.n;
+  row.querySelector('.pr-item').addEventListener('click',()=>{
+   if(selMode){marked.has(i)?marked.delete(i):marked.add(i);fresh=[];renderPick(document.getElementById('pick-foot').textContent);return;}
+   const d=document.getElementById(x.id);if(!d)return;
+   if(x.o)openDish(d);else{d.scrollIntoView({behavior:'smooth',block:'center'});d.classList.remove('flash');void d.offsetWidth;d.classList.add('flash');}});
+  row.querySelector('.pr-sw').addEventListener('click',()=>doSwap([i]));
+  L.appendChild(row);});
+ const go=document.getElementById('pick-swap');go.textContent='换掉选中的'+(marked.size?' ('+marked.size+')':'');go.disabled=!marked.size;
+ document.getElementById('pick-sel').textContent=selMode?'取消':'☑️ 多选换菜';
+ document.getElementById('pick-hint').textContent=selMode?'点菜名勾选，可以选好几道':'';
+ document.getElementById('pick-foot').textContent=note||'';}
+function doSwap(idxs){if(!cur)return;const res=swapPick(cur,idxs);
+ if(!res){fresh=[];renderPick('没有其他符合规则的菜可以换了，先保留原来的');window.__swapFail=(window.__swapFail||0)+1;return;}
+ cur=res.dishes;pickPrev=res.key;window.__pick=res;idxs.forEach(i=>marked.delete(i));fresh=res.replaced;renderPick(noteFor(res));}
+function showPick(){const res=pickMenu(null,pickPrev,null,pickN.value);if(!res)return;pickPrev=res.key;window.__pick=res;
+ cur=res.dishes;marked=new Set();selMode=false;fresh=[];renderPick(noteFor(res));
  const box=document.getElementById('pick-res');box.classList.remove('hide');box.style.animation='none';void box.offsetWidth;box.style.animation='';}
 document.getElementById('pick-go').addEventListener('click',showPick);
 document.getElementById('pick-re').addEventListener('click',showPick);
+document.getElementById('pick-sel').addEventListener('click',()=>{selMode=!selMode;marked=new Set();fresh=[];renderPick(document.getElementById('pick-foot').textContent);});
+document.getElementById('pick-swap').addEventListener('click',()=>{if(marked.size)doSwap([...marked]);});
 const h=location.hash.match(/^#(d\\d+)$/)||(location.search.match(/[?&]dish=(d\\d+)/));if(h){const d=document.getElementById(h[1]);if(d){ov.style.transition='none';sh.style.transition='none';openDish(d);requestAnimationFrame(()=>{ov.style.transition='';sh.style.transition='';});}}
 </script></body></html>''')
 open(os.path.join(ROOT, 'index.html'), 'w', encoding='utf-8').write("\n".join(out))
 print(total, len(CATS), len(P), len("\n".join(out).encode()))
-print('in-sheet 参考 links:', len(REF_STATS['linked']), REF_STATS['linked'])
+print('sheet link tags:', len(REF_STATS['linked']), REF_STATS['linked'])
 if REF_STATS['nourl']: print('参考 lines without a URL:', REF_STATS['nourl'])
