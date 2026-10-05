@@ -258,6 +258,30 @@ footer::before{{content:"🍙 🍡 🍵";display:block;font-size:18px;margin-bot
 .rcp-src{{display:none}}
 .todo-card{{margin-top:34px}}
 .todo-card h2 .ic{{font-size:18px}}
+/* compact sizing (~12% smaller) */
+h1{{font-size:31px}} .jp{{font-size:13.5px}} .sub{{font-size:11.5px}}
+.noren span{{height:50px;font-size:19px}}
+nav{{padding:8px 2px;gap:7px}} nav a{{font-size:12.5px;padding:5px 11px}}
+.search{{padding:10px 14px;margin:2px 0 14px}}
+.grid{{gap:20px}}
+.card{{padding:0 12px 5px;border-radius:23px}}
+.card h2{{margin:0 -12px 3px;padding:13px 14px 8px;font-size:17.5px;border-radius:21px 21px 0 0}}
+.card h2 .ic{{width:31px;height:31px;font-size:17px}} .card h2 small{{font-size:9.5px}}
+.card h2 .n{{font-size:11px;min-width:23px;height:23px;padding:0 7px}}
+.dish{{padding:7px 7px}} .dish.bare{{padding-top:7px;padding-bottom:7px}}
+.name{{font-size:15px}} .dish .row{{gap:9px}}
+.dth{{flex:0 0 35px;width:35px;height:35px;border-radius:10px}} span.dth{{font-size:16.5px}}
+.tbd{{font-size:9.5px}} .dish:not(.empty) .row::after{{font-size:18px}}
+.sec h3{{font-size:19px}} .tipbox{{font-size:12.5px}} .wk .l{{font-size:13px}}
+.pick-btn{{font-size:15px;padding:10px 19px}} .pick-n{{font-size:13.5px}} .pick-cap{{font-size:10.5px}}
+.pr-head span{{font-size:14px}} .pr-th{{flex:0 0 46px;width:46px;height:46px}} .pr-n{{font-size:14px}}
+.pr-tags span{{font-size:9.5px}} .pr-go{{font-size:10.5px}} .pr-sw{{flex:0 0 43px}} .pr-tool{{font-size:11.5px;min-height:38px}}
+.sh-top h3{{font-size:19.5px}} .rcp{{font-size:13.5px}} .ing{{font-size:12.5px}} .note{{font-size:11.5px}} .lnk{{font-size:11px}}
+@media(min-width:760px){{h1{{font-size:38px}} .noren span{{height:64px;font-size:24px}}
+ .todo-list{{display:grid;grid-template-columns:1fr 1fr;column-gap:18px}}
+ .todo-list .dish{{border-top:2px dotted var(--ca)}} .todo-list .dish:nth-child(-n+2){{border-top:0}}}}
+@media(min-width:900px){{.wrap{{max-width:1240px}} .grid{{grid-template-columns:repeat(3,1fr)}}
+ .todo-list{{grid-template-columns:repeat(3,1fr)}} .todo-list .dish:nth-child(3){{border-top:0}}}}
 /* v6: simple cards (thumb + name), link tags at the top of the sheet */
 .dish .row{{flex-wrap:nowrap;gap:10px}}
 .dish .row::before{{display:none}}
@@ -414,7 +438,7 @@ for c in CATS:
         s = (f'<div class="dish{" empty bare" if bare else ""}" id="{DID[id(d)]}" data-cat="{c["id"]}" '
              f'data-s="{E((d["name"]+" "+d["ingredients"]+" "+d["note"]+" "+plain(d["recipe"])).lower())}">'
              f'<div class="row">{th}<span class="name">{E(d["name"])}</span>')
-        if bare: s += '<span class="tbd" title="做法待补充">待补充</span>'
+        if bare or d.get('tbd'): s += '<span class="tbd" title="做法待补充">待补充</span>'
         s += '</div>'
         if not bare:   # sheet: link tags on top, then ingredients/notes, photo(s), steps
             body, refs = split_refs(d['recipe'], d['links'])
@@ -432,7 +456,7 @@ out.append('</div>')
 
 TODO_PAL = ("#e3ddd5", "#7d7468", "#f7f5f2")
 out.append(f'<section class="card todo-card" id="todo" style="--ca:{TODO_PAL[0]};--cd:{TODO_PAL[1]};--cb:{TODO_PAL[2]}">'
-           f'<h2><span class="ic">📝</span>待做 <small>To try</small><span class="n">{len(D["todo"])}</span></h2>')
+           f'<h2><span class="ic">📝</span>待做 <small>To try</small><span class="n">{len(D["todo"])}</span></h2><div class="todo-list">')
 for i, t in enumerate(D['todo'], 1):   # same card component as the menu; a sheet only when there is a link
     links = [dict(label='小红书' if 'xhslink' in t['link'] else '食谱', url=t['link'])] if t.get('link') else []
     _, refs = split_refs(t['details'], links)
@@ -440,7 +464,7 @@ for i, t in enumerate(D['todo'], 1):   # same card component as the menu; a shee
          f'<div class="row"><span class="dth ic" aria-hidden="true">🌸</span><span class="name">{E(t["name"])}</span></div>')
     if refs: s += f'<div class="rcp-src" data-ic="📝" data-cat="待做 · To try">{ref_html(refs, "待做:" + t["name"])}</div>'
     out.append(s + '</div>')
-out.append('</section>')
+out.append('</div></section>')
 
 out.append('<section class="sec" id="weeks"><h3 style="--hc:#d5dde4"><span>📅 最近每周菜单</span><small>Recent weekly menus · こんしゅう</small></h3><div class="weeks">')
 for w in D['weeks']:
