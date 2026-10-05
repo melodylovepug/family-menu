@@ -311,9 +311,15 @@ body.lock{{overflow:hidden}}
 .rcp .phc .ai figcaption::before{{content:"✨ "}}
 /* v5: 帮我选菜 picker */
 .pick{{margin:2px 0 16px;text-align:center}}
-.pick-btn{{font-family:inherit;font-size:17px;font-weight:800;letter-spacing:.06em;color:#fff;background:#b8928e;border:2px solid #a8817d;border-radius:999px;padding:11px 26px;box-shadow:0 4px 0 #9c7773;cursor:pointer;-webkit-tap-highlight-color:transparent}}
+.pick-btn{{font-family:inherit;font-size:17px;font-weight:800;letter-spacing:.06em;color:#fff;background:#b8928e;border:2px solid #a8817d;border-radius:999px;padding:11px 22px;box-shadow:0 4px 0 #9c7773;cursor:pointer;-webkit-tap-highlight-color:transparent}}
 .pick-btn:active,.pr-re:active{{transform:translateY(3px);box-shadow:0 1px 0 #9c7773}}
 .pick-cap span{{white-space:nowrap}}
+.pick-row{{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}}
+.pick-n{{-webkit-appearance:none;appearance:none;font-family:inherit;font-size:15px;font-weight:800;color:#9c7773;cursor:pointer;
+background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%239c7773' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 13px center/10px 6px;
+border:2px solid #e3d2cf;border-radius:999px;padding:11px 32px 11px 16px;line-height:1.2;box-shadow:0 4px 0 #eadfdc;-webkit-tap-highlight-color:transparent}}
+.pick-n:focus{{outline:none;border-color:#b8928e}}
+.pick-n:active{{transform:translateY(3px);box-shadow:0 1px 0 #eadfdc}}
 .pick-cap{{font-size:11.5px;color:var(--mute);margin:9px auto 0;max-width:330px;line-height:1.55}}
 .pick-res{{position:relative;margin:18px auto 0;max-width:560px;text-align:left;background:#fffdf9;border:2px solid #e8d8d5;border-radius:24px;padding:14px 14px 10px;box-shadow:0 5px 0 #eadfdc,0 12px 22px -14px rgba(90,75,60,.22);animation:pop .25s ease-out}}
 .pick-res::before{{content:"";position:absolute;top:-9px;left:50%;width:84px;height:18px;transform:translateX(-50%) rotate(2deg);border-radius:2px;opacity:.9;background:repeating-linear-gradient(90deg,#ddcbc8 0 6px,rgba(255,255,255,.8) 6px 12px)}}
@@ -343,8 +349,8 @@ span.pr-th{{display:flex;align-items:center;justify-content:center;font-size:24p
 <div class="hero">{STEAM}{ONI}<div class="hanko">おい<br>しい</div></div>
 <h1>{E(D["title"])}</h1><div class="jp">「{E(D["subtitle"])}」</div>
 <div class="sub">Home Menu · {total} 道拿手菜 · {len(CATS)} 类 · 点菜名看做法</div><div class="washi"></div></header>
-<section class="pick" id="pick"><button class="pick-btn" id="pick-go" type="button">🎲 帮我选 4 道菜</button>
-<div class="pick-cap"><span>1 道凉菜/蔬菜 + 3 道荤菜</span> · <span>主蛋白不重复</span> · <span>最多 1 个汤</span> · <span>不选甜品</span> · <span>尽量避开近 2 周吃过的</span></div>
+<section class="pick" id="pick"><div class="pick-row"><select class="pick-n" id="pick-n" aria-label="选几道菜">{"".join(f'<option value="{i}"{" selected" if i == 4 else ""}>{i} 道</option>' for i in range(2, 9))}</select><button class="pick-btn" id="pick-go" type="button">🎲 帮我选 4 道菜</button></div>
+<div class="pick-cap"><span id="pick-capn">1 道凉菜/蔬菜 + 3 道荤菜</span> · <span>主蛋白不重复</span> · <span>最多 1 个汤</span> · <span>不选甜品</span> · <span>尽量避开近 2 周吃过的</span></div>
 <div class="pick-res hide" id="pick-res" aria-live="polite"><div class="pr-head"><span>🍱 今日菜单 <small>きょうのこんだて</small></span><button class="pr-re" id="pick-re" type="button">🔄 换一组</button></div>
 <div class="pr-list" id="pick-list"></div><div class="pr-foot" id="pick-foot"></div></div></section>
 <script type="application/json" id="pick-data">{json.dumps(PICK, ensure_ascii=False).replace("</", "<\\/")}</script>
@@ -447,32 +453,41 @@ document.querySelectorAll('.dish').forEach(d=>d.addEventListener('click',e=>{if(
 document.getElementById('sh-x').addEventListener('click',closeDish);
 ov.addEventListener('click',e=>{if(e.target===ov)closeDish();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDish();});
-/* 帮我选菜: 1 cold/veg + 3 meat/seafood mains, distinct proteins, <=1 soup, no dessert, skip dishes eaten <=14 days ago */
+/* 帮我选菜: N dishes (2-8) = exactly 1 cold/veg + (N-1) meat/seafood mains; no protein repeated across ALL picks
+   (the cold dish's protein counts unless it is 素), <=1 soup, no dessert,
+   skip dishes eaten <=14 days ago. Relax order: the 2-week rule first; protein repeats only if there aren't enough proteins. */
 const PK=JSON.parse(document.getElementById('pick-data').textContent);
 const PAL_JS={meat:["#e8d6d3","#9c7773","#f7f0ee"],poultry:["#e8dfc8","#8c7a4e","#f8f5ec"],sea:["#d9e0e7","#66778a","#f2f4f6"],cold:["#dbe2d4","#6f7f67","#f3f5f0"],soup:["#ead8cc","#93705a","#f8f1ec"],staple:["#e6dccd","#8e7b62","#f8f4ee"]};
 function daysAgo(iso,today){if(!iso)return Infinity;const p=iso.split('-').map(Number);
  const t=Date.UTC(today.getFullYear(),today.getMonth(),today.getDate());return Math.round((t-Date.UTC(p[0],p[1]-1,p[2]))/864e5);}
-function pickMenu(today,prevKey,rnd){today=today||new Date();rnd=rnd||Math.random;
- const recent=x=>daysAgo(x.l,today)<=14, w=x=>x.r?3:1;
+function wOrder(arr,w,rnd){return arr.map(x=>[Math.pow(rnd(),1/w(x)),x]).sort((p,q)=>q[0]-p[0]).map(p=>p[1]);}
+function pickMenu(today,prevKey,rnd,n){today=today||new Date();rnd=rnd||Math.random;n=Math.min(8,Math.max(2,+n||4));const k=n-1;
+ const recent=x=>daysAgo(x.l,today)<=14;
  const cold=PK.filter(x=>x.k==='cold'), mains=PK.filter(x=>x.k==='main');
- const combos=(cs,ms)=>{const out=[];
-  for(let a=0;a<ms.length;a++)for(let b=a+1;b<ms.length;b++){if(ms[a].m===ms[b].m)continue;
-   for(let c=b+1;c<ms.length;c++){const t=[ms[a],ms[b],ms[c]];if(ms[c].m===ms[a].m||ms[c].m===ms[b].m)continue;
-    const soups=t.filter(x=>x.s).length;if(soups>1)continue;
-    for(const x of cs){if(soups+(x.s?1:0)>1)continue;out.push([x].concat(t));}}}return out;};
  const fc=cold.filter(x=>!recent(x)), fm=mains.filter(x=>!recent(x));
- // relax ONLY the 2-week rule, and only as far as needed
- const tiers=[[fc,fm,0],[cold,fm,1],[fc,mains,1],[cold,mains,1]];
- let pool=null,relaxed=0;
- for(const need of [2,1]){for(const [cs,ms,r] of tiers){const c=combos(cs,ms);if(c.length>=need){pool=c;relaxed=r;break;}}if(pool)break;}
- if(!pool)return null;
  const key=s=>s.map(x=>x.id).sort().join(',');
- let cand=pool.length>1&&prevKey?pool.filter(s=>key(s)!==prevKey):pool;
- const ws=cand.map(s=>s.reduce((p,x)=>p*w(x)*(relaxed&&recent(x)?.25:1),1)); /* when relaxed, still lean toward not-recent */ let r=rnd()*ws.reduce((a,b)=>a+b,0),i=0;
- while(i<cand.length-1&&(r-=ws[i])>=0)i++;
- return {dishes:cand[i],key:key(cand[i]),relaxed,skipped:PK.filter(recent).map(x=>x.n)};}
+ const tiers=[[fc,fm,0,0],[cold,fm,1,0],[fc,mains,1,0],[cold,mains,1,0],[fc,fm,0,1],[cold,fm,1,1],[fc,mains,1,1],[cold,mains,1,1]];
+ for(const [cs0,ms,rr,rp] of tiers){const veg=cs0.filter(x=>x.m==='素');const cs=rp&&veg.length?veg:cs0;if(!cs.length)continue;   /* if repeats must be allowed, use a 素 cold dish so it adds none */
+  const w=x=>(x.r?3:1)*(rr&&recent(x)?.25:1);   /* prefer dishes with recipes; when relaxed, still lean toward not-recent */
+  let first=null;
+  for(let t=0;t<80;t++){
+   const c=wOrder(cs,w,rnd)[0],order=wOrder(ms,w,rnd),got=[],used=new Set(c.m&&c.m!=='素'?[c.m]:[]);let soups=c.s?1:0;
+   for(const x of order){if(got.length===k)break;if(used.has(x.m)||(x.s&&soups))continue;got.push(x);used.add(x.m);if(x.s)soups++;}
+   if(rp)for(const x of order){if(got.length===k)break;if(got.includes(x)||(x.s&&soups))continue;got.push(x);if(x.s)soups++;}
+   if(got.length<k)continue;
+   const res={dishes:[c].concat(got),relaxed:rr,relaxedProtein:used.size<got.length+(c.m&&c.m!=='素'?1:0)?1:0,n,skipped:PK.filter(recent).map(x=>x.n)};
+   res.key=key(res.dishes);if(res.key!==prevKey)return res;first=first||res;}
+  if(first)return first;}
+ return null;}
 let pickPrev='';
-function showPick(){const res=pickMenu(null,pickPrev);if(!res)return;pickPrev=res.key;window.__pick=res;
+const pickN=document.getElementById('pick-n');
+function syncN(){const v=+pickN.value;document.getElementById('pick-go').textContent='🎲 帮我选 '+v+' 道菜';
+ document.getElementById('pick-capn').textContent='1 道凉菜/蔬菜 + '+(v-1)+' 道荤菜';}
+try{const sv=localStorage.getItem('pickN');if(sv&&+sv>=2&&+sv<=8)pickN.value=sv;}catch(e){}
+syncN();
+pickN.addEventListener('change',()=>{syncN();try{localStorage.setItem('pickN',pickN.value)}catch(e){}
+ pickPrev='';if(!document.getElementById('pick-res').classList.contains('hide'))showPick();});
+function showPick(){const res=pickMenu(null,pickPrev,null,pickN.value);if(!res)return;pickPrev=res.key;window.__pick=res;
  const L=document.getElementById('pick-list');L.innerHTML='';
  res.dishes.forEach(x=>{const pal=PAL_JS[x.c]||PAL_JS.meat;const b=document.createElement('button');b.type='button';b.className='pr-item';b.dataset.id=x.id;
   b.style.cssText='--ca:'+pal[0]+';--cd:'+pal[1]+';--cb:'+pal[2];
@@ -484,7 +499,7 @@ function showPick(){const res=pickMenu(null,pickPrev);if(!res)return;pickPrev=re
   b.addEventListener('click',()=>{const d=document.getElementById(x.id);if(!d)return;
    if(x.r)openDish(d);else{d.scrollIntoView({behavior:'smooth',block:'center'});d.classList.remove('flash');void d.offsetWidth;d.classList.add('flash');}});
   L.appendChild(b);});
- document.getElementById('pick-foot').textContent=res.relaxed?'近 2 周吃过的太多，这次放宽了「避开近 2 周」这一条':(res.skipped.length?'已避开近 2 周吃过的：'+res.skipped.join('、'):'');
+ document.getElementById('pick-foot').textContent=res.relaxedProtein?'荤菜的种类不够分，这次有主蛋白重复':res.relaxed?'近 2 周吃过的太多，这次放宽了「避开近 2 周」这一条':(res.skipped.length?'已避开近 2 周吃过的：'+res.skipped.join('、'):'');
  const box=document.getElementById('pick-res');box.classList.remove('hide');box.style.animation='none';void box.offsetWidth;box.style.animation='';}
 document.getElementById('pick-go').addEventListener('click',showPick);
 document.getElementById('pick-re').addEventListener('click',showPick);
