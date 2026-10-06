@@ -174,7 +174,7 @@ for c in CATS:
 TID = {id(t): t.get('id') or f't{i}' for i, t in enumerate(D['todo'], 1)}
 for t in D['todo']:
     if t.get('recent') and t.get('meat') and t['meat'] not in ('素', '甜品'):
-        PICK.append(dict(id=TID[id(t)], n=t['name'], k='main', m=t['meat'], s='汤' in t['name'], t=True, r=False,
+        PICK.append(dict(id=TID[id(t)], n=t['name'], k='main', m=t['meat'], s=bool(t.get('soup')) or '汤' in t['name'], t=True, r=False,
                          o=bool(t.get('link') or t.get('details') or t.get('ingredients')), p='', i='🌸', c='todo', l=LAST.get(t['name'], '')))
 total = sum(len(c['dishes']) for c in CATS)
 out = []
@@ -505,7 +505,8 @@ for i, t in enumerate(D['todo'], 1):   # same card component as the menu; a shee
     sheet = bool(refs or ing or body.strip())
     s = (f'<div class="dish{"" if sheet else " empty"}" id="{TID[id(t)]}" data-cat="todo" data-s="{E((t["name"]+" "+t["note"]+" "+ing+(" 最近" if t.get("recent") else "")).lower())}">'
          f'<div class="row"><span class="dth ic" aria-hidden="true">🌸</span><span class="name">{E(t["name"])}</span>'
-         + ('<span class="recent">最近</span>' if t.get('recent') else '') + '</div>')
+         + ('<span class="recent">最近</span>' if t.get('recent') else '')
+         + ('<span class="tbd" title="做法待补充">待补充</span>' if t.get('tbd') else '') + '</div>')
     if sheet:
         summ = f'<div class="sh-sum"><div class="ing">{E(ing)}</div></div>' if ing else ''
         steps = md(body, t.get('ing_photo')) if body.strip() else ''

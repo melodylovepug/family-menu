@@ -1104,6 +1104,17 @@
  ],
  "todo": [
   {
+   "id": "t46",
+   "name": "羊肚菌鸡汤",
+   "note": "",
+   "link": null,
+   "details": "",
+   "recent": true,
+   "meat": "鸡",
+   "soup": true,
+   "tbd": true
+  },
+  {
    "id": "t45",
    "name": "熟醉虾",
    "note": "",
