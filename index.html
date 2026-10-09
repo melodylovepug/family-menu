@@ -116,6 +116,9 @@ footer::before{content:"🍙 🍡 🍵";display:block;font-size:18px;margin-bott
 .af-go:disabled{opacity:.6}
 .af-msg{font-size:12.5px;color:var(--mute)}
 .skp{font-size:10px;font-weight:700;color:#9a9188;background:#efebe6;border:1.2px solid #ddd6ce;border-radius:999px;padding:0 7px;line-height:1.6;letter-spacing:.04em;flex:0 0 auto}
+.svt{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:80;font-size:12.5px;font-weight:700;color:#6e625a;background:rgba(255,253,249,.96);border:1.5px solid #e3d7d2;border-radius:999px;padding:6px 14px;box-shadow:0 4px 14px -6px rgba(74,64,58,.35);display:flex;align-items:center;gap:4px;white-space:nowrap}
+.svt.ok{color:#6f7f67;border-color:#cfdac8}.svt.fail{color:#a65e4e;border-color:#e6c9c2}
+.svt-r{font:inherit;color:#fff;background:#b8928e;border:0;border-radius:999px;padding:2px 10px;cursor:pointer}
 .ed-btn{display:block;margin:0 0 12px auto;padding:5px 14px;font-size:12.5px}
 .addf.edf{margin:0 0 14px;max-width:none}
 .recent{font-size:10px;font-weight:800;color:#fff;background:#a89a8c;border-radius:999px;padding:0 8px;line-height:1.7;letter-spacing:.08em;flex:0 0 auto}
@@ -606,6 +609,7 @@ const ADD={"url": "https://script.google.com/macros/s/AKfycbxx3byFZ09adGhHPDE4li
  const seen=new Set(ADD.known);
  const SKIP=' [skip]', unSkip=v=>{v=String(v||'').trim();const k=v.endsWith(SKIP.trim());return [k?v.slice(0,-SKIP.trim().length).trim():v,k];};
  const EB=ADD.base, EDIT='✏️', isEdit=r=>String(r&&r.name||'').startsWith(EDIT);
+ const OKPH=/^(https:\/\/(lh\d\.googleusercontent\.com|drive\.google\.com)\/|data:image\/jpeg;base64,)/;
  const okUrl=u=>/^https?:\/\//i.test(u||'');
  const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;};
  const yes=v=>v===true||/^(yes|y|true|1|是|✓)$/i.test(String(v||'').trim());
@@ -614,12 +618,12 @@ const ADD={"url": "https://script.google.com/macros/s/AKfycbxx3byFZ09adGhHPDE4li
  function addRow(r){
   const name=String(r.name||'').trim().slice(0,60),id=String(r.id||'');
   if(!name||!/^g\d+$/.test(id)||document.getElementById(id))return null;
-  const key=normN(name);if(seen.has(key))return null;seen.add(key);
+  const key=normN(name);if(seen.has(key))return null;seen.add(key);ADDED[id]=key;
   const todo=r.where==='todo',sec=todo?null:(ADD.secs[r.section]?r.section:'other');
   const S=todo?null:ADD.secs[sec];
   const prot=ADD.canon[r.protein]||String(r.protein||'');
   const recent=yes(r.recent),link=okUrl(r.link)?String(r.link):'',[ing,skip]=unSkip(String(r.ingredients||'').slice(0,500));
-  const photo=/^https:\/\/(lh\d\.googleusercontent\.com|drive\.google\.com)\//.test(r.photo||'')?r.photo:'';
+  const photo=OKPH.test(r.photo||'')?r.photo:'';
   const has=!!(link||ing||photo);
   const icon=todo?'🌸':S[0];
   const d=el('div','dish'+(has?'':' empty bare'));d.id=id;d.dataset.cat=todo?'todo':sec;
@@ -649,18 +653,16 @@ const ADD={"url": "https://script.google.com/macros/s/AKfycbxx3byFZ09adGhHPDE4li
   EB[id]={w:todo?'todo':'menu',sec:todo?'':sec,m:prot,r:recent,s:soup,link,ing,photo,photo_id:r.photo_id||'',tbd:false,rb:false,dess:false,k:skip,l:ADD.hist[key]||''};
   return d;}
  window.__addRow=addRow;
- fetch(ADD.url,{cache:'no-store'}).then(r=>r.json()).then(j=>{if(j&&j.ok&&Array.isArray(j.rows)){j.rows.forEach(r=>{if(!isEdit(r))try{addRow(r)}catch(e){}});
-   j.rows.forEach(r=>{if(isEdit(r))EDITS.push(r)});applyAll();}
-  window.__sheetRows=(j&&j.rows||[]).length;if(/^#g\d+$/.test(location.hash))openFromHash();}).catch(()=>{window.__sheetRows=-1;});
+ const ADDED={};
  /* form */
  const f=document.getElementById('addf');if(!f)return;
  const ob=document.getElementById('add-open'),msg=document.getElementById('af-msg'),go=document.getElementById('af-go');
  ob.addEventListener('click',()=>{const o=f.classList.toggle('hide');ob.setAttribute('aria-expanded',String(!o));if(!o)document.getElementById('af-name').focus();});
  const secw=document.getElementById('af-secw');
   function shrink(file){return new Promise((res,rej)=>{const u=URL.createObjectURL(file),im=new Image();
-  im.onload=()=>{const s=Math.min(1,1200/Math.max(im.naturalWidth,im.naturalHeight)),c=document.createElement('canvas');
+  im.onload=()=>{const s=Math.min(1,1000/Math.max(im.naturalWidth,im.naturalHeight)),c=document.createElement('canvas');
    c.width=Math.round(im.naturalWidth*s);c.height=Math.round(im.naturalHeight*s);const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);
-   g.drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL('image/jpeg',0.82));};
+   g.drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL('image/jpeg',0.8));};
   im.onerror=()=>{URL.revokeObjectURL(u);rej(new Error('photo'));};im.src=u;});}
  f.addEventListener('submit',async e=>{e.preventDefault();
   if(editId)return saveEdit();
@@ -670,15 +672,15 @@ const ADD={"url": "https://script.google.com/macros/s/AKfycbxx3byFZ09adGhHPDE4li
    recent:document.getElementById('af-recent').checked,soup:false,
    link:document.getElementById('af-link').value.trim(),ingredients:document.getElementById('af-ing').value.trim().slice(0,490)+(document.getElementById('af-skip').checked?SKIP:''),website:document.getElementById('af-hp').value};
   if(p.link&&!okUrl(p.link)){msg.textContent='链接要以 http 开头';return;}
-  go.disabled=true;msg.textContent='保存中…';
-  try{const file=document.getElementById('af-photo').files[0];if(file){msg.textContent='压缩照片…';p.photo=await shrink(file);msg.textContent='上传中…';}
-   const r=await fetch(ADD.url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(p)});
-   const j=await r.json();if(!j.ok)throw new Error(j.error||'error');
-   const d=j.row&&addRow(j.row);f.reset();secw.style.display='';msg.textContent='已添加 ✓';
-   if(d){d.scrollIntoView({behavior:'smooth',block:'center'});d.classList.remove('flash');void d.offsetWidth;d.classList.add('flash');}
-   else if(j.row)msg.textContent='已保存 ✓（菜单里已有同名的菜）';
-  }catch(err){msg.textContent='没保存成功，请稍后再试';}
-  finally{go.disabled=false;}});
+  go.disabled=true;
+  try{const file=document.getElementById('af-photo').files[0];if(file){msg.textContent='压缩照片…';p.photo=await shrink(file);}}
+  catch(err){msg.textContent='照片读不了，换一张试试';go.disabled=false;return;}
+  go.disabled=false;msg.textContent='';
+  const tid='g'+Date.now(),it={cid:'c'+Date.now(),kind:'add',tid,p,t:Date.now()};
+  const d=addRow(localRow(it));if(d)d.dataset.pend=1;
+  PEND.push(it);savePend();f.reset();f.classList.add('hide');ob.setAttribute('aria-expanded','false');
+  if(d){d.scrollIntoView({behavior:'smooth',block:'center'});d.classList.remove('flash');void d.offsetWidth;d.classList.add('flash');}
+  flush();});
 
  /* ---- ✏️ 编辑: edit rows are normal sheet rows whose name is "✏️<dish id>" (a full snapshot of the form; empty photo = keep);
     "✏️<dish id>!" resets the dish to menu.json. Latest row wins; menu.json is never touched. ---- */
@@ -689,7 +691,7 @@ const ADD={"url": "https://script.google.com/macros/s/AKfycbxx3byFZ09adGhHPDE4li
    if(nm!==EDIT+id)continue;const todo=r.where==='todo';
    st={w:todo?'todo':'menu',sec:todo?'':(ADD.secs[r.section]?r.section:'other'),m:ADD.canon[r.protein]||String(r.protein||''),r:yes(r.recent),s:yes(r.soup)||r.section==='soup',
     link:okUrl(r.link)?String(r.link):''};[st.ing,st.k]=unSkip(r.ingredients);
-   if(/^https:\/\/(lh\d\.googleusercontent\.com|drive\.google\.com)\//.test(r.photo||'')){photo=r.photo;pid=r.photo_id||'';}}
+   if(OKPH.test(r.photo||'')){photo=r.photo;pid=r.photo_id||'';}}
   return Object.assign({},b,st||{},{photo,photo_id:pid,edited:!!st||photo!==b.photo});}
  const ORIG={};
  function boxOf(st){return st.w==='todo'?document.querySelector('#todo .todo-list'):document.getElementById(st.sec);}
@@ -767,14 +769,72 @@ const ADD={"url": "https://script.google.com/macros/s/AKfycbxx3byFZ09adGhHPDE4li
    recent:document.getElementById('af-recent').checked,soup:false,
    link:document.getElementById('af-link').value.trim(),ingredients:document.getElementById('af-ing').value.trim().slice(0,490)+(document.getElementById('af-skip').checked?SKIP:''),website:document.getElementById('af-hp').value};
   if(p.link&&!okUrl(p.link)){msg.textContent='链接要以 http 开头';return;}
-  go.disabled=true;msg.textContent='保存中…';
-  try{const file=document.getElementById('af-photo').files[0];if(file){msg.textContent='压缩照片…';p.photo=await shrink(file);msg.textContent='上传中…';}
-   const r=await fetch(ADD.url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(p)});
-   const j=await r.json();if(!j.ok)throw new Error(j.error||'error');
-   EDITS.push(j.row||Object.assign({},p,{photo:''}));apply(id);window.__lastEdit=j.row;
-   const d=document.getElementById(id);openDish(d);const m2=el('p','tbd-steps','已保存修改 ✓');m2.id='ed-ok';document.getElementById('sh-r').insertBefore(m2,document.getElementById('sh-r').firstChild);
-  }catch(err){msg.textContent='没保存成功，请稍后再试';}
-  finally{go.disabled=false;}}
+  go.disabled=true;
+  try{const file=document.getElementById('af-photo').files[0];if(file){msg.textContent='压缩照片…';p.photo=await shrink(file);}}
+  catch(err){msg.textContent='照片读不了，换一张试试';go.disabled=false;return;}
+  go.disabled=false;
+  const it={cid:'c'+Date.now(),kind:'edit',p,t:Date.now()};PEND.push(it);savePend();
+  EDITS.push(localRow(it));apply(id);
+  const d=document.getElementById(id);if(d)openDish(d);else closeDish();
+  flush();}
+ /* ---- optimistic saves: pending queue (localStorage) + cached sheet rows ---- */
+ const LS_P='fm-pending',LS_R='fm-rows';
+ const lsGet=(k,dflt)=>{try{return JSON.parse(localStorage.getItem(k))||dflt}catch(e){return dflt}};
+ const lsSet=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}};
+ let PEND=lsGet(LS_P,[]).filter(x=>x&&x.p&&x.cid),ROWS=lsGet(LS_R,[]);if(!Array.isArray(ROWS))ROWS=[];
+ function savePend(){if(!lsSet(LS_P,PEND)){/* quota: keep entries but drop local photo copies of the oldest */
+   for(const x of PEND){if(x.p.photo){x.p.photo='';if(lsSet(LS_P,PEND))break;}}}}
+ function localRow(it){const p=it.p;return {id:it.kind==='add'?it.tid:'',name:p.name,where:p.where==='todo'?'todo':'menu',section:p.section||'',protein:p.protein||'',
+   recent:p.recent?'yes':'',soup:'',link:p.link||'',ingredients:p.ingredients||'',photo:p.photo||'',photo_id:'',_cid:it.cid};}
+ const sig=r=>[r.name,r.where==='todo'?'todo':'menu',r.section||'',r.protein||'',yes(r.recent)?1:0,r.link||'',String(r.ingredients||'').trim()].join('\u0001');
+ /* toast */
+ const T=el('div','svt hide');T.setAttribute('role','status');T.setAttribute('aria-live','polite');document.body.appendChild(T);let tHide=0;
+ function toast(state){clearTimeout(tHide);T.className='svt '+state;T.innerHTML='';
+  if(state==='busy')T.textContent='保存中…';
+  else if(state==='ok'){T.textContent='✓ 已保存';tHide=setTimeout(()=>T.classList.add('hide'),1800);}
+  else if(state==='fail'){T.appendChild(document.createTextNode('保存失败 · '));const b=el('button','svt-r','重试');b.type='button';b.addEventListener('click',()=>flush(true));T.appendChild(b);}}
+ function renameId(o,n){if(o===n)return;const d=document.getElementById(o);if(!d||document.getElementById(n))return;d.id=n;delete d.dataset.pend;
+  PK.forEach(x=>{if(x.id===o)x.id=n;});if(EB[o]){EB[n]=EB[o];delete EB[o];}if(o in ORIG){ORIG[n]=ORIG[o];delete ORIG[o];}if(ADDED[o]){ADDED[n]=ADDED[o];delete ADDED[o];}
+  const fix=r=>{if(r.name===EDIT+o)r.name=EDIT+n;else if(r.name===EDIT+o+'!')r.name=EDIT+n+'!';};EDITS.forEach(fix);PEND.forEach(x=>fix(x.p));savePend();
+  if(location.hash==='#'+o)history.replaceState(null,'','#'+n);}
+ let busy=false;
+ async function flush(manual){if(busy||!PEND.length)return;busy=true;toast('busy');let fail=false;
+  while(PEND.length){const it=PEND[0];
+   try{const r=await fetch(ADD.url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(it.p)});
+    const j=await r.json();if(!j.ok)throw new Error(j.error||'error');
+    const row=j.row||localRow(it);PEND.shift();savePend();
+    if(it.kind==='add'&&j.row)renameId(it.tid,j.row.id);
+    if(it.kind==='edit'){const k=EDITS.findIndex(x=>x._cid===it.cid);if(k>=0)EDITS[k]=row;}
+    if(j.row){ROWS.push(j.row);lsSet(LS_R,ROWS);}window.__lastEdit=row;
+   }catch(e){fail=true;break;}}
+  busy=false;toast(fail?'fail':'ok');window.__saveState=fail?'fail':'ok';}
+ window.__flush=flush;window.__pending=()=>PEND.length;
+ window.addEventListener('online',()=>flush());
+ /* render: cached rows + pending immediately, then refresh from the sheet */
+ function render(rows,first){
+  /* pending items already in the sheet are confirmed: drop them */
+  const names=new Map(),sigs=new Set();
+  rows.forEach(r=>{if(isEdit(r))sigs.add(sig(r));else names.set(normN(r.name)+'|'+(r.where==='todo'?'todo':'menu'),r);});
+  if(!busy){const keep=[];for(const it of PEND){const lr=localRow(it);
+    if(it.kind==='add'){const m=names.get(normN(lr.name)+'|'+lr.where);if(m){renameId(it.tid,m.id);continue;}}
+    else if(sigs.has(sig(lr)))continue;
+    keep.push(it);}
+   if(keep.length!==PEND.length){PEND=keep;savePend();}}
+  const live=new Set(rows.filter(r=>!isEdit(r)).map(r=>String(r.id)));PEND.forEach(it=>{if(it.kind==='add')live.add(it.tid);});
+  /* rows hidden in the sheet since the cache: remove their cards */
+  Object.keys(ADDED).forEach(id=>{if(live.has(id))return;const d=document.getElementById(id);
+   if(d){bump(d.parentElement,-1);d.remove();}const i=PK.findIndex(x=>x.id===id);if(i>=0)PK.splice(i,1);seen.delete(ADDED[id]);delete ADDED[id];delete EB[id];});
+  rows.forEach(r=>{if(!isEdit(r))try{addRow(r)}catch(e){}});
+  PEND.forEach(it=>{if(it.kind==='add'&&!document.getElementById(it.tid)){const d=addRow(localRow(it));if(d)d.dataset.pend=1;}});
+  const before=new Set(EDITS.map(r=>r.name));EDITS.length=0;
+  rows.forEach(r=>{if(isEdit(r))EDITS.push(r)});PEND.forEach(it=>{if(it.kind==='edit')EDITS.push(localRow(it));});
+  EDITS.forEach(r=>before.add(r.name));
+  before.forEach(nm=>{const m=String(nm).match(/^✏️([dtg]\d+)!?$/);if(m)try{apply(m[1])}catch(e){}});
+  window.__edits=EDITS.length;}
+ render(ROWS,true);
+ fetch(ADD.url,{cache:'no-store'}).then(r=>r.json()).then(j=>{if(j&&j.ok&&Array.isArray(j.rows)){ROWS=j.rows;lsSet(LS_R,ROWS);render(ROWS);}
+  window.__sheetRows=(j&&j.rows||[]).length;if(/^#g\d+$/.test(location.hash)&&!ov.classList.contains('on'))openFromHash();}).catch(()=>{window.__sheetRows=-1;});
+ if(PEND.length)flush();
 })();
 
 function openFromHash(){const h=location.hash.match(/^#([dtg]\d+)$/)||(location.search.match(/[?&]dish=([dtg]\d+)/));if(h){const d=document.getElementById(h[1]);if(d){ov.style.transition='none';sh.style.transition='none';openDish(d);requestAnimationFrame(()=>{ov.style.transition='';sh.style.transition='';});}}}

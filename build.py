@@ -335,6 +335,9 @@ footer::before{{content:"🍙 🍡 🍵";display:block;font-size:18px;margin-bot
 .af-go:disabled{{opacity:.6}}
 .af-msg{{font-size:12.5px;color:var(--mute)}}
 .skp{{font-size:10px;font-weight:700;color:#9a9188;background:#efebe6;border:1.2px solid #ddd6ce;border-radius:999px;padding:0 7px;line-height:1.6;letter-spacing:.04em;flex:0 0 auto}}
+.svt{{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:80;font-size:12.5px;font-weight:700;color:#6e625a;background:rgba(255,253,249,.96);border:1.5px solid #e3d7d2;border-radius:999px;padding:6px 14px;box-shadow:0 4px 14px -6px rgba(74,64,58,.35);display:flex;align-items:center;gap:4px;white-space:nowrap}}
+.svt.ok{{color:#6f7f67;border-color:#cfdac8}}.svt.fail{{color:#a65e4e;border-color:#e6c9c2}}
+.svt-r{{font:inherit;color:#fff;background:#b8928e;border:0;border-radius:999px;padding:2px 10px;cursor:pointer}}
 .ed-btn{{display:block;margin:0 0 12px auto;padding:5px 14px;font-size:12.5px}}
 .addf.edf{{margin:0 0 14px;max-width:none}}
 .recent{{font-size:10px;font-weight:800;color:#fff;background:#a89a8c;border-radius:999px;padding:0 8px;line-height:1.7;letter-spacing:.08em;flex:0 0 auto}}
