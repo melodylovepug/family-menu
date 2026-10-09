@@ -305,6 +305,19 @@ span.pr-th{display:flex;align-items:center;justify-content:center;font-size:24px
 <a href="#sweet" style="--c:#7d6a7d55">🍰 甜品·饮料</a>
 <a href="#todo" style="--c:#c9a9a666">📝 待做</a><a href="#weeks" style="--c:#9aa8b566">📅 每周</a></nav>
 <input class="search" id="q" type="search" placeholder="🔍 搜菜名或食材，比如 冬瓜、鸡腿…">
+<div class="addw"><button class="add-btn" id="add-open" type="button" aria-expanded="false">＋ 添加新菜</button>
+<form class="addf hide" id="addf" autocomplete="off">
+<label class="af-l"><span>菜名 <b>*</b></span><input id="af-name" maxlength="60" required placeholder="比如 葱油拌面"></label>
+<div class="af-l">加到哪里<div class="af-seg"><label><input type="radio" name="af-where" value="menu" checked><span>🍽 菜单</span></label><label><input type="radio" name="af-where" value="todo"><span>📝 待做</span></label></div></div>
+<label class="af-l" id="af-secw">分类<select id="af-sec"><option value="beef">🐮 牛·羊</option><option value="pork">🐷 猪</option><option value="poultry">🐔 鸡·鸭</option><option value="sea">🐟 海鲜</option><option value="cold">🥗 凉菜·蔬菜</option><option value="soup">🍲 汤</option><option value="staple">🍚 饭·面包</option><option value="lunch">🍱 午餐</option><option value="other" selected>🥡 其他</option><option value="sweet">🍰 甜品·饮料</option></select></label>
+<div class="af-row"><label class="af-l">主蛋白<select id="af-prot"><option value="">（不填）</option><option value="牛">牛</option><option value="猪">猪</option><option value="羊">羊</option><option value="鸡">鸡</option><option value="鸭">鸭</option><option value="鱼">鱼</option><option value="龙虾/虾">龙虾/虾</option><option value="蟹">蟹</option><option value="蛤蜊/贝">蛤蜊/贝</option><option value="豆腐/蛋">豆腐/蛋</option><option value="素">素</option></select></label>
+<div class="af-l">标签<div class="af-chk"><label><input type="checkbox" id="af-recent"><span>最近</span></label><label><input type="checkbox" id="af-soup"><span>汤</span></label></div></div></div>
+<label class="af-l">食谱链接<input id="af-link" type="url" inputmode="url" placeholder="https://…（可不填）"></label>
+<label class="af-l">食材<input id="af-ing" maxlength="500" placeholder="比如 面 · 葱 · 酱油（可不填）"></label>
+<label class="af-l">照片<input id="af-photo" type="file" accept="image/*"></label>
+<input class="af-hp" id="af-hp" tabindex="-1" aria-hidden="true" placeholder="website">
+<div class="af-act"><button class="af-go" id="af-go" type="submit">保存</button><span class="af-msg" id="af-msg" aria-live="polite"></span></div>
+</form></div>
 <div class="grid">
 <section class="card" id="beef" style="--ca:#e2cdc4;--cd:#8a5f4f;--cb:#f6efeb"><h2><span class="ic">🐮</span>牛·羊 <small>Beef &amp; Lamb</small><span class="n">11</span></h2>
 <div class="dish" id="d1" data-cat="beef" data-s="葱爆牛肉片 牛肉片 · 葱姜蒜 · 洋葱 · 白胡椒 · 酱油  食材：牛肉片 配料：葱姜蒜，洋葱 调料：白胡椒，酱油 ▶️ 葱爆羊肉 lamb stir fry 肉片怎么做才嫩？ 步骤 1. 牛肉泡冷水+盐+小苏打。等待15分钟出血水 2. 牛肉挤干水，酱油，1g淀粉水. maybe 蛋清和一点点油，锁住水分 3. 中等温度油分批下锅，变色就捞起放在边上让牛肉自己加热 4. 油锅放葱姜蒜洋葱炒香，下牛肉，最后放辣椒/葱"><div class="row"><span class="dth ic" aria-hidden="true">🐮</span><span class="name">葱爆牛肉片</span></div><div class="rcp-src" data-ic="🐮" data-cat="牛·羊 · Beef &amp; Lamb"><div class="srcs"><a class="lnk" href="https://www.youtube.com/watch?v=Etf9zxVjhKM" target="_blank" rel="noopener">▶ YouTube · 葱爆羊肉 Lamb Stir Fry 肉片怎么做才嫩？</a></div><div class="sh-sum"><div class="ing">牛肉片 · 葱姜蒜 · 洋葱 · 白胡椒 · 酱油</div></div><p>食材：牛肉片</p><p>配料：葱姜蒜，洋葱</p><p>调料：白胡椒，酱油</p><h4>步骤</h4><ol><li>牛肉泡冷水+盐+小苏打。等待15分钟出血水</li><li>牛肉挤干水，酱油，1g淀粉水. Maybe 蛋清和一点点油，锁住水分</li><li>中等温度油分批下锅，变色就捞起放在边上让牛肉自己加热</li><li>油锅放葱姜蒜洋葱炒香，下牛肉，最后放辣椒/葱</li></ol></div></div>
@@ -583,6 +596,82 @@ document.getElementById('pick-go').addEventListener('click',showPick);
 document.getElementById('pick-re').addEventListener('click',showPick);
 document.getElementById('pick-sel').addEventListener('click',()=>{selMode=!selMode;marked=new Set();fresh=[];renderPick(document.getElementById('pick-foot').textContent);});
 document.getElementById('pick-swap').addEventListener('click',()=>{if(marked.size)doSwap([...marked]);});
+const ADD={"url": "https://script.google.com/macros/s/AKfycbxx3byFZ09adGhHPDE4liQxCP2Bwx8OIErUbe2fIzKc0RCoq-Vt53IrNb8TV2yJHbSi/exec", "known": ["cajun海鲜(hotnjuicystyle)", "chickenkatsu", "cryingtiger", "holidayprimrib+chimichurri", "hotnjuicy", "hotnjuicycajunstyle", "locomoco拌饭", "miso鳕鱼", "shortrib", "一饭封神烧椒牛肉taco", "三文鱼烩饭", "三杯鸡", "三鲜菌菇汤", "上海冷面", "上海菜饭", "东北大拌菜", "丝瓜肉沫蛋汤", "乌骨鸡汤", "乌骨鸡菌菇汤", "云片虾", "八宝辣酱", "冬瓜丸子汤", "冬瓜桑拿鸡", "冬瓜蘑菇汤", "凉拌手撕鸡", "凉拌猪耳", "凉拌秋葵", "凉拌芝麻豆苗金针菇", "凉拌茄子", "凉拌莴笋", "凉拌蘑菇", "凉拌鸡蛋羹", "刀蚬", "南京盐水鸭", "和风芦笋", "咖喱土豆牛肉", "咖喱鸡", "咸蛋黄鸡翅", "土豆排骨", "土豆牛腩", "墨西哥玉米", "大盘鸡", "大盘鸡(加面的)", "小葱拌豆腐", "小鸡炖蘑菇", "居酒屋牛腱萝卜", "巴西青柠水", "干锅+蒜苔+藕片", "干锅蒜苔", "广东汤", "彩椒烧鱿鱼", "微波炉凉拌黄豆芽", "捞汁海鲜", "排骨冬瓜汤", "排骨土豆炖豆角", "排骨炖豆角", "无花果brie", "日式炸猪排", "日式生吐司", "朗姆葡萄干磅蛋糕", "栗子红烧肉", "椒麻云片虾", "水晶虾仁", "水煮/清蒸鸡胸肉", "水煮牛肉(少辣)", "油闷大虾(带壳🦐)", "泰式酸辣鸡腿", "洋葱炒牛肉", "清炖牛肋条", "清炖牛肋骨条", "清炖牛肋骨条(带面版)", "滑蛋鸡肉饭", "炒藕丁", "煲仔饭", "熟醉虾", "爆炒鸡胗", "爆炒鸡腿菇鸡胗", "牛尾汤", "牛肉炒饭", "牛肉脯", "牛肉豆腐煲", "牛肋条罗宋汤", "牛肋条蘸酱", "牛腩/牛肋条包菜罗宋汤", "牛腩卷心菜土豆罗宋汤", "狮子头", "猪肉干", "白斩鸡", "白菜胡椒鸡腿", "白醋脆藕", "盐曲黑鳕鱼", "砂锅红烧鱼", "空气炸锅鸡脆骨", "窝蛋牛肉煲仔饭", "笋干烧肉百叶结", "糖柿子", "糖番茄", "糖藕", "糟卤毛豆", "素什锦", "罗宋汤", "羊肉烧卖", "羊肉烧麦", "羊肚菌鸡汤", "肉末酸豆角", "胡椒鸡腿白菜煲", "腌笃鲜", "花胶鸡汤", "茭白毛豆肉丁", "茭白肉丝", "茶碗蒸", "荷塘月色", "莲藕排骨汤", "葱油芋艿", "葱油龙虾+泡饭", "葱爆牛肉片", "蒜泥白肉", "蒜蓉粉丝虾滑煲", "蒜香骨", "藕丁", "蘑菇黑椒牛肉粒(清淡一些)", "虎虾莴笋醋冻", "虫草花鸡汤", "虾米冬瓜", "西班牙风味章鱼", "辣猪肚", "避风塘炒虾", "酸菜炖粉条", "酸辣笋丁", "金汤猪脚鸡", "陕西大盘鸡", "青柠渍菠萝", "青椒牛肉豆腐煲", "青花椒黄花鱼", "韩式shortrib", "韩式炖shortrib", "香菜柠檬鸡", "香辣虾", "高汤鸡", "鱼子乌冬", "鱼肝酱", "鲜虾豆腐菌菇煲", "鸡汁百叶包", "麻婆豆腐", "黄油白酒蛤蜊", "黄芽菜肉丝年糕", "龙虾泡饭", "🍅意大利番茄佛卡夏"], "hist": {"蒜泥白肉": "2026-10-08", "水煮牛肉(少辣)": "2026-10-08", "凉拌芝麻豆苗金针菇": "2026-10-08", "云片虾": "2026-10-05", "大盘鸡(加面的)": "2026-10-05", "冬瓜丸子汤": "2026-10-05", "牛腩卷心菜土豆罗宋汤": "2026-10-01", "泰式酸辣鸡腿": "2026-10-01", "东北大拌菜": "2026-10-01", "monie": "2026-09-28", "排骨土豆炖豆角": "2026-09-28", "牛肋条蘸酱": "2026-09-28", "黄芽菜肉丝年糕": "2026-09-28", "凉拌莴笋": "2026-09-28", "白菜胡椒鸡腿": "2026-08-24", "芦笋炒芋艿": "2026-08-24", "红烧玉子豆腐": "2026-08-27", "上次的整条鱼": "2026-08-27", "牛肋条罗宋汤": "2026-07-15", "藕炒牛肉": "2026-07-16", "贵妃鸡": "2026-07-06", "蒜台肉丝": "2026-07-06", "肉饼蒸蛋": "2026-07-07", "煲仔饭": "2026-07-07", "shortrib": "2026-07-07", "鸭腿": "2026-07-09", "羊肉烧麦": "2026-06-29", "豆苗": "2026-06-29", "肉饼子炖蛋": "2026-06-29", "白鱼ricotta": "2026-06-29", "ricotta桃子三文鱼": "2026-06-30", "牛肉山药条": "2026-07-01"}, "secs": {"beef": ["🐮", "牛·羊", "Beef & Lamb", "#e2cdc4", "#8a5f4f", "#f6efeb"], "pork": ["🐷", "猪", "Pork", "#efd9dc", "#a36f78", "#fbf2f3"], "poultry": ["🐔", "鸡·鸭", "Poultry", "#e8dfc8", "#8c7a4e", "#f8f5ec"], "sea": ["🐟", "海鲜", "Seafood", "#d9e0e7", "#66778a", "#f2f4f6"], "cold": ["🥗", "凉菜·蔬菜", "Cold & Veg", "#dbe2d4", "#6f7f67", "#f3f5f0"], "soup": ["🍲", "汤", "Soups", "#ead8cc", "#93705a", "#f8f1ec"], "staple": ["🍚", "饭·面包", "Rice & Bread", "#e6dccd", "#8e7b62", "#f8f4ee"], "lunch": ["🍱", "午餐", "Lunch", "#cfe0dd", "#4f7d76", "#eef5f4"], "other": ["🥡", "其他", "Other", "#d8d6e8", "#67658f", "#f3f3f9"], "sweet": ["🍰", "甜品·饮料", "Desserts & Drinks", "#e2d8e2", "#7d6a7d", "#f6f2f6"]}, "noPick": ["lunch", "other", "sweet"], "canon": {"虾": "龙虾/虾", "蛋": "豆腐/蛋"}};
+/* ---- 添加新菜: dishes stored in the Google Sheet (Apps Script web app) ---- */
+(function(){
+ const normN=t=>String(t||'').replace(/（/g,'(').replace(/）/g,')').replace(/\s+/g,'').toLowerCase();
+ const seen=new Set(ADD.known);
+ const okUrl=u=>/^https?:\/\//i.test(u||'');
+ const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;};
+ const yes=v=>v===true||/^(yes|y|true|1|是|✓)$/i.test(String(v||'').trim());
+ function photoEl(r,cls){const im=el('img',cls);im.alt='';im.loading='lazy';im.src=r.photo;
+  im.addEventListener('error',()=>{if(r.photo_id&&!im.dataset.fb){im.dataset.fb=1;im.src='https://drive.google.com/thumbnail?id='+encodeURIComponent(r.photo_id)+'&sz=w1200';}else im.remove();});return im;}
+ function addRow(r){
+  const name=String(r.name||'').trim().slice(0,60),id=String(r.id||'');
+  if(!name||!/^g\d+$/.test(id)||document.getElementById(id))return null;
+  const key=normN(name);if(seen.has(key))return null;seen.add(key);
+  const todo=r.where==='todo',sec=todo?null:(ADD.secs[r.section]?r.section:'other');
+  const S=todo?null:ADD.secs[sec];
+  const prot=ADD.canon[r.protein]||String(r.protein||'');
+  const recent=yes(r.recent),link=okUrl(r.link)?String(r.link):'',ing=String(r.ingredients||'').trim().slice(0,500);
+  const photo=/^https:\/\/(lh\d\.googleusercontent\.com|drive\.google\.com)\//.test(r.photo||'')?r.photo:'';
+  const has=!!(link||ing||photo);
+  const icon=todo?'🌸':S[0];
+  const d=el('div','dish'+(has?'':' empty bare'));d.id=id;d.dataset.cat=todo?'todo':sec;
+  d.dataset.s=(name+' '+ing+(recent?' 最近':'')).toLowerCase();
+  const row=el('div','row');
+  if(photo&&!todo){const im=photoEl({photo,photo_id:r.photo_id},'dth');row.appendChild(im);im.addEventListener('error',()=>{if(!row.querySelector('.dth')){const ic=el('span','dth ic',icon);row.insertBefore(ic,row.firstChild);}});}
+  else row.appendChild(el('span','dth ic',icon));
+  row.appendChild(el('span','name',name));
+  if(recent)row.appendChild(el('span','recent','最近'));
+  if(!has)row.appendChild(el('span','tbd','待补充'));
+  d.appendChild(row);
+  if(has){const src=el('div','rcp-src');src.dataset.ic=todo?'📝':icon;src.dataset.cat=todo?'待做 · To try':S[1]+' · '+S[2];
+   if(link){const w=el('div','srcs'),a=el('a','lnk',(/xhslink|xiaohongshu/.test(link)?'📕 小红书':/youtu/.test(link)?'▶ YouTube':'🔗 食谱'));a.href=link;a.target='_blank';a.rel='noopener';w.appendChild(a);src.appendChild(w);}
+   if(ing){const w=el('div','sh-sum');w.appendChild(el('div','ing',ing));src.appendChild(w);}
+   if(photo)src.appendChild(photoEl({photo,photo_id:r.photo_id},'ph'));
+   src.appendChild(el('p','tbd-steps','做法步骤 待补充'));d.appendChild(src);}
+  const box=todo?document.querySelector('#todo .todo-list'):document.getElementById(sec);if(!box)return null;
+  box.appendChild(d);bindDish(d);
+  const n=(todo?document.getElementById('todo'):box).querySelector('h2 .n');if(n)n.textContent=+n.textContent+1;
+  /* picker: same rules as built-in dishes */
+  const meat=prot&&prot!=='素'&&prot!=='甜品',soup=yes(r.soup)||sec==='soup'||name.includes('汤');
+  let k=null,t=recent;
+  if(todo){if(recent&&meat){k='main';t=true;}}
+  else if(!ADD.noPick.includes(sec)){k=sec==='cold'?'cold':(meat?'main':null);}
+  if(k)PK.push({id,n:name,k,m:prot||'素',s:soup,t,r:false,o:has,p:todo?'':photo,i:icon,c:todo?'todo':sec,l:ADD.hist[key]||''});
+  return d;}
+ window.__addRow=addRow;
+ fetch(ADD.url,{cache:'no-store'}).then(r=>r.json()).then(j=>{if(j&&j.ok&&Array.isArray(j.rows))j.rows.forEach(r=>{try{addRow(r)}catch(e){}});
+  window.__sheetRows=(j&&j.rows||[]).length;if(/^#g\d+$/.test(location.hash))openFromHash();}).catch(()=>{window.__sheetRows=-1;});
+ /* form */
+ const f=document.getElementById('addf');if(!f)return;
+ const ob=document.getElementById('add-open'),msg=document.getElementById('af-msg'),go=document.getElementById('af-go');
+ ob.addEventListener('click',()=>{const o=f.classList.toggle('hide');ob.setAttribute('aria-expanded',String(!o));if(!o)document.getElementById('af-name').focus();});
+ const secw=document.getElementById('af-secw');
+ f.querySelectorAll('input[name=af-where]').forEach(x=>x.addEventListener('change',()=>{secw.style.display=f.querySelector('input[name=af-where]:checked').value==='todo'?'none':'';}));
+ function shrink(file){return new Promise((res,rej)=>{const u=URL.createObjectURL(file),im=new Image();
+  im.onload=()=>{const s=Math.min(1,1200/Math.max(im.naturalWidth,im.naturalHeight)),c=document.createElement('canvas');
+   c.width=Math.round(im.naturalWidth*s);c.height=Math.round(im.naturalHeight*s);const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);
+   g.drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL('image/jpeg',0.82));};
+  im.onerror=()=>{URL.revokeObjectURL(u);rej(new Error('photo'));};im.src=u;});}
+ f.addEventListener('submit',async e=>{e.preventDefault();
+  const name=document.getElementById('af-name').value.trim();if(!name){msg.textContent='请填菜名';return;}
+  const where=f.querySelector('input[name=af-where]:checked').value;
+  const p={name,where,section:where==='menu'?document.getElementById('af-sec').value:'',protein:document.getElementById('af-prot').value,
+   recent:document.getElementById('af-recent').checked,soup:document.getElementById('af-soup').checked,
+   link:document.getElementById('af-link').value.trim(),ingredients:document.getElementById('af-ing').value.trim(),website:document.getElementById('af-hp').value};
+  if(p.link&&!okUrl(p.link)){msg.textContent='链接要以 http 开头';return;}
+  go.disabled=true;msg.textContent='保存中…';
+  try{const file=document.getElementById('af-photo').files[0];if(file){msg.textContent='压缩照片…';p.photo=await shrink(file);msg.textContent='上传中…';}
+   const r=await fetch(ADD.url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(p)});
+   const j=await r.json();if(!j.ok)throw new Error(j.error||'error');
+   const d=j.row&&addRow(j.row);f.reset();secw.style.display='';msg.textContent='已添加 ✓';
+   if(d){d.scrollIntoView({behavior:'smooth',block:'center'});d.classList.remove('flash');void d.offsetWidth;d.classList.add('flash');}
+   else if(j.row)msg.textContent='已保存 ✓（菜单里已有同名的菜）';
+  }catch(err){msg.textContent='没保存成功，请稍后再试';}
+  finally{go.disabled=false;}});
+})();
 
 function openFromHash(){const h=location.hash.match(/^#([dtg]\d+)$/)||(location.search.match(/[?&]dish=([dtg]\d+)/));if(h){const d=document.getElementById(h[1]);if(d){ov.style.transition='none';sh.style.transition='none';openDish(d);requestAnimationFrame(()=>{ov.style.transition='';sh.style.transition='';});}}}
 openFromHash();

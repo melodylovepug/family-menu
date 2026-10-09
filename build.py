@@ -8,7 +8,7 @@ D = json.load(open(os.path.join(ROOT, 'menu.json'), encoding='utf-8'))
 E = html.escape
 
 # Google Apps Script web app URL for the "添加新菜" form (see apps-script/Code.gs). Empty = form hidden and no fetch.
-SCRIPT_URL = ''
+SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxx3byFZ09adGhHPDE4liQxCP2Bwx8OIErUbe2fIzKc0RCoq-Vt53IrNb8TV2yJHbSi/exec'
 SCRIPT_URL = os.environ.get('MENU_SCRIPT_URL', SCRIPT_URL)   # test override only
 # Protein spellings that mean the same thing for the no-repeat rule
 PROT_CANON = {'虾': '龙虾/虾', '蛋': '豆腐/蛋'}
