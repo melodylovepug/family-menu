@@ -7,6 +7,13 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 D = json.load(open(os.path.join(ROOT, 'menu.json'), encoding='utf-8'))
 E = html.escape
 
+# Google Apps Script web app URL for the "添加新菜" form (see apps-script/Code.gs). Empty = form hidden and no fetch.
+SCRIPT_URL = ''
+SCRIPT_URL = os.environ.get('MENU_SCRIPT_URL', SCRIPT_URL)   # test override only
+# Protein spellings that mean the same thing for the no-repeat rule
+PROT_CANON = {'虾': '龙虾/虾', '蛋': '豆腐/蛋'}
+def canon(m): return PROT_CANON.get(m, m)
+
 def inline(t):
     t = E(t)
     t = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', t)
@@ -148,6 +155,19 @@ def build_weeks():
         weeks.append(dict(date=lab, lines=lines, src='history'))
     return weeks
 WEEKS = build_weeks()
+
+def extra_js():
+    """Client code for dishes added through the Google Sheet form. Only emitted when SCRIPT_URL is set."""
+    if not SCRIPT_URL: return ''
+    known = sorted({norm(k) for c in CATS for d in c['dishes'] for k in [d['name']] + d.get('aliases', [])} | {norm(t['name']) for t in D['todo']})
+    hist = {}
+    for h in D.get('history', []):
+        for raw in h['dishes']:
+            k = norm(raw)
+            if h['date'] > hist.get(k, ''): hist[k] = h['date']
+    secs = {c['id']: [c['icon'], c['zh'], c['en']] + list(PAL[c['id']]) for c in CATS}
+    cfg = dict(url=SCRIPT_URL, known=known, hist=hist, secs=secs, noPick=sorted(NO_PICK), canon=PROT_CANON)
+    return 'const ADD=' + json.dumps(cfg, ensure_ascii=False).replace('</', '<\\/') + ';\n' + open(os.path.join(ROOT, 'add.js'), encoding='utf-8').read()
 def has_recipe(d): return bool(re.sub(r'^\s*\[[^\]]+\]\([^)]+\)\s*$', '', d['recipe'], flags=re.M).strip())
 def has_body(d):
     """Real recipe content: anything besides link lines, photo markers and '>' tips."""
@@ -164,7 +184,7 @@ NO_PICK = {'sweet', 'lunch', 'other'}   # sections the picker never draws from
 PICK = []
 for c in CATS:
     for d in c['dishes']:
-        m = d.get('meat')
+        m = canon(d.get('meat'))
         if c['id'] in NO_PICK or m == '甜品' or d.get('tag') == '甜品': continue      # never 午餐 / 其他 / dessert
         kind = 'cold' if c['id'] == 'cold' else ('main' if m and m != '素' else None)
         if not kind: continue                                                    # veg-only mains/staples are skipped
@@ -174,7 +194,7 @@ for c in CATS:
 TID = {id(t): t.get('id') or f't{i}' for i, t in enumerate(D['todo'], 1)}
 for t in D['todo']:
     if t.get('recent') and t.get('meat') and t['meat'] not in ('素', '甜品'):
-        PICK.append(dict(id=TID[id(t)], n=t['name'], k='main', m=t['meat'], s=bool(t.get('soup')) or '汤' in t['name'], t=True, r=False,
+        PICK.append(dict(id=TID[id(t)], n=t['name'], k='main', m=canon(t['meat']), s=bool(t.get('soup')) or '汤' in t['name'], t=True, r=False,
                          o=bool(t.get('link') or t.get('details') or t.get('ingredients')), p='', i='🌸', c='todo', l=LAST.get(t['name'], '')))
 total = sum(len(c['dishes']) for c in CATS)
 out = []
@@ -291,6 +311,24 @@ footer::before{{content:"🍙 🍡 🍵";display:block;font-size:18px;margin-bot
 .dish.empty{{cursor:default}}.dish.empty:hover{{background:none}}
 .open{{font-size:12px;font-weight:700;color:var(--cd);background:#fff;border:1.5px solid var(--ca);padding:4px 10px;border-radius:999px;font-family:inherit;cursor:pointer}}
 .cam{{font-size:12px;opacity:.75}}
+.addw{{margin:-6px 0 16px;text-align:center}}
+.add-btn{{font-family:inherit;font-size:13px;font-weight:800;color:#8f6560;background:#fff;border:2px dashed #d9c1be;border-radius:999px;padding:7px 16px;cursor:pointer}}
+.addf{{margin:12px auto 0;max-width:560px;text-align:left;background:#fffdf9;border:2px solid #e8d8d5;border-radius:22px;padding:14px 16px 12px;box-shadow:0 5px 0 #eadfdc;display:flex;flex-direction:column;gap:10px}}
+.addf.hide{{display:none}}
+.af-l{{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:800;color:#8f6560}}
+.af-l b{{color:#c0716a}}
+.addf input:not([type=radio]):not([type=checkbox]),.addf select{{font-family:inherit;font-size:16px;color:var(--ink);background:#fff;border:2px solid #e3d7d2;border-radius:14px;padding:8px 12px;outline:none;width:100%}}
+.addf input[type=file]{{font-size:13px;padding:6px 8px}}
+.af-row{{display:grid;grid-template-columns:1fr 1fr;gap:10px}}
+.af-seg,.af-chk{{display:flex;gap:8px;flex-wrap:wrap}}
+.af-seg input,.af-chk input{{position:absolute;opacity:0;pointer-events:none}}
+.af-seg span,.af-chk span{{display:inline-block;font-size:13px;font-weight:700;color:#7d7468;background:#fff;border:2px solid #e3ddd5;border-radius:999px;padding:6px 13px;cursor:pointer}}
+.af-seg input:checked+span,.af-chk input:checked+span{{color:#fff;background:#a89a8c;border-color:#a89a8c}}
+.af-hp{{position:absolute;left:-9999px;width:1px;height:1px}}
+.af-act{{display:flex;align-items:center;gap:10px;flex-wrap:wrap}}
+.af-go{{font-family:inherit;font-size:15px;font-weight:800;color:#fff;background:#b8928e;border:2px solid #a8817d;border-radius:999px;padding:8px 22px;box-shadow:0 4px 0 #9c7773;cursor:pointer}}
+.af-go:disabled{{opacity:.6}}
+.af-msg{{font-size:12.5px;color:var(--mute)}}
 .recent{{font-size:10px;font-weight:800;color:#fff;background:#a89a8c;border-radius:999px;padding:0 8px;line-height:1.7;letter-spacing:.08em;flex:0 0 auto}}
 .tbd{{font-size:10.5px;font-weight:700;color:var(--mute);border:1.2px dashed #d6ccc2;border-radius:999px;padding:0 7px;line-height:1.6;background:rgba(255,255,255,.6)}}
 .dish.bare{{padding-top:9px;padding-bottom:9px}}
@@ -464,6 +502,22 @@ span.pr-th{{display:flex;align-items:center;justify-content:center;font-size:24p
 for c in CATS: out.append(f'<a href="#{c["id"]}" style="--c:{PAL[c["id"]][1]}55">{c["icon"]} {E(c["zh"])}</a>')
 out.append('<a href="#todo" style="--c:#c9a9a666">📝 待做</a><a href="#weeks" style="--c:#9aa8b566">📅 每周</a></nav>')
 out.append('<input class="search" id="q" type="search" placeholder="🔍 搜菜名或食材，比如 冬瓜、鸡腿…">')
+if SCRIPT_URL:
+    sec_opts = ''.join(f'<option value="{c["id"]}"{" selected" if c["id"] == "other" else ""}>{c["icon"]} {E(c["zh"])}</option>' for c in CATS)
+    prot_opts = ''.join(f'<option value="{p}">{p or "（不填）"}</option>' for p in ['', '牛', '猪', '羊', '鸡', '鸭', '鱼', '龙虾/虾', '蟹', '蛤蜊/贝', '豆腐/蛋', '素'])
+    out.append(f'''<div class="addw"><button class="add-btn" id="add-open" type="button" aria-expanded="false">＋ 添加新菜</button>
+<form class="addf hide" id="addf" autocomplete="off">
+<label class="af-l"><span>菜名 <b>*</b></span><input id="af-name" maxlength="60" required placeholder="比如 葱油拌面"></label>
+<div class="af-l">加到哪里<div class="af-seg"><label><input type="radio" name="af-where" value="menu" checked><span>🍽 菜单</span></label><label><input type="radio" name="af-where" value="todo"><span>📝 待做</span></label></div></div>
+<label class="af-l" id="af-secw">分类<select id="af-sec">{sec_opts}</select></label>
+<div class="af-row"><label class="af-l">主蛋白<select id="af-prot">{prot_opts}</select></label>
+<div class="af-l">标签<div class="af-chk"><label><input type="checkbox" id="af-recent"><span>最近</span></label><label><input type="checkbox" id="af-soup"><span>汤</span></label></div></div></div>
+<label class="af-l">食谱链接<input id="af-link" type="url" inputmode="url" placeholder="https://…（可不填）"></label>
+<label class="af-l">食材<input id="af-ing" maxlength="500" placeholder="比如 面 · 葱 · 酱油（可不填）"></label>
+<label class="af-l">照片<input id="af-photo" type="file" accept="image/*"></label>
+<input class="af-hp" id="af-hp" tabindex="-1" aria-hidden="true" placeholder="website">
+<div class="af-act"><button class="af-go" id="af-go" type="submit">保存</button><span class="af-msg" id="af-msg" aria-live="polite"></span></div>
+</form></div>''')
 out.append('<div class="grid">')
 n = 0
 for c in CATS:
@@ -555,8 +609,9 @@ function openDish(d){const src=d.querySelector('.rcp-src');if(!src)return;
  sh.scrollTop=0;ov.classList.add('on');ov.setAttribute('aria-hidden','false');document.body.classList.add('lock');
  if(location.hash!=='#'+d.id)history.replaceState(null,'','#'+d.id);}
 function closeDish(){ov.classList.remove('on');ov.setAttribute('aria-hidden','true');document.body.classList.remove('lock');
- if(/^#[dt]\\d+$/.test(location.hash))history.replaceState(null,'',location.pathname+location.search);}
-document.querySelectorAll('.dish').forEach(d=>d.addEventListener('click',e=>{if(e.target.closest('a'))return;openDish(d);}));
+ if(/^#[dtg]\\d+$/.test(location.hash))history.replaceState(null,'',location.pathname+location.search);}
+const bindDish=d=>d.addEventListener('click',e=>{if(e.target.closest('a'))return;openDish(d);});
+document.querySelectorAll('.dish').forEach(bindDish);
 document.getElementById('sh-x').addEventListener('click',closeDish);
 ov.addEventListener('click',e=>{if(e.target===ov)closeDish();});
 document.querySelectorAll('a.wkd').forEach(a=>a.addEventListener('click',e=>{const d=document.getElementById(a.dataset.d);if(!d)return;e.preventDefault();
@@ -654,9 +709,12 @@ document.getElementById('pick-go').addEventListener('click',showPick);
 document.getElementById('pick-re').addEventListener('click',showPick);
 document.getElementById('pick-sel').addEventListener('click',()=>{selMode=!selMode;marked=new Set();fresh=[];renderPick(document.getElementById('pick-foot').textContent);});
 document.getElementById('pick-swap').addEventListener('click',()=>{if(marked.size)doSwap([...marked]);});
-const h=location.hash.match(/^#([dt]\\d+)$/)||(location.search.match(/[?&]dish=([dt]\\d+)/));if(h){const d=document.getElementById(h[1]);if(d){ov.style.transition='none';sh.style.transition='none';openDish(d);requestAnimationFrame(()=>{ov.style.transition='';sh.style.transition='';});}}
+__EXTRA_JS__
+function openFromHash(){const h=location.hash.match(/^#([dtg]\\d+)$/)||(location.search.match(/[?&]dish=([dtg]\\d+)/));if(h){const d=document.getElementById(h[1]);if(d){ov.style.transition='none';sh.style.transition='none';openDish(d);requestAnimationFrame(()=>{ov.style.transition='';sh.style.transition='';});}}}
+openFromHash();
 </script></body></html>''')
-open(os.path.join(ROOT, 'index.html'), 'w', encoding='utf-8').write("\n".join(out))
-print(total, len(CATS), 'todo', len(D['todo']), len("\n".join(out).encode()))
+page = "\n".join(out).replace('__EXTRA_JS__', extra_js())
+open(os.path.join(ROOT, 'index.html'), 'w', encoding='utf-8').write(page)
+print(total, len(CATS), 'todo', len(D['todo']), len(page.encode()), 'form' if SCRIPT_URL else 'no form')
 print('sheet link tags:', len(REF_STATS['linked']), REF_STATS['linked'])
 if REF_STATS['nourl']: print('参考 lines without a URL:', REF_STATS['nourl'])
