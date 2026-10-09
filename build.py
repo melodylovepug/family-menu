@@ -519,7 +519,7 @@ if SCRIPT_URL:
 <div class="af-l">加到哪里<div class="af-seg"><label><input type="radio" name="af-where" value="menu" checked><span>🍽 菜单</span></label><label><input type="radio" name="af-where" value="todo"><span>📝 待做</span></label></div></div>
 <label class="af-l" id="af-secw">分类<select id="af-sec">{sec_opts}</select></label>
 <div class="af-row"><label class="af-l">主蛋白<select id="af-prot">{prot_opts}</select></label>
-<div class="af-l">标签<div class="af-chk"><label><input type="checkbox" id="af-recent"><span>最近</span></label><label><input type="checkbox" id="af-soup"><span>汤</span></label><label title="不参与随机选菜"><input type="checkbox" id="af-skip"><span>skip</span></label></div></div></div>
+<div class="af-l">标签<div class="af-chk"><label><input type="checkbox" id="af-recent"><span>最近</span></label><label title="不参与随机选菜"><input type="checkbox" id="af-skip"><span>skip</span></label></div></div></div>
 <label class="af-l">食谱链接<input id="af-link" type="url" inputmode="url" placeholder="https://…（可不填）"></label>
 <label class="af-l">食材<input id="af-ing" maxlength="500" placeholder="比如 面 · 葱 · 酱油（可不填）"></label>
 <label class="af-l">照片<input id="af-photo" type="file" accept="image/*"></label>

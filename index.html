@@ -314,7 +314,7 @@ span.pr-th{display:flex;align-items:center;justify-content:center;font-size:24px
 <div class="af-l">加到哪里<div class="af-seg"><label><input type="radio" name="af-where" value="menu" checked><span>🍽 菜单</span></label><label><input type="radio" name="af-where" value="todo"><span>📝 待做</span></label></div></div>
 <label class="af-l" id="af-secw">分类<select id="af-sec"><option value="beef">🐮 牛·羊</option><option value="pork">🐷 猪</option><option value="poultry">🐔 鸡·鸭</option><option value="sea">🐟 海鲜</option><option value="cold">🥗 凉菜·蔬菜</option><option value="soup">🍲 汤</option><option value="staple">🍚 饭·面包</option><option value="lunch">🍱 午餐</option><option value="other" selected>🥡 其他</option><option value="sweet">🍰 甜品·饮料</option></select></label>
 <div class="af-row"><label class="af-l">主蛋白<select id="af-prot"><option value="">（不填）</option><option value="牛">牛</option><option value="猪">猪</option><option value="羊">羊</option><option value="鸡">鸡</option><option value="鸭">鸭</option><option value="鱼">鱼</option><option value="龙虾/虾">龙虾/虾</option><option value="蟹">蟹</option><option value="蛤蜊/贝">蛤蜊/贝</option><option value="豆腐/蛋">豆腐/蛋</option><option value="素">素</option></select></label>
-<div class="af-l">标签<div class="af-chk"><label><input type="checkbox" id="af-recent"><span>最近</span></label><label><input type="checkbox" id="af-soup"><span>汤</span></label><label title="不参与随机选菜"><input type="checkbox" id="af-skip"><span>skip</span></label></div></div></div>
+<div class="af-l">标签<div class="af-chk"><label><input type="checkbox" id="af-recent"><span>最近</span></label><label title="不参与随机选菜"><input type="checkbox" id="af-skip"><span>skip</span></label></div></div></div>
 <label class="af-l">食谱链接<input id="af-link" type="url" inputmode="url" placeholder="https://…（可不填）"></label>
 <label class="af-l">食材<input id="af-ing" maxlength="500" placeholder="比如 面 · 葱 · 酱油（可不填）"></label>
 <label class="af-l">照片<input id="af-photo" type="file" accept="image/*"></label>
@@ -641,7 +641,7 @@ const ADD={"url": "https://script.google.com/macros/s/AKfycbxx3byFZ09adGhHPDE4li
   box.appendChild(d);bindDish(d);
   const n=(todo?document.getElementById('todo'):box).querySelector('h2 .n');if(n)n.textContent=+n.textContent+1;
   /* picker: same rules as built-in dishes */
-  const meat=prot&&prot!=='素'&&prot!=='甜品',soup=yes(r.soup)||sec==='soup'||name.includes('汤');
+  const meat=prot&&prot!=='素'&&prot!=='甜品',soup=yes(r.soup)||r.section==='soup'||name.includes('汤');
   let k=null,t=recent;
   if(todo){if(recent&&meat){k='main';t=true;}}
   else if(!ADD.noPick.includes(sec)){k=sec==='cold'?'cold':(meat?'main':null);}
@@ -657,8 +657,7 @@ const ADD={"url": "https://script.google.com/macros/s/AKfycbxx3byFZ09adGhHPDE4li
  const ob=document.getElementById('add-open'),msg=document.getElementById('af-msg'),go=document.getElementById('af-go');
  ob.addEventListener('click',()=>{const o=f.classList.toggle('hide');ob.setAttribute('aria-expanded',String(!o));if(!o)document.getElementById('af-name').focus();});
  const secw=document.getElementById('af-secw');
- f.querySelectorAll('input[name=af-where]').forEach(x=>x.addEventListener('change',()=>{secw.style.display=f.querySelector('input[name=af-where]:checked').value==='todo'?'none':'';}));
- function shrink(file){return new Promise((res,rej)=>{const u=URL.createObjectURL(file),im=new Image();
+  function shrink(file){return new Promise((res,rej)=>{const u=URL.createObjectURL(file),im=new Image();
   im.onload=()=>{const s=Math.min(1,1200/Math.max(im.naturalWidth,im.naturalHeight)),c=document.createElement('canvas');
    c.width=Math.round(im.naturalWidth*s);c.height=Math.round(im.naturalHeight*s);const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);
    g.drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL('image/jpeg',0.82));};
@@ -667,8 +666,8 @@ const ADD={"url": "https://script.google.com/macros/s/AKfycbxx3byFZ09adGhHPDE4li
   if(editId)return saveEdit();
   const name=document.getElementById('af-name').value.trim();if(!name){msg.textContent='请填菜名';return;}
   const where=f.querySelector('input[name=af-where]:checked').value;
-  const p={name,where,section:where==='menu'?document.getElementById('af-sec').value:'',protein:document.getElementById('af-prot').value,
-   recent:document.getElementById('af-recent').checked,soup:document.getElementById('af-soup').checked,
+  const p={name,where,section:document.getElementById('af-sec').value,protein:document.getElementById('af-prot').value,
+   recent:document.getElementById('af-recent').checked,soup:false,
    link:document.getElementById('af-link').value.trim(),ingredients:document.getElementById('af-ing').value.trim().slice(0,490)+(document.getElementById('af-skip').checked?SKIP:''),website:document.getElementById('af-hp').value};
   if(p.link&&!okUrl(p.link)){msg.textContent='链接要以 http 开头';return;}
   go.disabled=true;msg.textContent='保存中…';
@@ -688,7 +687,7 @@ const ADD={"url": "https://script.google.com/macros/s/AKfycbxx3byFZ09adGhHPDE4li
  function stateFor(id){const b=EB[id];if(!b)return null;let st=null,photo=b.photo,pid=b.photo_id||'';
   for(const r of EDITS){const nm=String(r.name);if(nm===EDIT+id+'!'){st=null;photo=b.photo;pid=b.photo_id||'';continue;}
    if(nm!==EDIT+id)continue;const todo=r.where==='todo';
-   st={w:todo?'todo':'menu',sec:todo?'':(ADD.secs[r.section]?r.section:'other'),m:ADD.canon[r.protein]||String(r.protein||''),r:yes(r.recent),s:yes(r.soup),
+   st={w:todo?'todo':'menu',sec:todo?'':(ADD.secs[r.section]?r.section:'other'),m:ADD.canon[r.protein]||String(r.protein||''),r:yes(r.recent),s:yes(r.soup)||r.section==='soup',
     link:okUrl(r.link)?String(r.link):''};[st.ing,st.k]=unSkip(r.ingredients);
    if(/^https:\/\/(lh\d\.googleusercontent\.com|drive\.google\.com)\//.test(r.photo||'')){photo=r.photo;pid=r.photo_id||'';}}
   return Object.assign({},b,st||{},{photo,photo_id:pid,edited:!!st||photo!==b.photo});}
@@ -749,14 +748,14 @@ const ADD={"url": "https://script.google.com/macros/s/AKfycbxx3byFZ09adGhHPDE4li
    b.addEventListener('click',()=>startEdit(d));r.insertBefore(b,r.firstChild);}};
  closeDish=function(){stopEdit();_close();};
  document.querySelectorAll('.dish').forEach(d=>d.querySelector('.rcp-src')||0);
- function setWhere(v){f.querySelector('input[name=af-where][value='+v+']').checked=true;secw.style.display=v==='todo'?'none':'';}
+ function setWhere(v){f.querySelector('input[name=af-where][value='+v+']').checked=true;}
  function startEdit(d){const st=d._st||stateFor(d.id);if(!st)return;editId=d.id;
   const r=document.getElementById('sh-r');f.reset();msg.textContent='';
   document.getElementById('ed-open').style.display='none';r.insertBefore(f,r.children[1]||null);f.classList.remove('hide');f.classList.add('edf');
   const nm=document.getElementById('af-name');nm.value=d.querySelector('.name').textContent;nm.disabled=true;
-  setWhere(st.w);document.getElementById('af-sec').value=st.sec||'other';
+  setWhere(st.w);document.getElementById('af-sec').value=st.w==='todo'?(st.s?'soup':'other'):(st.sec||'other');
   const ps=document.getElementById('af-prot');ps.value=PROTS.includes(st.m)?st.m:'';
-  document.getElementById('af-recent').checked=!!st.r;document.getElementById('af-soup').checked=!!st.s;document.getElementById('af-skip').checked=!!st.k;
+  document.getElementById('af-recent').checked=!!st.r;document.getElementById('af-skip').checked=!!st.k;
   document.getElementById('af-link').value=st.link||'';document.getElementById('af-ing').value=st.ing||'';
   document.getElementById('af-photo').parentElement.firstChild.textContent=st.photo?'换照片（不选就保留原来的）':'照片';
   go.textContent='保存修改';f.scrollIntoView({block:'nearest'});}
@@ -764,8 +763,8 @@ const ADD={"url": "https://script.google.com/macros/s/AKfycbxx3byFZ09adGhHPDE4li
   document.getElementById('af-name').disabled=false;secw.style.display='';go.textContent='保存';msg.textContent='';
   document.getElementById('af-photo').parentElement.firstChild.textContent='照片';ob.setAttribute('aria-expanded','false');}
  async function saveEdit(){const id=editId,where=f.querySelector('input[name=af-where]:checked').value;
-  const p={name:EDIT+id,where,section:where==='menu'?document.getElementById('af-sec').value:'',protein:document.getElementById('af-prot').value,
-   recent:document.getElementById('af-recent').checked,soup:document.getElementById('af-soup').checked,
+  const p={name:EDIT+id,where,section:document.getElementById('af-sec').value,protein:document.getElementById('af-prot').value,
+   recent:document.getElementById('af-recent').checked,soup:false,
    link:document.getElementById('af-link').value.trim(),ingredients:document.getElementById('af-ing').value.trim().slice(0,490)+(document.getElementById('af-skip').checked?SKIP:''),website:document.getElementById('af-hp').value};
   if(p.link&&!okUrl(p.link)){msg.textContent='链接要以 http 开头';return;}
   go.disabled=true;msg.textContent='保存中…';

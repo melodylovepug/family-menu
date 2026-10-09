@@ -39,7 +39,7 @@
   box.appendChild(d);bindDish(d);
   const n=(todo?document.getElementById('todo'):box).querySelector('h2 .n');if(n)n.textContent=+n.textContent+1;
   /* picker: same rules as built-in dishes */
-  const meat=prot&&prot!=='素'&&prot!=='甜品',soup=yes(r.soup)||sec==='soup'||name.includes('汤');
+  const meat=prot&&prot!=='素'&&prot!=='甜品',soup=yes(r.soup)||r.section==='soup'||name.includes('汤');
   let k=null,t=recent;
   if(todo){if(recent&&meat){k='main';t=true;}}
   else if(!ADD.noPick.includes(sec)){k=sec==='cold'?'cold':(meat?'main':null);}
@@ -55,8 +55,7 @@
  const ob=document.getElementById('add-open'),msg=document.getElementById('af-msg'),go=document.getElementById('af-go');
  ob.addEventListener('click',()=>{const o=f.classList.toggle('hide');ob.setAttribute('aria-expanded',String(!o));if(!o)document.getElementById('af-name').focus();});
  const secw=document.getElementById('af-secw');
- f.querySelectorAll('input[name=af-where]').forEach(x=>x.addEventListener('change',()=>{secw.style.display=f.querySelector('input[name=af-where]:checked').value==='todo'?'none':'';}));
- function shrink(file){return new Promise((res,rej)=>{const u=URL.createObjectURL(file),im=new Image();
+  function shrink(file){return new Promise((res,rej)=>{const u=URL.createObjectURL(file),im=new Image();
   im.onload=()=>{const s=Math.min(1,1200/Math.max(im.naturalWidth,im.naturalHeight)),c=document.createElement('canvas');
    c.width=Math.round(im.naturalWidth*s);c.height=Math.round(im.naturalHeight*s);const g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);
    g.drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL('image/jpeg',0.82));};
@@ -65,8 +64,8 @@
   if(editId)return saveEdit();
   const name=document.getElementById('af-name').value.trim();if(!name){msg.textContent='请填菜名';return;}
   const where=f.querySelector('input[name=af-where]:checked').value;
-  const p={name,where,section:where==='menu'?document.getElementById('af-sec').value:'',protein:document.getElementById('af-prot').value,
-   recent:document.getElementById('af-recent').checked,soup:document.getElementById('af-soup').checked,
+  const p={name,where,section:document.getElementById('af-sec').value,protein:document.getElementById('af-prot').value,
+   recent:document.getElementById('af-recent').checked,soup:false,
    link:document.getElementById('af-link').value.trim(),ingredients:document.getElementById('af-ing').value.trim().slice(0,490)+(document.getElementById('af-skip').checked?SKIP:''),website:document.getElementById('af-hp').value};
   if(p.link&&!okUrl(p.link)){msg.textContent='链接要以 http 开头';return;}
   go.disabled=true;msg.textContent='保存中…';
@@ -86,7 +85,7 @@
  function stateFor(id){const b=EB[id];if(!b)return null;let st=null,photo=b.photo,pid=b.photo_id||'';
   for(const r of EDITS){const nm=String(r.name);if(nm===EDIT+id+'!'){st=null;photo=b.photo;pid=b.photo_id||'';continue;}
    if(nm!==EDIT+id)continue;const todo=r.where==='todo';
-   st={w:todo?'todo':'menu',sec:todo?'':(ADD.secs[r.section]?r.section:'other'),m:ADD.canon[r.protein]||String(r.protein||''),r:yes(r.recent),s:yes(r.soup),
+   st={w:todo?'todo':'menu',sec:todo?'':(ADD.secs[r.section]?r.section:'other'),m:ADD.canon[r.protein]||String(r.protein||''),r:yes(r.recent),s:yes(r.soup)||r.section==='soup',
     link:okUrl(r.link)?String(r.link):''};[st.ing,st.k]=unSkip(r.ingredients);
    if(/^https:\/\/(lh\d\.googleusercontent\.com|drive\.google\.com)\//.test(r.photo||'')){photo=r.photo;pid=r.photo_id||'';}}
   return Object.assign({},b,st||{},{photo,photo_id:pid,edited:!!st||photo!==b.photo});}
@@ -147,14 +146,14 @@
    b.addEventListener('click',()=>startEdit(d));r.insertBefore(b,r.firstChild);}};
  closeDish=function(){stopEdit();_close();};
  document.querySelectorAll('.dish').forEach(d=>d.querySelector('.rcp-src')||0);
- function setWhere(v){f.querySelector('input[name=af-where][value='+v+']').checked=true;secw.style.display=v==='todo'?'none':'';}
+ function setWhere(v){f.querySelector('input[name=af-where][value='+v+']').checked=true;}
  function startEdit(d){const st=d._st||stateFor(d.id);if(!st)return;editId=d.id;
   const r=document.getElementById('sh-r');f.reset();msg.textContent='';
   document.getElementById('ed-open').style.display='none';r.insertBefore(f,r.children[1]||null);f.classList.remove('hide');f.classList.add('edf');
   const nm=document.getElementById('af-name');nm.value=d.querySelector('.name').textContent;nm.disabled=true;
-  setWhere(st.w);document.getElementById('af-sec').value=st.sec||'other';
+  setWhere(st.w);document.getElementById('af-sec').value=st.w==='todo'?(st.s?'soup':'other'):(st.sec||'other');
   const ps=document.getElementById('af-prot');ps.value=PROTS.includes(st.m)?st.m:'';
-  document.getElementById('af-recent').checked=!!st.r;document.getElementById('af-soup').checked=!!st.s;document.getElementById('af-skip').checked=!!st.k;
+  document.getElementById('af-recent').checked=!!st.r;document.getElementById('af-skip').checked=!!st.k;
   document.getElementById('af-link').value=st.link||'';document.getElementById('af-ing').value=st.ing||'';
   document.getElementById('af-photo').parentElement.firstChild.textContent=st.photo?'换照片（不选就保留原来的）':'照片';
   go.textContent='保存修改';f.scrollIntoView({block:'nearest'});}
@@ -162,8 +161,8 @@
   document.getElementById('af-name').disabled=false;secw.style.display='';go.textContent='保存';msg.textContent='';
   document.getElementById('af-photo').parentElement.firstChild.textContent='照片';ob.setAttribute('aria-expanded','false');}
  async function saveEdit(){const id=editId,where=f.querySelector('input[name=af-where]:checked').value;
-  const p={name:EDIT+id,where,section:where==='menu'?document.getElementById('af-sec').value:'',protein:document.getElementById('af-prot').value,
-   recent:document.getElementById('af-recent').checked,soup:document.getElementById('af-soup').checked,
+  const p={name:EDIT+id,where,section:document.getElementById('af-sec').value,protein:document.getElementById('af-prot').value,
+   recent:document.getElementById('af-recent').checked,soup:false,
    link:document.getElementById('af-link').value.trim(),ingredients:document.getElementById('af-ing').value.trim().slice(0,490)+(document.getElementById('af-skip').checked?SKIP:''),website:document.getElementById('af-hp').value};
   if(p.link&&!okUrl(p.link)){msg.textContent='链接要以 http 开头';return;}
   go.disabled=true;msg.textContent='保存中…';
