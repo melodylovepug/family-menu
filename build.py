@@ -13,6 +13,11 @@ SCRIPT_URL = os.environ.get('MENU_SCRIPT_URL', SCRIPT_URL)   # test override onl
 # Protein spellings that mean the same thing for the no-repeat rule
 PROT_CANON = {'虾': '龙虾/虾', '蛋': '豆腐/蛋'}
 def canon(m): return PROT_CANON.get(m, m)
+def is_skip(d):
+    """'skip' tag: never drawn by the random picker. Accepts tag:'skip', tags:[...,'skip'] or skip:true in menu.json."""
+    t = d.get('tags') or []
+    if isinstance(t, str): t = re.split(r'[,\s]+', t)
+    return bool(d.get('skip')) or str(d.get('tag') or '').strip().lower() == 'skip' or 'skip' in [str(x).lower() for x in t]
 
 def inline(t):
     t = E(t)
@@ -185,7 +190,7 @@ PICK = []
 for c in CATS:
     for d in c['dishes']:
         m = canon(d.get('meat'))
-        if c['id'] in NO_PICK or m == '甜品' or d.get('tag') == '甜品': continue      # never 午餐 / 其他 / dessert
+        if is_skip(d) or c['id'] in NO_PICK or m == '甜品' or d.get('tag') == '甜品': continue      # never 午餐 / 其他 / dessert
         kind = 'cold' if c['id'] == 'cold' else ('main' if m and m != '素' else None)
         if not kind: continue                                                    # veg-only mains/staples are skipped
         PICK.append(dict(id=DID[id(d)], n=d['name'], k=kind, m=m, s=(c['id'] == 'soup' or '汤' in d['name']), t=bool(d.get('recent')),
@@ -193,7 +198,7 @@ for c in CATS:
 # 最近-tagged 待做 items join the pool as mains (needs a protein tag); at most ONE 待做/最近 dish per pick or swap result.
 TID = {id(t): t.get('id') or f't{i}' for i, t in enumerate(D['todo'], 1)}
 for t in D['todo']:
-    if t.get('recent') and t.get('meat') and t['meat'] not in ('素', '甜品'):
+    if t.get('recent') and t.get('meat') and not is_skip(t) and t['meat'] not in ('素', '甜品'):
         PICK.append(dict(id=TID[id(t)], n=t['name'], k='main', m=canon(t['meat']), s=bool(t.get('soup')) or '汤' in t['name'], t=True, r=False,
                          o=bool(t.get('link') or t.get('details') or t.get('ingredients')), p='', i='🌸', c='todo', l=LAST.get(t['name'], '')))
 total = sum(len(c['dishes']) for c in CATS)
@@ -329,6 +334,7 @@ footer::before{{content:"🍙 🍡 🍵";display:block;font-size:18px;margin-bot
 .af-go{{font-family:inherit;font-size:15px;font-weight:800;color:#fff;background:#b8928e;border:2px solid #a8817d;border-radius:999px;padding:8px 22px;box-shadow:0 4px 0 #9c7773;cursor:pointer}}
 .af-go:disabled{{opacity:.6}}
 .af-msg{{font-size:12.5px;color:var(--mute)}}
+.skp{{font-size:10px;font-weight:700;color:#9a9188;background:#efebe6;border:1.2px solid #ddd6ce;border-radius:999px;padding:0 7px;line-height:1.6;letter-spacing:.04em;flex:0 0 auto}}
 .ed-btn{{display:block;margin:0 0 12px auto;padding:5px 14px;font-size:12.5px}}
 .addf.edf{{margin:0 0 14px;max-width:none}}
 .recent{{font-size:10px;font-weight:800;color:#fff;background:#a89a8c;border-radius:999px;padding:0 8px;line-height:1.7;letter-spacing:.08em;flex:0 0 auto}}
@@ -513,7 +519,7 @@ if SCRIPT_URL:
 <div class="af-l">加到哪里<div class="af-seg"><label><input type="radio" name="af-where" value="menu" checked><span>🍽 菜单</span></label><label><input type="radio" name="af-where" value="todo"><span>📝 待做</span></label></div></div>
 <label class="af-l" id="af-secw">分类<select id="af-sec">{sec_opts}</select></label>
 <div class="af-row"><label class="af-l">主蛋白<select id="af-prot">{prot_opts}</select></label>
-<div class="af-l">标签<div class="af-chk"><label><input type="checkbox" id="af-recent"><span>最近</span></label><label><input type="checkbox" id="af-soup"><span>汤</span></label></div></div></div>
+<div class="af-l">标签<div class="af-chk"><label><input type="checkbox" id="af-recent"><span>最近</span></label><label><input type="checkbox" id="af-soup"><span>汤</span></label><label title="不参与随机选菜"><input type="checkbox" id="af-skip"><span>skip</span></label></div></div></div>
 <label class="af-l">食谱链接<input id="af-link" type="url" inputmode="url" placeholder="https://…（可不填）"></label>
 <label class="af-l">食材<input id="af-ing" maxlength="500" placeholder="比如 面 · 葱 · 酱油（可不填）"></label>
 <label class="af-l">照片<input id="af-photo" type="file" accept="image/*"></label>
@@ -536,13 +542,14 @@ for c in CATS:
              f'data-s="{E((d["name"]+" "+d["ingredients"]+" "+d["note"]+" "+plain(d["recipe"])).lower())}">'
              f'<div class="row">{th}<span class="name">{E(d["name"])}</span>')
         if d.get('recent'): s += '<span class="recent">最近</span>'
+        if is_skip(d): s += '<span class="skp" title="不参与随机选菜">skip</span>'
         if bare or d.get('tbd'): s += '<span class="tbd" title="做法待补充">待补充</span>'
         s += '</div>'
         _refs = split_refs(d['recipe'], d['links'])[1]
         EB[DID[id(d)]] = dict(w='menu', sec=c['id'], m=canon(d.get('meat') or ''), r=bool(d.get('recent')),
             s=bool(d.get('soup')) or c['id'] == 'soup' or '汤' in d['name'], link=next((u for u, _ in _refs if u), ''),
             ing=d['ingredients'], photo=d.get('photo') or '', tbd=bool(bare or d.get('tbd')), rb=has_body(d),
-            dess=(d.get('meat') == '甜品' or d.get('tag') == '甜品'), l=LAST.get(d['name'], ''))
+            dess=(d.get('meat') == '甜品' or d.get('tag') == '甜品'), k=is_skip(d), l=LAST.get(d['name'], ''))
         if not bare:   # sheet: link tags on top, then ingredients/notes, photo(s), steps
             body, refs = split_refs(d['recipe'], d['links'])
             summ = ''
@@ -566,10 +573,10 @@ for i, t in enumerate(D['todo'], 1):   # same card component as the menu; a shee
     ing = t.get('ingredients', '')
     sheet = bool(refs or ing or body.strip())
     EB[TID[id(t)]] = dict(w='todo', sec='', m=canon(t.get('meat') or ''), r=bool(t.get('recent')), s=bool(t.get('soup')) or '汤' in t['name'],
-        link=t.get('link') or '', ing=ing, photo='', tbd=bool(t.get('tbd')), rb=False, dess=t.get('meat') == '甜品', l=LAST.get(t['name'], ''))
+        link=t.get('link') or '', ing=ing, photo='', tbd=bool(t.get('tbd')), rb=False, dess=t.get('meat') == '甜品', k=is_skip(t), l=LAST.get(t['name'], ''))
     s = (f'<div class="dish{"" if sheet else " empty"}" id="{TID[id(t)]}" data-cat="todo" data-s="{E((t["name"]+" "+t["note"]+" "+ing+(" 最近" if t.get("recent") else "")).lower())}">'
          f'<div class="row"><span class="dth ic" aria-hidden="true">🌸</span><span class="name">{E(t["name"])}</span>'
-         + ('<span class="recent">最近</span>' if t.get('recent') else '')
+         + ('<span class="recent">最近</span>' if t.get('recent') else '') + ('<span class="skp" title="不参与随机选菜">skip</span>' if is_skip(t) else '')
          + ('<span class="tbd" title="做法待补充">待补充</span>' if t.get('tbd') else '') + '</div>')
     if sheet:
         summ = f'<div class="sh-sum"><div class="ing">{E(ing)}</div></div>' if ing else ''

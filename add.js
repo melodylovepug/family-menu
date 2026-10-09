@@ -2,6 +2,7 @@
 (function(){
  const normN=t=>String(t||'').replace(/（/g,'(').replace(/）/g,')').replace(/\s+/g,'').toLowerCase();
  const seen=new Set(ADD.known);
+ const SKIP=' [skip]', unSkip=v=>{v=String(v||'').trim();const k=v.endsWith(SKIP.trim());return [k?v.slice(0,-SKIP.trim().length).trim():v,k];};
  const EB=ADD.base, EDIT='✏️', isEdit=r=>String(r&&r.name||'').startsWith(EDIT);
  const okUrl=u=>/^https?:\/\//i.test(u||'');
  const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;};
@@ -15,7 +16,7 @@
   const todo=r.where==='todo',sec=todo?null:(ADD.secs[r.section]?r.section:'other');
   const S=todo?null:ADD.secs[sec];
   const prot=ADD.canon[r.protein]||String(r.protein||'');
-  const recent=yes(r.recent),link=okUrl(r.link)?String(r.link):'',ing=String(r.ingredients||'').trim().slice(0,500);
+  const recent=yes(r.recent),link=okUrl(r.link)?String(r.link):'',[ing,skip]=unSkip(String(r.ingredients||'').slice(0,500));
   const photo=/^https:\/\/(lh\d\.googleusercontent\.com|drive\.google\.com)\//.test(r.photo||'')?r.photo:'';
   const has=!!(link||ing||photo);
   const icon=todo?'🌸':S[0];
@@ -26,6 +27,7 @@
   else row.appendChild(el('span','dth ic',icon));
   row.appendChild(el('span','name',name));
   if(recent)row.appendChild(el('span','recent','最近'));
+  if(skip)row.appendChild(el('span','skp','skip'));
   if(!has)row.appendChild(el('span','tbd','待补充'));
   d.appendChild(row);
   if(has){const src=el('div','rcp-src');src.dataset.ic=todo?'📝':icon;src.dataset.cat=todo?'待做 · To try':S[1]+' · '+S[2];
@@ -41,8 +43,8 @@
   let k=null,t=recent;
   if(todo){if(recent&&meat){k='main';t=true;}}
   else if(!ADD.noPick.includes(sec)){k=sec==='cold'?'cold':(meat?'main':null);}
-  if(k)PK.push({id,n:name,k,m:prot||'素',s:soup,t,r:false,o:has,p:todo?'':photo,i:icon,c:todo?'todo':sec,l:ADD.hist[key]||''});
-  EB[id]={w:todo?'todo':'menu',sec:todo?'':sec,m:prot,r:recent,s:soup,link,ing,photo,photo_id:r.photo_id||'',tbd:false,rb:false,dess:false,l:ADD.hist[key]||''};
+  if(k&&!skip)PK.push({id,n:name,k,m:prot||'素',s:soup,t,r:false,o:has,p:todo?'':photo,i:icon,c:todo?'todo':sec,l:ADD.hist[key]||''});
+  EB[id]={w:todo?'todo':'menu',sec:todo?'':sec,m:prot,r:recent,s:soup,link,ing,photo,photo_id:r.photo_id||'',tbd:false,rb:false,dess:false,k:skip,l:ADD.hist[key]||''};
   return d;}
  window.__addRow=addRow;
  fetch(ADD.url,{cache:'no-store'}).then(r=>r.json()).then(j=>{if(j&&j.ok&&Array.isArray(j.rows)){j.rows.forEach(r=>{if(!isEdit(r))try{addRow(r)}catch(e){}});
@@ -65,7 +67,7 @@
   const where=f.querySelector('input[name=af-where]:checked').value;
   const p={name,where,section:where==='menu'?document.getElementById('af-sec').value:'',protein:document.getElementById('af-prot').value,
    recent:document.getElementById('af-recent').checked,soup:document.getElementById('af-soup').checked,
-   link:document.getElementById('af-link').value.trim(),ingredients:document.getElementById('af-ing').value.trim(),website:document.getElementById('af-hp').value};
+   link:document.getElementById('af-link').value.trim(),ingredients:document.getElementById('af-ing').value.trim().slice(0,490)+(document.getElementById('af-skip').checked?SKIP:''),website:document.getElementById('af-hp').value};
   if(p.link&&!okUrl(p.link)){msg.textContent='链接要以 http 开头';return;}
   go.disabled=true;msg.textContent='保存中…';
   try{const file=document.getElementById('af-photo').files[0];if(file){msg.textContent='压缩照片…';p.photo=await shrink(file);msg.textContent='上传中…';}
@@ -85,7 +87,7 @@
   for(const r of EDITS){const nm=String(r.name);if(nm===EDIT+id+'!'){st=null;photo=b.photo;pid=b.photo_id||'';continue;}
    if(nm!==EDIT+id)continue;const todo=r.where==='todo';
    st={w:todo?'todo':'menu',sec:todo?'':(ADD.secs[r.section]?r.section:'other'),m:ADD.canon[r.protein]||String(r.protein||''),r:yes(r.recent),s:yes(r.soup),
-    link:okUrl(r.link)?String(r.link):'',ing:String(r.ingredients||'').trim().slice(0,500)};
+    link:okUrl(r.link)?String(r.link):''};[st.ing,st.k]=unSkip(r.ingredients);
    if(/^https:\/\/(lh\d\.googleusercontent\.com|drive\.google\.com)\//.test(r.photo||'')){photo=r.photo;pid=r.photo_id||'';}}
   return Object.assign({},b,st||{},{photo,photo_id:pid,edited:!!st||photo!==b.photo});}
  const ORIG={};
@@ -118,8 +120,9 @@
   if(st.photo&&!todo){nt=photoEl({photo:st.photo,photo_id:st.photo_id},'dth');nt.addEventListener('error',()=>{if(!row.querySelector('.dth'))row.insertBefore(el('span','dth ic',icon),row.firstChild);});}
   else nt=el('span','dth ic',icon);
   if(th)th.replaceWith(nt);else row.insertBefore(nt,row.firstChild);
-  row.querySelectorAll('.recent,.tbd').forEach(x=>x.remove());
+  row.querySelectorAll('.recent,.tbd,.skp').forEach(x=>x.remove());
   if(st.r)row.appendChild(el('span','recent','最近'));
+  if(st.k)row.appendChild(el('span','skp','skip'));
   if(b.tbd||!has)row.appendChild(el('span','tbd','待补充'));
   d.classList.toggle('bare',!has);
   d.dataset.s=(name+' '+st.ing+' '+(src?src.textContent:'')+(st.r?' 最近':'')).toLowerCase();
@@ -129,7 +132,7 @@
   const soup=st.s||st.sec==='soup'||name.includes('汤');
   if(todo){if(st.r&&meat){k='main';t=true;}}
   else if(!ADD.noPick.includes(st.sec)&&!b.dess){k=st.sec==='cold'?'cold':(meat?'main':null);}
-  if(k)PK.push({id,n:name,k,m:st.m||'素',s:soup,t,r:b.rb,o:has,p:todo?'':st.photo,i:icon,c:todo?'todo':st.sec,l:b.l||(old0&&old0.l)||''});}
+  if(k&&!st.k)PK.push({id,n:name,k,m:st.m||'素',s:soup,t,r:b.rb,o:has,p:todo?'':st.photo,i:icon,c:todo?'todo':st.sec,l:b.l||(old0&&old0.l)||''});}
  function applyAll(){const ids=new Set();EDITS.forEach(r=>{const m=String(r.name).match(/^✏️([dtg]\d+)!?$/);if(m)ids.add(m[1]);});ids.forEach(id=>{try{apply(id)}catch(e){}});
   window.__edits=EDITS.length;}
  window.__applyEdit=r=>{EDITS.push(r);applyAll();};
@@ -151,7 +154,7 @@
   const nm=document.getElementById('af-name');nm.value=d.querySelector('.name').textContent;nm.disabled=true;
   setWhere(st.w);document.getElementById('af-sec').value=st.sec||'other';
   const ps=document.getElementById('af-prot');ps.value=PROTS.includes(st.m)?st.m:'';
-  document.getElementById('af-recent').checked=!!st.r;document.getElementById('af-soup').checked=!!st.s;
+  document.getElementById('af-recent').checked=!!st.r;document.getElementById('af-soup').checked=!!st.s;document.getElementById('af-skip').checked=!!st.k;
   document.getElementById('af-link').value=st.link||'';document.getElementById('af-ing').value=st.ing||'';
   document.getElementById('af-photo').parentElement.firstChild.textContent=st.photo?'换照片（不选就保留原来的）':'照片';
   go.textContent='保存修改';f.scrollIntoView({block:'nearest'});}
@@ -161,7 +164,7 @@
  async function saveEdit(){const id=editId,where=f.querySelector('input[name=af-where]:checked').value;
   const p={name:EDIT+id,where,section:where==='menu'?document.getElementById('af-sec').value:'',protein:document.getElementById('af-prot').value,
    recent:document.getElementById('af-recent').checked,soup:document.getElementById('af-soup').checked,
-   link:document.getElementById('af-link').value.trim(),ingredients:document.getElementById('af-ing').value.trim(),website:document.getElementById('af-hp').value};
+   link:document.getElementById('af-link').value.trim(),ingredients:document.getElementById('af-ing').value.trim().slice(0,490)+(document.getElementById('af-skip').checked?SKIP:''),website:document.getElementById('af-hp').value};
   if(p.link&&!okUrl(p.link)){msg.textContent='链接要以 http 开头';return;}
   go.disabled=true;msg.textContent='保存中…';
   try{const file=document.getElementById('af-photo').files[0];if(file){msg.textContent='压缩照片…';p.photo=await shrink(file);msg.textContent='上传中…';}
