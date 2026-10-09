@@ -476,6 +476,8 @@ span.pr-th{{display:flex;align-items:center;justify-content:center;font-size:24p
 .pr-row .pr-item{{flex:1;min-width:0;width:auto}}
 .pr-sw{{flex:0 0 48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:inherit;color:var(--cd);background:#fff;border:1.5px solid var(--ca);border-radius:16px;box-shadow:0 2px 0 var(--ca);cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent}}
 .pr-sw b{{font-size:15px;line-height:1;font-weight:400}}.pr-sw small{{font-size:10.5px;font-weight:800;line-height:1}}
+.pick-txt{{width:100%;margin-top:8px;font:inherit;font-size:13px;color:var(--ink);border:1.5px dashed #e3d2cf;border-radius:12px;padding:8px;background:#fff}}
+.pr-del{{flex:0 0 30px;font-family:inherit;font-size:13px;color:var(--mute);background:#fff;border:1.5px solid var(--ca);border-radius:14px;cursor:pointer;padding:0}}
 .pr-sw:active{{transform:translateY(2px);box-shadow:none}}
 .pr-chk{{display:none;flex:0 0 22px;width:22px;height:22px;border-radius:50%;border:2px solid var(--ca);background:#fff;align-items:center;justify-content:center}}
 .pick-res.sel .pr-chk{{display:inline-flex}}
@@ -506,7 +508,7 @@ span.pr-th{{display:flex;align-items:center;justify-content:center;font-size:24p
 <div class="pick-cap"><span id="pick-capn">1 道凉菜/蔬菜 + 3 道荤菜</span> · <span>主蛋白不重复</span> · <span>最多 1 个汤</span> · <span>最多 1 道「最近」待做</span> · <span>不选午餐/其他/甜品</span> · <span>尽量避开近 2 周吃过的</span></div>
 <div class="pick-res hide" id="pick-res" aria-live="polite"><div class="pr-head"><span>🍱 今日菜单 <small>きょうのこんだて</small></span><button class="pr-re" id="pick-re" type="button">🔄 换一组</button></div>
 <div class="pr-list" id="pick-list"></div>
-<div class="pr-bar"><span class="pr-hint" id="pick-hint"></span><button class="pr-tool" id="pick-sel" type="button">☑️ 多选换菜</button><button class="pr-tool pr-do" id="pick-swap" type="button" disabled>换掉选中的</button></div>
+<div class="pr-bar"><span class="pr-hint" id="pick-hint"></span><button class="pr-tool" id="pick-sel" type="button">☑️ 多选换菜</button><button class="pr-tool pr-do" id="pick-swap" type="button" disabled>换掉选中的</button><button class="pr-tool" id="pick-copy" type="button">📋 复制食材</button></div>
 <div class="pr-foot" id="pick-foot"></div></div></section>
 <script type="application/json" id="pick-data">{json.dumps(PICK, ensure_ascii=False).replace("</", "<\\/")}</script>
 <nav>''')
@@ -707,13 +709,14 @@ function renderPick(note){const L=document.getElementById('pick-list');L.innerHT
   const last=x.l?'<span class="pr-last">'+(daysAgo(x.l,new Date())<0?'已计划 ':'上次 ')+Number(x.l.slice(5,7))+'/'+Number(x.l.slice(8))+'</span>':'';
   row.innerHTML='<button type="button" class="pr-item" aria-pressed="'+marked.has(i)+'"><span class="pr-chk" aria-hidden="true"></span>'+th+
    '<span class="pr-tx"><span class="pr-n"></span><span class="pr-tags">'+tags.map(t=>'<span>'+t+'</span>').join('')+last+'</span></span>'+
-   '<span class="pr-go">'+(x.o?'做法 ›':'卡片 ›')+'</span></button><button type="button" class="pr-sw" aria-label="换掉这道"><b>🔄</b><small>换</small></button>';
+   '<span class="pr-go">'+(x.o?'做法 ›':'卡片 ›')+'</span></button><button type="button" class="pr-sw" aria-label="换掉这道"><b>🔄</b><small>换</small></button>'+(cur.length>1?'<button type="button" class="pr-del" aria-label="去掉这道">✕</button>':'');
   row.querySelector('.pr-n').textContent=x.n;
   row.querySelector('.pr-item').addEventListener('click',()=>{
    if(selMode){marked.has(i)?marked.delete(i):marked.add(i);fresh=[];renderPick(document.getElementById('pick-foot').textContent);return;}
    const d=document.getElementById(x.id);if(!d)return;
    if(x.o)openDish(d);else{d.scrollIntoView({behavior:'smooth',block:'center'});d.classList.remove('flash');void d.offsetWidth;d.classList.add('flash');}});
   row.querySelector('.pr-sw').addEventListener('click',()=>doSwap([i]));
+  const del=row.querySelector('.pr-del');if(del)del.addEventListener('click',()=>{cur.splice(i,1);marked=new Set();fresh=[];pickPrev=setKey(cur);renderPick('');});
   L.appendChild(row);});
  const go=document.getElementById('pick-swap');go.textContent='换掉选中的'+(marked.size?' ('+marked.size+')':'');go.disabled=!marked.size;
  document.getElementById('pick-sel').textContent=selMode?'取消':'☑️ 多选换菜';
@@ -729,6 +732,13 @@ document.getElementById('pick-go').addEventListener('click',showPick);
 document.getElementById('pick-re').addEventListener('click',showPick);
 document.getElementById('pick-sel').addEventListener('click',()=>{selMode=!selMode;marked=new Set();fresh=[];renderPick(document.getElementById('pick-foot').textContent);});
 document.getElementById('pick-swap').addEventListener('click',()=>{if(marked.size)doSwap([...marked]);});
+function pickText(){return (cur||[]).map(x=>{const d=document.getElementById(x.id),g=d&&d.querySelector('.rcp-src .ing');const ing=g?g.textContent.trim():'';
+ return x.n+'：'+(ing||'（待补充）');}).join('\\n');}
+function copyText(t){const fb=()=>{const a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');a.style.cssText='position:fixed;top:0;left:0;opacity:0;font-size:16px';
+  document.body.appendChild(a);a.focus();a.select();try{a.setSelectionRange(0,t.length);}catch(e){}let ok=false;try{ok=document.execCommand('copy');}catch(e){}a.remove();return ok;};
+ if(navigator.clipboard&&window.isSecureContext)return navigator.clipboard.writeText(t).then(()=>true,()=>fb());return Promise.resolve(fb());}
+document.getElementById('pick-copy').addEventListener('click',async()=>{const b=document.getElementById('pick-copy'),t=pickText();window.__copied=t;
+ const ok=await copyText(t);b.textContent=ok?'✓ 已复制':'长按下面的文字复制';let ta=document.getElementById('pick-txt');if(ok){if(ta)ta.remove();}else{if(!ta){ta=document.createElement('textarea');ta.id='pick-txt';ta.readOnly=true;ta.className='pick-txt';document.getElementById('pick-foot').before(ta);}ta.value=t;ta.rows=Math.min(8,t.split('\\n').length+1);ta.focus();ta.select();}clearTimeout(b._t);b._t=setTimeout(()=>{b.textContent='📋 复制食材';},1600);});
 __EXTRA_JS__
 function openFromHash(){const h=location.hash.match(/^#([dtg]\\d+)$/)||(location.search.match(/[?&]dish=([dtg]\\d+)/));if(h){const d=document.getElementById(h[1]);if(d){ov.style.transition='none';sh.style.transition='none';openDish(d);requestAnimationFrame(()=>{ov.style.transition='';sh.style.transition='';});}}}
 openFromHash();
