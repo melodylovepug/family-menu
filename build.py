@@ -166,7 +166,7 @@ def extra_js():
             k = norm(raw)
             if h['date'] > hist.get(k, ''): hist[k] = h['date']
     secs = {c['id']: [c['icon'], c['zh'], c['en']] + list(PAL[c['id']]) for c in CATS}
-    cfg = dict(url=SCRIPT_URL, known=known, hist=hist, secs=secs, noPick=sorted(NO_PICK), canon=PROT_CANON)
+    cfg = dict(url=SCRIPT_URL, known=known, hist=hist, secs=secs, noPick=sorted(NO_PICK), canon=PROT_CANON, base=EB)
     return 'const ADD=' + json.dumps(cfg, ensure_ascii=False).replace('</', '<\\/') + ';\n' + open(os.path.join(ROOT, 'add.js'), encoding='utf-8').read()
 def has_recipe(d): return bool(re.sub(r'^\s*\[[^\]]+\]\([^)]+\)\s*$', '', d['recipe'], flags=re.M).strip())
 def has_body(d):
@@ -329,6 +329,8 @@ footer::before{{content:"🍙 🍡 🍵";display:block;font-size:18px;margin-bot
 .af-go{{font-family:inherit;font-size:15px;font-weight:800;color:#fff;background:#b8928e;border:2px solid #a8817d;border-radius:999px;padding:8px 22px;box-shadow:0 4px 0 #9c7773;cursor:pointer}}
 .af-go:disabled{{opacity:.6}}
 .af-msg{{font-size:12.5px;color:var(--mute)}}
+.ed-btn{{display:block;margin:0 0 12px auto;padding:5px 14px;font-size:12.5px}}
+.addf.edf{{margin:0 0 14px;max-width:none}}
 .recent{{font-size:10px;font-weight:800;color:#fff;background:#a89a8c;border-radius:999px;padding:0 8px;line-height:1.7;letter-spacing:.08em;flex:0 0 auto}}
 .tbd{{font-size:10.5px;font-weight:700;color:var(--mute);border:1.2px dashed #d6ccc2;border-radius:999px;padding:0 7px;line-height:1.6;background:rgba(255,255,255,.6)}}
 .dish.bare{{padding-top:9px;padding-bottom:9px}}
@@ -520,6 +522,7 @@ if SCRIPT_URL:
 </form></div>''')
 out.append('<div class="grid">')
 n = 0
+EB = {}   # editable base state per dish id (for ✏️ 编辑 overrides from the sheet)
 for c in CATS:
     ca, cd, cb = PAL[c['id']]
     out.append(f'<section class="card" id="{c["id"]}" style="--ca:{ca};--cd:{cd};--cb:{cb}"><h2><span class="ic">{c["icon"]}</span>{E(c["zh"])} <small>{E(c["en"])}</small><span class="n">{len(c["dishes"])}</span></h2>')
@@ -535,6 +538,11 @@ for c in CATS:
         if d.get('recent'): s += '<span class="recent">最近</span>'
         if bare or d.get('tbd'): s += '<span class="tbd" title="做法待补充">待补充</span>'
         s += '</div>'
+        _refs = split_refs(d['recipe'], d['links'])[1]
+        EB[DID[id(d)]] = dict(w='menu', sec=c['id'], m=canon(d.get('meat') or ''), r=bool(d.get('recent')),
+            s=bool(d.get('soup')) or c['id'] == 'soup' or '汤' in d['name'], link=next((u for u, _ in _refs if u), ''),
+            ing=d['ingredients'], photo=d.get('photo') or '', tbd=bool(bare or d.get('tbd')), rb=has_body(d),
+            dess=(d.get('meat') == '甜品' or d.get('tag') == '甜品'), l=LAST.get(d['name'], ''))
         if not bare:   # sheet: link tags on top, then ingredients/notes, photo(s), steps
             body, refs = split_refs(d['recipe'], d['links'])
             summ = ''
@@ -557,6 +565,8 @@ for i, t in enumerate(D['todo'], 1):   # same card component as the menu; a shee
     body, refs = split_refs(t['details'], links)
     ing = t.get('ingredients', '')
     sheet = bool(refs or ing or body.strip())
+    EB[TID[id(t)]] = dict(w='todo', sec='', m=canon(t.get('meat') or ''), r=bool(t.get('recent')), s=bool(t.get('soup')) or '汤' in t['name'],
+        link=t.get('link') or '', ing=ing, photo='', tbd=bool(t.get('tbd')), rb=False, dess=t.get('meat') == '甜品', l=LAST.get(t['name'], ''))
     s = (f'<div class="dish{"" if sheet else " empty"}" id="{TID[id(t)]}" data-cat="todo" data-s="{E((t["name"]+" "+t["note"]+" "+ing+(" 最近" if t.get("recent") else "")).lower())}">'
          f'<div class="row"><span class="dth ic" aria-hidden="true">🌸</span><span class="name">{E(t["name"])}</span>'
          + ('<span class="recent">最近</span>' if t.get('recent') else '')
