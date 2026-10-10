@@ -3,7 +3,11 @@
  const normN=t=>String(t||'').replace(/（/g,'(').replace(/）/g,')').replace(/\s+/g,'').toLowerCase();
  const seen=new Set(ADD.known);
  const SKIP=' [skip]', unSkip=v=>{v=String(v||'').trim();const k=v.endsWith(SKIP.trim());return [k?v.slice(0,-SKIP.trim().length).trim():v,k];};
+ const cleanName=v=>String(v||'').replace(/[\[\]\u0000-\u001f]/g,' ').replace(/\s+/g,' ').trim().slice(0,40);
+ const parseIng=v=>{const [a,k]=unSkip(v);const m=a.match(/\s*\[name:([^\]]{1,60})\]$/);return [m?a.slice(0,m.index).trim():a,k,m?cleanName(m[1]):''];};
+ const ORIGN={};
  const EB=ADD.base, EDIT='✏️', isEdit=r=>String(r&&r.name||'').startsWith(EDIT);
+ const DAY='📅',isDay=r=>String(r&&r.name||'').startsWith(DAY),isMeta=r=>isEdit(r)||isDay(r);
  const OKPH=/^(https:\/\/(lh\d\.googleusercontent\.com|drive\.google\.com)\/|data:image\/jpeg;base64,)/;
  const okUrl=u=>/^https?:\/\//i.test(u||'');
  const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;};
@@ -87,7 +91,7 @@
    if(nm===EDIT+id+'✕'){del=true;continue;}
    if(nm!==EDIT+id)continue;const todo=r.where==='todo';
    st={w:todo?'todo':'menu',sec:todo?'':(ADD.secs[r.section]?r.section:'other'),m:ADD.canon[r.protein]||String(r.protein||''),r:yes(r.recent),s:yes(r.soup)||r.section==='soup',
-    link:okUrl(r.link)?String(r.link):''};[st.ing,st.k]=unSkip(r.ingredients);
+    link:okUrl(r.link)?String(r.link):''};[st.ing,st.k,st.n]=parseIng(r.ingredients);
    if(OKPH.test(r.photo||'')){photo=r.photo;pid=r.photo_id||'';}}
   return Object.assign({},b,st||{},{photo,photo_id:pid,edited:!!st||photo!==b.photo,del});}
  const ORIG={};
@@ -96,7 +100,8 @@
  function apply(id){const d=document.getElementById(id),b=EB[id];if(!d||!b)return;
   if(d._del){d._del=false;d.classList.remove('del');bump(d.parentElement,1);}
   if(!(id in ORIG)){const s0=d.querySelector('.rcp-src');ORIG[id]=s0&&!s0.dataset.ph?s0.cloneNode(true):null;}
-  const st=stateFor(id);d._st=st;const todo=st.w==='todo',S=todo?null:ADD.secs[st.sec],icon=todo?'🌸':S[0],name=d.querySelector('.name').textContent;
+  if(!(id in ORIGN))ORIGN[id]=d.querySelector('.name').textContent;
+  const st=stateFor(id);d._st=st;const todo=st.w==='todo',S=todo?null:ADD.secs[st.sec],icon=todo?'🌸':S[0],name=st.n||ORIGN[id];d.querySelector('.name').textContent=name;
   /* move to the right section */
   const box=boxOf(st),cur=d.parentElement;if(box&&cur!==box){bump(cur,-1);box.appendChild(d);bump(box,1);}
   d.dataset.cat=todo?'todo':st.sec;
@@ -164,7 +169,7 @@
  function startEdit(d){const st=d._st||stateFor(d.id);if(!st)return;editId=d.id;
   const r=document.getElementById('sh-r');f.reset();msg.textContent='';
   document.getElementById('ed-bar').style.display='none';r.insertBefore(f,r.children[1]||null);f.classList.remove('hide');f.classList.add('edf');
-  const nm=document.getElementById('af-name');nm.value=d.querySelector('.name').textContent;nm.disabled=true;
+  const nm=document.getElementById('af-name');nm.value=d.querySelector('.name').textContent;nm.disabled=false;if(!(d.id in ORIGN))ORIGN[d.id]=nm.value;
   setWhere(st.w);document.getElementById('af-sec').value=st.w==='todo'?(st.s?'soup':'other'):(st.sec||'other');
   const ps=document.getElementById('af-prot');ps.value=PROTS.includes(st.m)?st.m:'';
   document.getElementById('af-recent').checked=!!st.r;document.getElementById('af-skip').checked=!!st.k;
@@ -175,9 +180,11 @@
   document.getElementById('af-name').disabled=false;secw.style.display='';go.textContent='保存';msg.textContent='';
   document.getElementById('af-photo').parentElement.firstChild.textContent='照片';ob.setAttribute('aria-expanded','false');}
  async function saveEdit(){const id=editId,where=f.querySelector('input[name=af-where]:checked').value;
+  const nn=cleanName(document.getElementById('af-name').value);if(!nn){msg.textContent='请填菜名';return;}
+  const nmk=nn!==ORIGN[id]?' [name:'+nn+']':'';
   const p={name:EDIT+id,where,section:document.getElementById('af-sec').value,protein:document.getElementById('af-prot').value,
    recent:document.getElementById('af-recent').checked,soup:false,
-   link:document.getElementById('af-link').value.trim(),ingredients:document.getElementById('af-ing').value.trim().slice(0,490)+(document.getElementById('af-skip').checked?SKIP:''),website:document.getElementById('af-hp').value};
+   link:document.getElementById('af-link').value.trim(),ingredients:document.getElementById('af-ing').value.replace(/\[(name:|skip)/g,'(').trim().slice(0,430)+nmk+(document.getElementById('af-skip').checked?SKIP:''),website:document.getElementById('af-hp').value};
   if(p.link&&!okUrl(p.link)){msg.textContent='链接要以 http 开头';return;}
   go.disabled=true;
   try{const file=document.getElementById('af-photo').files[0];if(file){msg.textContent='压缩照片…';p.photo=await shrink(file);}}
@@ -215,6 +222,7 @@
     const row=j.row||localRow(it);PEND.shift();savePend();
     if(it.kind==='add'&&j.row)renameId(it.tid,j.row.id);
     if(it.kind==='edit'){const k=EDITS.findIndex(x=>x._cid===it.cid);if(k>=0)EDITS[k]=row;}
+    if(it.kind==='day'){const k=DAYROWS.findIndex(x=>x._cid===it.cid);if(k>=0)DAYROWS[k]=row;}
     if(j.row){ROWS.push(j.row);lsSet(LS_R,ROWS);}window.__lastEdit=row;
    }catch(e){fail=true;break;}}
   busy=false;toast(fail?'fail':'ok');window.__saveState=fail?'fail':'ok';}
@@ -224,23 +232,66 @@
  function render(rows,first){
   /* pending items already in the sheet are confirmed: drop them */
   const names=new Map(),sigs=new Set();
-  rows.forEach(r=>{if(isEdit(r))sigs.add(sig(r));else names.set(normN(r.name)+'|'+(r.where==='todo'?'todo':'menu'),r);});
+  rows.forEach(r=>{if(isMeta(r))sigs.add(sig(r));else names.set(normN(r.name)+'|'+(r.where==='todo'?'todo':'menu'),r);});
   if(!busy){const keep=[];for(const it of PEND){const lr=localRow(it);
     if(it.kind==='add'){const m=names.get(normN(lr.name)+'|'+lr.where);if(m){renameId(it.tid,m.id);continue;}}
     else if(sigs.has(sig(lr)))continue;
     keep.push(it);}
    if(keep.length!==PEND.length){PEND=keep;savePend();}}
-  const live=new Set(rows.filter(r=>!isEdit(r)).map(r=>String(r.id)));PEND.forEach(it=>{if(it.kind==='add')live.add(it.tid);});
+  const live=new Set(rows.filter(r=>!isMeta(r)).map(r=>String(r.id)));PEND.forEach(it=>{if(it.kind==='add')live.add(it.tid);});
   /* rows hidden in the sheet since the cache: remove their cards */
   Object.keys(ADDED).forEach(id=>{if(live.has(id))return;const d=document.getElementById(id);
    if(d){bump(d.parentElement,-1);d.remove();}const i=PK.findIndex(x=>x.id===id);if(i>=0)PK.splice(i,1);seen.delete(ADDED[id]);delete ADDED[id];delete EB[id];});
-  rows.forEach(r=>{if(!isEdit(r))try{addRow(r)}catch(e){}});
+  rows.forEach(r=>{if(!isMeta(r))try{addRow(r)}catch(e){}});
   PEND.forEach(it=>{if(it.kind==='add'&&!document.getElementById(it.tid)){const d=addRow(localRow(it));if(d)d.dataset.pend=1;}});
   const before=new Set(EDITS.map(r=>r.name));EDITS.length=0;
   rows.forEach(r=>{if(isEdit(r))EDITS.push(r)});PEND.forEach(it=>{if(it.kind==='edit')EDITS.push(localRow(it));});
   EDITS.forEach(r=>before.add(r.name));
   before.forEach(nm=>{const m=String(nm).match(/^✏️([dtg]\d+)[!✕]?$/);if(m)try{apply(m[1])}catch(e){}});
+  DAYROWS.length=0;rows.forEach(r=>{if(isDay(r))DAYROWS.push(r)});PEND.forEach(it=>{if(it.kind==='day')DAYROWS.push(localRow(it));});renderDays();
   window.__edits=EDITS.length;}
+ /* ---- 📅 加入菜单: a day's meal is a sheet row named "📅YYYY-MM-DD" (dish ids, space-separated, in the ingredients column);
+    "📅YYYY-MM-DD!" replaces that day's earlier rows. Merged into 最近每周菜单 and the picker's 2-week history. ---- */
+ const DAYROWS=[],WDZ='一二三四五六日';
+ const iso=x=>x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0');
+ const pdate=s=>{const p=s.split('-').map(Number);return new Date(p[0],p[1]-1,p[2]);};
+ const dayLab=s=>{const x=pdate(s);return '周'+WDZ[(x.getDay()+6)%7]+' '+(x.getMonth()+1)+'/'+x.getDate();};
+ function dayMap(){const m={};for(const r of DAYROWS){const g=String(r.name).match(/^📅(\d{4}-\d{2}-\d{2})(!?)$/);if(!g)continue;
+   const ids=String(r.ingredients||'').split(/[\s,]+/).filter(x=>/^[dtg]\d+$/.test(x));m[g[1]]=g[2]?ids:(m[g[1]]||[]).concat(ids.filter(i=>!(m[g[1]]||[]).includes(i)));}
+  return m;}
+ const L0={};
+ function renderDays(){document.querySelectorAll('.wk .l.sl,.wk.wk-new').forEach(e=>{const w=e.closest('.wk');e.remove();if(w&&!w.querySelector('.l'))w.remove();});
+  /* reset picker history to the build-time value, then fold in sheet days */
+  PK.forEach(x=>{if(!(x.id in L0))L0[x.id]=x.l||'';x.l=L0[x.id];});Object.keys(EB).forEach(id=>{if(!(('e'+id) in L0))L0['e'+id]=EB[id].l||'';EB[id].l=L0['e'+id];});
+  const m=dayMap(),box=document.querySelector('#weeks .weeks');window.__days=m;
+  Object.keys(m).sort().forEach(ds=>{const ids=m[ds];if(!ids.length)return;
+   ids.forEach(id=>{const p=PK.find(x=>x.id===id);if(p&&ds>(p.l||''))p.l=ds;if(EB[id]&&ds>(EB[id].l||''))EB[id].l=ds;});
+   if(!box)return;const x=pdate(ds),mon=new Date(x);mon.setDate(x.getDate()-(x.getDay()+6)%7);const lab=(mon.getMonth()+1)+'.'+mon.getDate()+'.'+(mon.getFullYear()%100);
+   let wk=[...box.querySelectorAll('.wk')].find(w=>(w.querySelector('.d')||{}).textContent===lab);
+   if(!wk){wk=el('div','wk wk-new');wk.appendChild(el('div','d',lab));wk.dataset.mon=iso(mon);
+    const after=[...box.querySelectorAll('.wk')].find(w=>{const t=(w.querySelector('.d')||{}).textContent||'';const q=t.split('.').map(Number);return q.length===3&&new Date(2000+q[2],q[0]-1,q[1])<mon;});
+    box.insertBefore(wk,after||null);}
+   const line=el('div','l sl');line.dataset.ds=ds;line.appendChild(el('span',null,dayLab(ds)));const sp=el('span');
+   ids.forEach((id,i)=>{const d=document.getElementById(id);if(!d)return;if(sp.childNodes.length)sp.appendChild(document.createTextNode(' · '));
+    const a=el('a','wkd',d.querySelector('.name').textContent);a.href='#'+id;a.dataset.d=id;
+    a.addEventListener('click',e=>{e.preventDefault();if(d.classList.contains('del'))return;openDish(d);});sp.appendChild(a);});
+   line.appendChild(sp);
+   /* keep lines in date order inside the week */
+   const nx=[...wk.querySelectorAll('.l.sl')].find(l=>l.dataset.ds>ds);wk.insertBefore(line,nx||null);});}
+ function dlg(title,sub,btns){const o=el('div','cfm'),b=el('div','cfm-box');o.setAttribute('role','dialog');b.appendChild(el('p','cfm-t',title));if(sub)b.appendChild(el('p','cfm-s',sub));
+  const act=el('div','cfm-act');btns.forEach(x=>{const k=el('button',x.cls||'cfm-no',x.t);k.type='button';k.addEventListener('click',()=>{o.remove();if(x.fn)x.fn();});act.appendChild(k);});
+  b.appendChild(act);o.appendChild(b);o.addEventListener('click',e=>{if(e.target===o)o.remove();});document.body.appendChild(o);return o;}
+ function nextDays(){const t=new Date();t.setHours(0,0,0,0);const out=[];for(const wd of [2,4]){const x=new Date(t);x.setDate(t.getDate()+((wd-t.getDay()+7)%7));out.push(iso(x));}return out.sort();}
+ function saveDay(ds,ids,replace){const it={cid:'c'+Date.now(),kind:'day',p:{name:DAY+ds+(replace?'!':''),where:'menu',section:'other',protein:'',recent:false,soup:false,link:'',ingredients:ids.join(' '),website:''},t:Date.now()};
+  PEND.push(it);savePend();DAYROWS.push(localRow(it));renderDays();flush();}
+ function addToDay(){if(typeof cur==='undefined'||!cur||!cur.length)return;const ids=cur.map(x=>x.id);
+  const btns=nextDays().map(ds=>({t:'📅 '+dayLab(ds),cls:'cfm-yes cfm-day',fn:()=>{
+   const ex=(dayMap()[ds]||[]);if(!ex.length)return saveDay(ds,ids,false);
+   dlg(dayLab(ds)+' 已经有菜单了','现在是：'+ex.map(i=>{const d=document.getElementById(i);return d?d.querySelector('.name').textContent:i;}).join('、'),
+    [{t:'取消'},{t:'加上',cls:'cfm-no cfm-add',fn:()=>saveDay(ds,ids,false)},{t:'替换',cls:'cfm-yes',fn:()=>saveDay(ds,ids,true)}]);}}));
+  btns.push({t:'取消'});dlg('加入哪天的菜单？','厨师周二、周四来 · 记入每周菜单和「近 2 周」',btns);}
+ const ab=document.getElementById('pick-day');if(ab)ab.addEventListener('click',addToDay);
+ window.__nextDays=nextDays;
  render(ROWS,true);
  fetch(ADD.url,{cache:'no-store'}).then(r=>r.json()).then(j=>{if(j&&j.ok&&Array.isArray(j.rows)){ROWS=j.rows;lsSet(LS_R,ROWS);render(ROWS);}
   window.__sheetRows=(j&&j.rows||[]).length;if(/^#g\d+$/.test(location.hash)&&!ov.classList.contains('on'))openFromHash();}).catch(()=>{window.__sheetRows=-1;});

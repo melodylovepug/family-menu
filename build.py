@@ -344,7 +344,8 @@ footer::before{{content:"🍙 🍡 🍵";display:block;font-size:18px;margin-bot
 .cfm{{position:fixed;inset:0;z-index:90;background:rgba(74,64,58,.42);display:flex;align-items:center;justify-content:center;padding:20px}}
 .cfm-box{{width:100%;max-width:320px;background:#fffdf9;border:2px solid #e8d8d5;border-radius:22px;padding:18px 18px 14px;box-shadow:0 6px 0 #eadfdc,0 20px 40px -18px rgba(74,64,58,.45);text-align:center}}
 .cfm-t{{margin:0 0 6px;font-size:16px;font-weight:800;color:var(--ink)}} .cfm-s{{margin:0 0 14px;font-size:12px;color:var(--mute)}}
-.cfm-act{{display:flex;gap:10px;justify-content:center}}
+.cfm-day{{flex:1 1 40%}}
+.cfm-act{{flex-wrap:wrap;display:flex;gap:10px;justify-content:center}}
 .cfm-no,.cfm-yes{{font-family:inherit;font-size:14px;font-weight:800;border-radius:999px;padding:8px 20px;cursor:pointer}}
 .cfm-no{{color:#7d7468;background:#fff;border:2px solid #e3ddd5;box-shadow:0 3px 0 #e8e2da}}
 .cfm-yes{{color:#fff;background:#b5776c;border:2px solid #a2665c;box-shadow:0 3px 0 #8f584f}}
@@ -518,7 +519,7 @@ span.pr-th{{display:flex;align-items:center;justify-content:center;font-size:24p
 <div class="pick-cap"><span id="pick-capn">1 道凉菜/蔬菜 + 3 道荤菜</span> · <span>主蛋白不重复</span> · <span>最多 1 个汤</span> · <span>最多 1 道「最近」待做</span> · <span>不选午餐/其他/甜品</span> · <span>尽量避开近 2 周吃过的</span></div>
 <div class="pick-res hide" id="pick-res" aria-live="polite"><div class="pr-head"><span>🍱 今日菜单 <small>きょうのこんだて</small></span><button class="pr-re" id="pick-re" type="button">🔄 换一组</button></div>
 <div class="pr-list" id="pick-list"></div>
-<div class="pr-bar"><span class="pr-hint" id="pick-hint"></span><button class="pr-tool" id="pick-sel" type="button">☑️ 多选换菜</button><button class="pr-tool pr-do" id="pick-swap" type="button" disabled>换掉选中的</button><button class="pr-tool" id="pick-copy" type="button">📋 复制食材</button></div>
+<div class="pr-bar"><span class="pr-hint" id="pick-hint"></span><button class="pr-tool" id="pick-sel" type="button">☑️ 多选换菜</button><button class="pr-tool pr-do" id="pick-swap" type="button" disabled>换掉选中的</button><button class="pr-tool" id="pick-copy" type="button">📋 复制食材</button><button class="pr-tool" id="pick-day" type="button">📅 加入菜单</button></div>
 <div class="pr-foot" id="pick-foot"></div></div></section>
 <script type="application/json" id="pick-data">{json.dumps(PICK, ensure_ascii=False).replace("</", "<\\/")}</script>
 <nav>''')
