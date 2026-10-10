@@ -119,6 +119,16 @@ footer::before{content:"🍙 🍡 🍵";display:block;font-size:18px;margin-bott
 .svt{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:80;font-size:12.5px;font-weight:700;color:#6e625a;background:rgba(255,253,249,.96);border:1.5px solid #e3d7d2;border-radius:999px;padding:6px 14px;box-shadow:0 4px 14px -6px rgba(74,64,58,.35);display:flex;align-items:center;gap:4px;white-space:nowrap}
 .svt.ok{color:#6f7f67;border-color:#cfdac8}.svt.fail{color:#a65e4e;border-color:#e6c9c2}
 .svt-r{font:inherit;color:#fff;background:#b8928e;border:0;border-radius:999px;padding:2px 10px;cursor:pointer}
+.dish.del{display:none!important}
+.ed-bar{display:flex;justify-content:flex-end;gap:8px;margin:0 0 12px} .ed-bar .ed-btn{margin:0}
+.ed-del{color:#a0766f;border-color:#e3cfca}
+.cfm{position:fixed;inset:0;z-index:90;background:rgba(74,64,58,.42);display:flex;align-items:center;justify-content:center;padding:20px}
+.cfm-box{width:100%;max-width:320px;background:#fffdf9;border:2px solid #e8d8d5;border-radius:22px;padding:18px 18px 14px;box-shadow:0 6px 0 #eadfdc,0 20px 40px -18px rgba(74,64,58,.45);text-align:center}
+.cfm-t{margin:0 0 6px;font-size:16px;font-weight:800;color:var(--ink)} .cfm-s{margin:0 0 14px;font-size:12px;color:var(--mute)}
+.cfm-act{display:flex;gap:10px;justify-content:center}
+.cfm-no,.cfm-yes{font-family:inherit;font-size:14px;font-weight:800;border-radius:999px;padding:8px 20px;cursor:pointer}
+.cfm-no{color:#7d7468;background:#fff;border:2px solid #e3ddd5;box-shadow:0 3px 0 #e8e2da}
+.cfm-yes{color:#fff;background:#b5776c;border:2px solid #a2665c;box-shadow:0 3px 0 #8f584f}
 .ed-btn{display:block;margin:0 0 12px auto;padding:5px 14px;font-size:12.5px}
 .addf.edf{margin:0 0 14px;max-width:none}
 .recent{font-size:10px;font-weight:800;color:#fff;background:#a89a8c;border-radius:999px;padding:0 8px;line-height:1.7;letter-spacing:.08em;flex:0 0 auto}
@@ -492,7 +502,7 @@ span.pr-th{display:flex;align-items:center;justify-content:center;font-size:24px
 const q=document.getElementById('q');
 q.addEventListener('input',()=>{const v=q.value.trim().toLowerCase();
 document.querySelectorAll('[data-s]').forEach(el=>el.classList.toggle('hide',v&&!el.dataset.s.includes(v)));
-document.querySelectorAll('.card').forEach(c=>c.classList.toggle('hide',v&&!c.querySelector('.dish:not(.hide)')));
+document.querySelectorAll('.card').forEach(c=>c.classList.toggle('hide',v&&!c.querySelector('.dish:not(.hide):not(.del)')));
 });
 const ov=document.getElementById('ov'),sh=ov.querySelector('.sheet');
 function openDish(d){const src=d.querySelector('.rcp-src');if(!src)return;
@@ -697,16 +707,19 @@ const ADD={"url": "https://script.google.com/macros/s/AKfycbxx3byFZ09adGhHPDE4li
  const EDITS=[];
  const PROTS=['','牛','猪','羊','鸡','鸭','鱼','龙虾/虾','蟹','蛤蜊/贝','豆腐/蛋','素'];
  function stateFor(id){const b=EB[id];if(!b)return null;let st=null,photo=b.photo,pid=b.photo_id||'';
-  for(const r of EDITS){const nm=String(r.name);if(nm===EDIT+id+'!'){st=null;photo=b.photo;pid=b.photo_id||'';continue;}
+  let del=false;
+  for(const r of EDITS){const nm=String(r.name);if(nm===EDIT+id+'!'){st=null;del=false;photo=b.photo;pid=b.photo_id||'';continue;}
+   if(nm===EDIT+id+'✕'){del=true;continue;}
    if(nm!==EDIT+id)continue;const todo=r.where==='todo';
    st={w:todo?'todo':'menu',sec:todo?'':(ADD.secs[r.section]?r.section:'other'),m:ADD.canon[r.protein]||String(r.protein||''),r:yes(r.recent),s:yes(r.soup)||r.section==='soup',
     link:okUrl(r.link)?String(r.link):''};[st.ing,st.k]=unSkip(r.ingredients);
    if(OKPH.test(r.photo||'')){photo=r.photo;pid=r.photo_id||'';}}
-  return Object.assign({},b,st||{},{photo,photo_id:pid,edited:!!st||photo!==b.photo});}
+  return Object.assign({},b,st||{},{photo,photo_id:pid,edited:!!st||photo!==b.photo,del});}
  const ORIG={};
  function boxOf(st){return st.w==='todo'?document.querySelector('#todo .todo-list'):document.getElementById(st.sec);}
  function bump(box,n){const c=box&&(box.closest('.card')||box);const e=c&&c.querySelector('h2 .n');if(e)e.textContent=+e.textContent+n;}
  function apply(id){const d=document.getElementById(id),b=EB[id];if(!d||!b)return;
+  if(d._del){d._del=false;d.classList.remove('del');bump(d.parentElement,1);}
   if(!(id in ORIG)){const s0=d.querySelector('.rcp-src');ORIG[id]=s0&&!s0.dataset.ph?s0.cloneNode(true):null;}
   const st=stateFor(id);d._st=st;const todo=st.w==='todo',S=todo?null:ADD.secs[st.sec],icon=todo?'🌸':S[0],name=d.querySelector('.name').textContent;
   /* move to the right section */
@@ -745,8 +758,11 @@ const ADD={"url": "https://script.google.com/macros/s/AKfycbxx3byFZ09adGhHPDE4li
   const soup=st.s||st.sec==='soup'||name.includes('汤');
   if(todo){if(st.r&&meat){k='main';t=true;}}
   else if(!ADD.noPick.includes(st.sec)&&!b.dess){k=st.sec==='cold'?'cold':(meat?'main':null);}
-  if(k&&!st.k)PK.push({id,n:name,k,m:st.m||'素',s:soup,t,r:b.rb,o:has,p:todo?'':st.photo,i:icon,c:todo?'todo':st.sec,l:b.l||(old0&&old0.l)||''});}
- function applyAll(){const ids=new Set();EDITS.forEach(r=>{const m=String(r.name).match(/^✏️([dtg]\d+)!?$/);if(m)ids.add(m[1]);});ids.forEach(id=>{try{apply(id)}catch(e){}});
+  if(k&&!st.k)PK.push({id,n:name,k,m:st.m||'素',s:soup,t,r:b.rb,o:has,p:todo?'':st.photo,i:icon,c:todo?'todo':st.sec,l:b.l||(old0&&old0.l)||''});
+  /* deleted (✏️<id>✕ row): hidden everywhere — card, count, search, picker */
+  if(st.del){d._del=true;d.classList.add('del');bump(d.parentElement,-1);const j=PK.findIndex(x=>x.id===id);if(j>=0)PK.splice(j,1);
+   if(location.hash==='#'+id&&ov.classList.contains('on'))closeDish();}}
+ function applyAll(){const ids=new Set();EDITS.forEach(r=>{const m=String(r.name).match(/^✏️([dtg]\d+)[!✕]?$/);if(m)ids.add(m[1]);});ids.forEach(id=>{try{apply(id)}catch(e){}});
   window.__edits=EDITS.length;}
  window.__applyEdit=r=>{EDITS.push(r);applyAll();};
  /* every card opens; sheets without content get a placeholder so they can be edited */
@@ -756,14 +772,23 @@ const ADD={"url": "https://script.google.com/macros/s/AKfycbxx3byFZ09adGhHPDE4li
    const todo=d.dataset.cat==='todo',S=ADD.secs[d.dataset.cat];s.dataset.ic=todo?'📝':(S?S[0]:'🍽');s.dataset.cat=todo?'待做 · To try':(S?S[1]+' · '+S[2]:'');
    s.appendChild(el('p','tbd-steps','做法步骤 待补充'));d.appendChild(s);}
   stopEdit();_open(d);
-  if(EB[d.id]){const r=document.getElementById('sh-r'),b=el('button','add-btn ed-btn','✏️ 编辑');b.type='button';b.id='ed-open';
-   b.addEventListener('click',()=>startEdit(d));r.insertBefore(b,r.firstChild);}};
+  if(EB[d.id]){const r=document.getElementById('sh-r'),bar=el('div','ed-bar'),b=el('button','add-btn ed-btn','✏️ 编辑'),x=el('button','add-btn ed-btn ed-del','🗑 删除');
+   b.type=x.type='button';b.id='ed-open';x.id='ed-del';bar.id='ed-bar';
+   b.addEventListener('click',()=>startEdit(d));x.addEventListener('click',()=>askDelete(d));bar.append(x,b);r.insertBefore(bar,r.firstChild);}};
+ function askDelete(d){const name=d.querySelector('.name').textContent,ov2=el('div','cfm'),box=el('div','cfm-box');ov2.setAttribute('role','alertdialog');
+  box.appendChild(el('p','cfm-t','确定删除「'+name+'」吗？'));box.appendChild(el('p','cfm-s','删除后菜单和随机选菜里都不会再出现'));
+  const act=el('div','cfm-act'),no=el('button','cfm-no','取消'),yes2=el('button','cfm-yes','删除');no.type=yes2.type='button';act.append(no,yes2);box.appendChild(act);ov2.appendChild(box);
+  const close=()=>ov2.remove();no.addEventListener('click',close);ov2.addEventListener('click',e=>{if(e.target===ov2)close();});
+  yes2.addEventListener('click',()=>{close();doDelete(d.id);});document.body.appendChild(ov2);no.focus();}
+ function doDelete(id){const it={cid:'c'+Date.now(),kind:'edit',p:{name:EDIT+id+'✕',where:'menu',section:'other',protein:'',recent:false,soup:false,link:'',ingredients:'',website:''},t:Date.now()};
+  PEND.push(it);savePend();closeDish();EDITS.push(localRow(it));apply(id);flush();}
+ window.__askDelete=askDelete;
  closeDish=function(){stopEdit();_close();};
  document.querySelectorAll('.dish').forEach(d=>d.querySelector('.rcp-src')||0);
  function setWhere(v){f.querySelector('input[name=af-where][value='+v+']').checked=true;}
  function startEdit(d){const st=d._st||stateFor(d.id);if(!st)return;editId=d.id;
   const r=document.getElementById('sh-r');f.reset();msg.textContent='';
-  document.getElementById('ed-open').style.display='none';r.insertBefore(f,r.children[1]||null);f.classList.remove('hide');f.classList.add('edf');
+  document.getElementById('ed-bar').style.display='none';r.insertBefore(f,r.children[1]||null);f.classList.remove('hide');f.classList.add('edf');
   const nm=document.getElementById('af-name');nm.value=d.querySelector('.name').textContent;nm.disabled=true;
   setWhere(st.w);document.getElementById('af-sec').value=st.w==='todo'?(st.s?'soup':'other'):(st.sec||'other');
   const ps=document.getElementById('af-prot');ps.value=PROTS.includes(st.m)?st.m:'';
@@ -839,7 +864,7 @@ const ADD={"url": "https://script.google.com/macros/s/AKfycbxx3byFZ09adGhHPDE4li
   const before=new Set(EDITS.map(r=>r.name));EDITS.length=0;
   rows.forEach(r=>{if(isEdit(r))EDITS.push(r)});PEND.forEach(it=>{if(it.kind==='edit')EDITS.push(localRow(it));});
   EDITS.forEach(r=>before.add(r.name));
-  before.forEach(nm=>{const m=String(nm).match(/^✏️([dtg]\d+)!?$/);if(m)try{apply(m[1])}catch(e){}});
+  before.forEach(nm=>{const m=String(nm).match(/^✏️([dtg]\d+)[!✕]?$/);if(m)try{apply(m[1])}catch(e){}});
   window.__edits=EDITS.length;}
  render(ROWS,true);
  fetch(ADD.url,{cache:'no-store'}).then(r=>r.json()).then(j=>{if(j&&j.ok&&Array.isArray(j.rows)){ROWS=j.rows;lsSet(LS_R,ROWS);render(ROWS);}

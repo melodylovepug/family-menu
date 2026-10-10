@@ -82,16 +82,19 @@
  const EDITS=[];
  const PROTS=['','牛','猪','羊','鸡','鸭','鱼','龙虾/虾','蟹','蛤蜊/贝','豆腐/蛋','素'];
  function stateFor(id){const b=EB[id];if(!b)return null;let st=null,photo=b.photo,pid=b.photo_id||'';
-  for(const r of EDITS){const nm=String(r.name);if(nm===EDIT+id+'!'){st=null;photo=b.photo;pid=b.photo_id||'';continue;}
+  let del=false;
+  for(const r of EDITS){const nm=String(r.name);if(nm===EDIT+id+'!'){st=null;del=false;photo=b.photo;pid=b.photo_id||'';continue;}
+   if(nm===EDIT+id+'✕'){del=true;continue;}
    if(nm!==EDIT+id)continue;const todo=r.where==='todo';
    st={w:todo?'todo':'menu',sec:todo?'':(ADD.secs[r.section]?r.section:'other'),m:ADD.canon[r.protein]||String(r.protein||''),r:yes(r.recent),s:yes(r.soup)||r.section==='soup',
     link:okUrl(r.link)?String(r.link):''};[st.ing,st.k]=unSkip(r.ingredients);
    if(OKPH.test(r.photo||'')){photo=r.photo;pid=r.photo_id||'';}}
-  return Object.assign({},b,st||{},{photo,photo_id:pid,edited:!!st||photo!==b.photo});}
+  return Object.assign({},b,st||{},{photo,photo_id:pid,edited:!!st||photo!==b.photo,del});}
  const ORIG={};
  function boxOf(st){return st.w==='todo'?document.querySelector('#todo .todo-list'):document.getElementById(st.sec);}
  function bump(box,n){const c=box&&(box.closest('.card')||box);const e=c&&c.querySelector('h2 .n');if(e)e.textContent=+e.textContent+n;}
  function apply(id){const d=document.getElementById(id),b=EB[id];if(!d||!b)return;
+  if(d._del){d._del=false;d.classList.remove('del');bump(d.parentElement,1);}
   if(!(id in ORIG)){const s0=d.querySelector('.rcp-src');ORIG[id]=s0&&!s0.dataset.ph?s0.cloneNode(true):null;}
   const st=stateFor(id);d._st=st;const todo=st.w==='todo',S=todo?null:ADD.secs[st.sec],icon=todo?'🌸':S[0],name=d.querySelector('.name').textContent;
   /* move to the right section */
@@ -130,8 +133,11 @@
   const soup=st.s||st.sec==='soup'||name.includes('汤');
   if(todo){if(st.r&&meat){k='main';t=true;}}
   else if(!ADD.noPick.includes(st.sec)&&!b.dess){k=st.sec==='cold'?'cold':(meat?'main':null);}
-  if(k&&!st.k)PK.push({id,n:name,k,m:st.m||'素',s:soup,t,r:b.rb,o:has,p:todo?'':st.photo,i:icon,c:todo?'todo':st.sec,l:b.l||(old0&&old0.l)||''});}
- function applyAll(){const ids=new Set();EDITS.forEach(r=>{const m=String(r.name).match(/^✏️([dtg]\d+)!?$/);if(m)ids.add(m[1]);});ids.forEach(id=>{try{apply(id)}catch(e){}});
+  if(k&&!st.k)PK.push({id,n:name,k,m:st.m||'素',s:soup,t,r:b.rb,o:has,p:todo?'':st.photo,i:icon,c:todo?'todo':st.sec,l:b.l||(old0&&old0.l)||''});
+  /* deleted (✏️<id>✕ row): hidden everywhere — card, count, search, picker */
+  if(st.del){d._del=true;d.classList.add('del');bump(d.parentElement,-1);const j=PK.findIndex(x=>x.id===id);if(j>=0)PK.splice(j,1);
+   if(location.hash==='#'+id&&ov.classList.contains('on'))closeDish();}}
+ function applyAll(){const ids=new Set();EDITS.forEach(r=>{const m=String(r.name).match(/^✏️([dtg]\d+)[!✕]?$/);if(m)ids.add(m[1]);});ids.forEach(id=>{try{apply(id)}catch(e){}});
   window.__edits=EDITS.length;}
  window.__applyEdit=r=>{EDITS.push(r);applyAll();};
  /* every card opens; sheets without content get a placeholder so they can be edited */
@@ -141,14 +147,23 @@
    const todo=d.dataset.cat==='todo',S=ADD.secs[d.dataset.cat];s.dataset.ic=todo?'📝':(S?S[0]:'🍽');s.dataset.cat=todo?'待做 · To try':(S?S[1]+' · '+S[2]:'');
    s.appendChild(el('p','tbd-steps','做法步骤 待补充'));d.appendChild(s);}
   stopEdit();_open(d);
-  if(EB[d.id]){const r=document.getElementById('sh-r'),b=el('button','add-btn ed-btn','✏️ 编辑');b.type='button';b.id='ed-open';
-   b.addEventListener('click',()=>startEdit(d));r.insertBefore(b,r.firstChild);}};
+  if(EB[d.id]){const r=document.getElementById('sh-r'),bar=el('div','ed-bar'),b=el('button','add-btn ed-btn','✏️ 编辑'),x=el('button','add-btn ed-btn ed-del','🗑 删除');
+   b.type=x.type='button';b.id='ed-open';x.id='ed-del';bar.id='ed-bar';
+   b.addEventListener('click',()=>startEdit(d));x.addEventListener('click',()=>askDelete(d));bar.append(x,b);r.insertBefore(bar,r.firstChild);}};
+ function askDelete(d){const name=d.querySelector('.name').textContent,ov2=el('div','cfm'),box=el('div','cfm-box');ov2.setAttribute('role','alertdialog');
+  box.appendChild(el('p','cfm-t','确定删除「'+name+'」吗？'));box.appendChild(el('p','cfm-s','删除后菜单和随机选菜里都不会再出现'));
+  const act=el('div','cfm-act'),no=el('button','cfm-no','取消'),yes2=el('button','cfm-yes','删除');no.type=yes2.type='button';act.append(no,yes2);box.appendChild(act);ov2.appendChild(box);
+  const close=()=>ov2.remove();no.addEventListener('click',close);ov2.addEventListener('click',e=>{if(e.target===ov2)close();});
+  yes2.addEventListener('click',()=>{close();doDelete(d.id);});document.body.appendChild(ov2);no.focus();}
+ function doDelete(id){const it={cid:'c'+Date.now(),kind:'edit',p:{name:EDIT+id+'✕',where:'menu',section:'other',protein:'',recent:false,soup:false,link:'',ingredients:'',website:''},t:Date.now()};
+  PEND.push(it);savePend();closeDish();EDITS.push(localRow(it));apply(id);flush();}
+ window.__askDelete=askDelete;
  closeDish=function(){stopEdit();_close();};
  document.querySelectorAll('.dish').forEach(d=>d.querySelector('.rcp-src')||0);
  function setWhere(v){f.querySelector('input[name=af-where][value='+v+']').checked=true;}
  function startEdit(d){const st=d._st||stateFor(d.id);if(!st)return;editId=d.id;
   const r=document.getElementById('sh-r');f.reset();msg.textContent='';
-  document.getElementById('ed-open').style.display='none';r.insertBefore(f,r.children[1]||null);f.classList.remove('hide');f.classList.add('edf');
+  document.getElementById('ed-bar').style.display='none';r.insertBefore(f,r.children[1]||null);f.classList.remove('hide');f.classList.add('edf');
   const nm=document.getElementById('af-name');nm.value=d.querySelector('.name').textContent;nm.disabled=true;
   setWhere(st.w);document.getElementById('af-sec').value=st.w==='todo'?(st.s?'soup':'other'):(st.sec||'other');
   const ps=document.getElementById('af-prot');ps.value=PROTS.includes(st.m)?st.m:'';
@@ -224,7 +239,7 @@
   const before=new Set(EDITS.map(r=>r.name));EDITS.length=0;
   rows.forEach(r=>{if(isEdit(r))EDITS.push(r)});PEND.forEach(it=>{if(it.kind==='edit')EDITS.push(localRow(it));});
   EDITS.forEach(r=>before.add(r.name));
-  before.forEach(nm=>{const m=String(nm).match(/^✏️([dtg]\d+)!?$/);if(m)try{apply(m[1])}catch(e){}});
+  before.forEach(nm=>{const m=String(nm).match(/^✏️([dtg]\d+)[!✕]?$/);if(m)try{apply(m[1])}catch(e){}});
   window.__edits=EDITS.length;}
  render(ROWS,true);
  fetch(ADD.url,{cache:'no-store'}).then(r=>r.json()).then(j=>{if(j&&j.ok&&Array.isArray(j.rows)){ROWS=j.rows;lsSet(LS_R,ROWS);render(ROWS);}

@@ -338,6 +338,16 @@ footer::before{{content:"🍙 🍡 🍵";display:block;font-size:18px;margin-bot
 .svt{{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:80;font-size:12.5px;font-weight:700;color:#6e625a;background:rgba(255,253,249,.96);border:1.5px solid #e3d7d2;border-radius:999px;padding:6px 14px;box-shadow:0 4px 14px -6px rgba(74,64,58,.35);display:flex;align-items:center;gap:4px;white-space:nowrap}}
 .svt.ok{{color:#6f7f67;border-color:#cfdac8}}.svt.fail{{color:#a65e4e;border-color:#e6c9c2}}
 .svt-r{{font:inherit;color:#fff;background:#b8928e;border:0;border-radius:999px;padding:2px 10px;cursor:pointer}}
+.dish.del{{display:none!important}}
+.ed-bar{{display:flex;justify-content:flex-end;gap:8px;margin:0 0 12px}} .ed-bar .ed-btn{{margin:0}}
+.ed-del{{color:#a0766f;border-color:#e3cfca}}
+.cfm{{position:fixed;inset:0;z-index:90;background:rgba(74,64,58,.42);display:flex;align-items:center;justify-content:center;padding:20px}}
+.cfm-box{{width:100%;max-width:320px;background:#fffdf9;border:2px solid #e8d8d5;border-radius:22px;padding:18px 18px 14px;box-shadow:0 6px 0 #eadfdc,0 20px 40px -18px rgba(74,64,58,.45);text-align:center}}
+.cfm-t{{margin:0 0 6px;font-size:16px;font-weight:800;color:var(--ink)}} .cfm-s{{margin:0 0 14px;font-size:12px;color:var(--mute)}}
+.cfm-act{{display:flex;gap:10px;justify-content:center}}
+.cfm-no,.cfm-yes{{font-family:inherit;font-size:14px;font-weight:800;border-radius:999px;padding:8px 20px;cursor:pointer}}
+.cfm-no{{color:#7d7468;background:#fff;border:2px solid #e3ddd5;box-shadow:0 3px 0 #e8e2da}}
+.cfm-yes{{color:#fff;background:#b5776c;border:2px solid #a2665c;box-shadow:0 3px 0 #8f584f}}
 .ed-btn{{display:block;margin:0 0 12px auto;padding:5px 14px;font-size:12.5px}}
 .addf.edf{{margin:0 0 14px;max-width:none}}
 .recent{{font-size:10px;font-weight:800;color:#fff;background:#a89a8c;border-radius:999px;padding:0 8px;line-height:1.7;letter-spacing:.08em;flex:0 0 auto}}
@@ -619,7 +629,7 @@ out.append('''<footer>家庭菜单 · 自家食谱 · おうちごはん</footer
 const q=document.getElementById('q');
 q.addEventListener('input',()=>{const v=q.value.trim().toLowerCase();
 document.querySelectorAll('[data-s]').forEach(el=>el.classList.toggle('hide',v&&!el.dataset.s.includes(v)));
-document.querySelectorAll('.card').forEach(c=>c.classList.toggle('hide',v&&!c.querySelector('.dish:not(.hide)')));
+document.querySelectorAll('.card').forEach(c=>c.classList.toggle('hide',v&&!c.querySelector('.dish:not(.hide):not(.del)')));
 });
 const ov=document.getElementById('ov'),sh=ov.querySelector('.sheet');
 function openDish(d){const src=d.querySelector('.rcp-src');if(!src)return;
