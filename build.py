@@ -344,7 +344,7 @@ footer::before{{content:"🍙 🍡 🍵";display:block;font-size:18px;margin-bot
 .cfm{{position:fixed;inset:0;z-index:90;background:rgba(74,64,58,.42);display:flex;align-items:center;justify-content:center;padding:20px}}
 .cfm-box{{width:100%;max-width:320px;background:#fffdf9;border:2px solid #e8d8d5;border-radius:22px;padding:18px 18px 14px;box-shadow:0 6px 0 #eadfdc,0 20px 40px -18px rgba(74,64,58,.45);text-align:center}}
 .cfm-t{{margin:0 0 6px;font-size:16px;font-weight:800;color:var(--ink)}} .cfm-s{{margin:0 0 14px;font-size:12px;color:var(--mute)}}
-.cfm-day{{flex:1 1 40%}}
+.cfm-day{{flex:1 1 40%;background:#b8928e!important;border-color:#a8817d!important;box-shadow:0 3px 0 #9c7773!important}}
 .cfm-act{{flex-wrap:wrap;display:flex;gap:10px;justify-content:center}}
 .cfm-no,.cfm-yes{{font-family:inherit;font-size:14px;font-weight:800;border-radius:999px;padding:8px 20px;cursor:pointer}}
 .cfm-no{{color:#7d7468;background:#fff;border:2px solid #e3ddd5;box-shadow:0 3px 0 #e8e2da}}
