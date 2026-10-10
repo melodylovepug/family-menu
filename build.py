@@ -219,6 +219,8 @@ STEAM = '<svg class="steam" viewBox="0 0 60 40" aria-hidden="true"><path d="M12 
 PETAL = '<svg class="petal {c}" viewBox="0 0 40 40" aria-hidden="true"><g fill="#e3cbc7" stroke="#c9a9a6" stroke-width="1"><path d="M20 20C14 10 16 3 20 6c4-3 6 4 0 14z"/><path d="M20 20C14 10 16 3 20 6c4-3 6 4 0 14z" transform="rotate(72 20 20)"/><path d="M20 20C14 10 16 3 20 6c4-3 6 4 0 14z" transform="rotate(144 20 20)"/><path d="M20 20C14 10 16 3 20 6c4-3 6 4 0 14z" transform="rotate(216 20 20)"/><path d="M20 20C14 10 16 3 20 6c4-3 6 4 0 14z" transform="rotate(288 20 20)"/></g><circle cx="20" cy="20" r="2.6" fill="#c8b78e"/></svg>'
 out.append(f'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
+<script>window.BUILD="__BUILD__";</script>
 <title>家庭菜单 · Home Menu</title>
 <style>
 :root{{--bg:#f6f2ec;--card:#fcfaf6;--ink:#4a403a;--mute:#958a80;--line:#e6ded3;--pink:#b8928e;--pinkbg:#efe3e1;--matcha:#8f9e87;--sky:#d5dde4;--yel:#ede6d3;
@@ -753,8 +755,19 @@ document.getElementById('pick-copy').addEventListener('click',async()=>{const b=
 __EXTRA_JS__
 function openFromHash(){const h=location.hash.match(/^#([dtg]\\d+)$/)||(location.search.match(/[?&]dish=([dtg]\\d+)/));if(h){const d=document.getElementById(h[1]);if(d){ov.style.transition='none';sh.style.transition='none';openDish(d);requestAnimationFrame(()=>{ov.style.transition='';sh.style.transition='';});}}}
 openFromHash();
+/* always-latest: compare with version.json (never cached); reload once per new version */
+(function(){const V=window.BUILD;let busy=0;
+ function check(){if(busy)return;busy=1;fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(j=>{busy=0;
+  if(!j||!j.v||j.v===V)return;const k='fm-rl-'+j.v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1');}catch(e){return;}
+  const u=new URL(location.href);u.searchParams.set('v',j.v);location.replace(u.toString());}).catch(()=>{busy=0;});}
+ check();document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')check();});window.addEventListener('focus',check);
+ if('serviceWorker' in navigator)navigator.serviceWorker.getRegistrations().then(rs=>rs.forEach(r=>r.unregister())).catch(()=>{});})();
 </script></body></html>''')
 page = "\n".join(out).replace('__EXTRA_JS__', extra_js())
+import hashlib
+BUILD = hashlib.sha1(page.encode()).hexdigest()[:10]   # content version: changes whenever the page changes
+page = page.replace('__BUILD__', BUILD)
+open(os.path.join(ROOT, 'version.json'), 'w').write(json.dumps({'v': BUILD}))
 open(os.path.join(ROOT, 'index.html'), 'w', encoding='utf-8').write(page)
 print(total, len(CATS), 'todo', len(D['todo']), len(page.encode()), 'form' if SCRIPT_URL else 'no form')
 print('sheet link tags:', len(REF_STATS['linked']), REF_STATS['linked'])
