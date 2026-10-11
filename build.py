@@ -575,7 +575,8 @@ for c in CATS:
             if d['note']: summ += f'<div class="note">⏱ {E(d["note"])}</div>'
             if summ: summ = f'<div class="sh-sum">{summ}</div>'
             steps = md(body, d.get("photo"), d.get("photo_ai"))
-            if not has_body(d) and (d['ingredients'] or d['note'] or has): steps += '<p class="tbd-steps">做法步骤 待补充</p>'
+            if d.get('photo') and 'class="ph' not in steps: steps = f'<img class="ph" src="{E(d["photo"])}" alt="" loading="lazy">' + steps
+            if not has_body(d) and (d['ingredients'] or d['note'] or has or d.get('photo') or d['links']): steps += '<p class="tbd-steps">做法步骤 待补充</p>'
             s += (f'<div class="rcp-src" data-ic="{c["icon"]}" data-cat="{E(c["zh"])} · {E(c["en"])}">'
                   f'{ref_html(refs, d["name"])}{summ}{steps}</div>')
         out.append(s + '</div>')
