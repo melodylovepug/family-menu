@@ -277,7 +277,10 @@
       }
      ],
      "photo": "img/1ae745498aa58f.jpg",
-     "recipe": "![](img:蒜泥白肉)\n[小红书 · 17 麦三斤](http://xhslink.com/a/53t2gEyx3Ic7)"
+     "recipe": "![](img:蒜泥白肉)\n[小红书 · 17 麦三斤](http://xhslink.com/a/53t2gEyx3Ic7)",
+     "aliases": [
+      "蒜泥白肉(少辣)"
+     ]
     },
     {
      "id": "d81",
@@ -1703,6 +1706,24 @@
     "泰式酸辣鸡腿",
     "韩式炖short rib",
     "盐油砂锅焗斑鱼"
+   ],
+   "planned": true
+  },
+  {
+   "date": "2026-10-20",
+   "dishes": [
+    "大盘鸡",
+    "东北大拌菜",
+    "蒜泥白肉(少辣)"
+   ],
+   "planned": true
+  },
+  {
+   "date": "2026-10-22",
+   "dishes": [
+    "泰式酸辣鸡腿",
+    "南京盐水鸭",
+    "东北大拌菜"
    ],
    "planned": true
   }
