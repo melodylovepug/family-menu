@@ -163,6 +163,18 @@
      "links": [],
      "photo": null,
      "recipe": "> 皮用最薄的烧卖皮就行，羊肉的话可以选羊肩肉，要稍微肥一点的比较香。馅儿里加紫洋葱碎，黑白胡椒粉，五香粉or十三香，咖喱粉，和酱油，看情况补点盐就行了"
+    },
+    {
+     "id": "d86",
+     "name": "烧椒牛肉豆腐煲",
+     "tag": null,
+     "meat": "牛",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": "",
+     "tbd": true
     }
    ]
   },
@@ -812,6 +824,18 @@
      "links": [],
      "photo": null,
      "recipe": ""
+    },
+    {
+     "id": "d87",
+     "name": "酸辣藕丁",
+     "tag": null,
+     "meat": "素",
+     "ingredients": "",
+     "note": "",
+     "links": [],
+     "photo": null,
+     "recipe": "",
+     "tbd": true
     }
    ]
   },
@@ -1723,6 +1747,16 @@
    "dishes": [
     "泰式酸辣鸡腿",
     "南京盐水鸭",
+    "东北大拌菜"
+   ],
+   "planned": true
+  },
+  {
+   "date": "2026-10-27",
+   "dishes": [
+    "烧椒牛肉豆腐煲",
+    "酸辣藕丁",
+    "香菜柠檬鸡",
     "东北大拌菜"
    ],
    "planned": true
