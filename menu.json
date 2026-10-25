@@ -721,20 +721,6 @@
      "recipe": ""
     },
     {
-     "id": "d62",
-     "name": "炒藕丁",
-     "tag": null,
-     "meat": "素",
-     "aliases": [
-      "藕丁"
-     ],
-     "ingredients": "",
-     "note": "",
-     "links": [],
-     "photo": null,
-     "recipe": ""
-    },
-    {
      "id": "d64",
      "name": "凉拌茄子",
      "tag": null,
@@ -835,7 +821,11 @@
      "links": [],
      "photo": null,
      "recipe": "",
-     "tbd": true
+     "tbd": true,
+     "aliases": [
+      "炒藕丁",
+      "藕丁"
+     ]
     }
    ]
   },
