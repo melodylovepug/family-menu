@@ -195,12 +195,30 @@ for c in CATS:
         if not kind: continue                                                    # veg-only mains/staples are skipped
         PICK.append(dict(id=DID[id(d)], n=d['name'], k=kind, m=m, s=(c['id'] == 'soup' or '汤' in d['name']), t=bool(d.get('recent')),
                          r=has_body(d), o=bool(has_recipe(d) or d['ingredients'] or d['note'] or d['links'] or d.get('photo')), p=d.get('photo') or '', i=c['icon'], c=c['id'], l=LAST.get(d['name'], '')))
-# 最近-tagged 待做 items join the pool as mains (needs a protein tag); at most ONE 待做/最近 dish per pick or swap result.
+# 待做 items join the pool (kind + protein come from the explicit meat tag, else are inferred from the name).
+# tr=True: the old rule (最近-tagged + protein) -> drawable in every pick size; the rest are only drawn by the 3/4-dish "try one 待做" step.
+# At most ONE 待做/最近 dish per pick or swap result.
 TID = {id(t): t.get('id') or f't{i}' for i, t in enumerate(D['todo'], 1)}
+TODO_SKIP = ('辣酱', '鱼肝酱', '冷面', '拌饭', '菌菇汤', '广东汤', '糖藕')          # sauces / carb-only / no protein: never picked
+TODO_COLD = ('凉拌', '醋冻', '素什锦', '酸辣笋丁', '墨西哥玉米')                    # fill the 凉菜/蔬菜 slot
+TODO_PROT = [('牛', '牛'), ('羊', '羊'), ('虾', '虾'), ('章鱼|鱿鱼|墨鱼', '章鱼/鱿鱼'), ('鱼', '鱼'), ('鸭', '鸭'), ('猪|肉|肚|排骨|脚', '猪'),
+             ('鸡蛋|豆腐', '豆腐/蛋'), ('鸡|chicken', '鸡')]
+def todo_pick(t):
+    """-> (kind, protein) or None when a 待做 item can't be placed in a pick slot."""
+    if is_skip(t): return None
+    name = t['name']; meat = t.get('meat')
+    if meat and meat not in ('素', '甜品'): return ('main', canon(meat))
+    if meat == '甜品' or any(k in name for k in TODO_SKIP): return None
+    n = name.replace('羊肚菌', ''); kind = 'cold' if any(k in name for k in TODO_COLD) else 'main'
+    for pat, lab in TODO_PROT:
+        if re.search(pat, n, re.I): return (kind, canon(lab))
+    return ('cold', '素') if kind == 'cold' else None
 for t in D['todo']:
-    if t.get('recent') and t.get('meat') and not is_skip(t) and t['meat'] not in ('素', '甜品'):
-        PICK.append(dict(id=TID[id(t)], n=t['name'], k='main', m=canon(t['meat']), s=bool(t.get('soup')) or '汤' in t['name'], t=True, r=False,
-                         o=bool(t.get('link') or t.get('details') or t.get('ingredients')), p='', i='🌸', c='todo', l=LAST.get(t['name'], '')))
+    tp = todo_pick(t)
+    if not tp: continue
+    PICK.append(dict(id=TID[id(t)], n=t['name'], k=tp[0], m=tp[1], s=bool(t.get('soup')) or '汤' in t['name'].replace('高汤', ''), t=True, r=False,
+                     tr=bool(t.get('recent') and t.get('meat') and t['meat'] not in ('素', '甜品')),
+                     o=bool(t.get('link') or t.get('details') or t.get('ingredients')), p='', i='🌸', c='todo', l=LAST.get(t['name'], '')))
 total = sum(len(c['dishes']) for c in CATS)
 out = []
 PAL = {"beef":("#e2cdc4","#8a5f4f","#f6efeb"),"pork":("#efd9dc","#a36f78","#fbf2f3"),"poultry":("#e8dfc8","#8c7a4e","#f8f5ec"),"sea":("#d9e0e7","#66778a","#f2f4f6"),
@@ -668,7 +686,8 @@ const isMeat=x=>x.m&&x.m!=='素';
 function fillSlots(kept,kinds,excl,today,rnd,accept){today=today||new Date();rnd=rnd||Math.random;
  const recent=x=>daysAgo(x.l,today)<=14, ex=new Set(excl.concat(kept.map(x=>x.id)));
  const nc=kinds.filter(k=>k==='cold').length, nm=kinds.length-nc;
- const allC=PK.filter(x=>x.k==='cold'&&!ex.has(x.id)), allM=PK.filter(x=>x.k==='main'&&!ex.has(x.id));
+ const base=x=>x.c!=='todo'||x.tr;   /* non-最近 待做 items are only drawn by the 3/4-dish todo step */
+ const allC=PK.filter(x=>base(x)&&x.k==='cold'&&!ex.has(x.id)), allM=PK.filter(x=>base(x)&&x.k==='main'&&!ex.has(x.id));
  const frC=allC.filter(x=>!recent(x)), frM=allM.filter(x=>!recent(x));
  const tiers=[[0,0,0],[1,0,0],[0,1,0],[1,1,0],[0,0,1],[1,0,1],[0,1,1],[1,1,1]];
  for(const [ca,ma,rp] of tiers){if((ca&&!nc)||(ma&&!nm))continue;   /* skip tiers that relax a slot type we aren't filling */
@@ -692,15 +711,28 @@ function fillSlots(kept,kinds,excl,today,rnd,accept){today=today||new Date();rnd
    if(!accept||accept(got))return res;first=first||res;}
   if(first)return first;}
  return null;}
+/* 3/4-dish sets: try to include exactly ONE 待做 dish. It is seeded as a kept dish, the other slots are then filled under all the usual rules
+   (distinct proteins, <=1 soup, 2-week rule, skip tags, 1 cold + mains). Only a clean result (nothing relaxed) is accepted; otherwise null -> pick normally. */
+function withTodo(kept,kinds,excl,today,rnd,accept){
+ if(kept.some(x=>x.t)||kinds.length+kept.length<3||kinds.length+kept.length>4)return null;
+ const recent=x=>daysAgo(x.l,today)<=14, ex=new Set(excl.concat(kept.map(x=>x.id)));
+ const usedP=new Set(kept.filter(isMeat).map(x=>x.m)), hasSoup=kept.some(x=>x.s);
+ const cands=PK.filter(x=>x.c==='todo'&&!ex.has(x.id)&&!recent(x)&&kinds.includes(x.k)&&!(x.s&&hasSoup)&&!(isMeat(x)&&usedP.has(x.m)));
+ for(const t of wOrder(cands,()=>1,rnd).slice(0,25)){
+  const ks=kinds.slice();ks.splice(ks.indexOf(t.k),1);
+  const r=fillSlots(kept.concat([t]),ks,excl,today,rnd,accept?(g=>accept(g.concat([t]))):null);
+  if(r&&!r.relaxed&&!r.relaxedProtein){const got=r.got.concat([t]);got.sort((a,b)=>(a.k==='cold'?0:1)-(b.k==='cold'?0:1));return Object.assign({},r,{got});}}
+ return null;}
 const setKey=s=>s.map(x=>x.id).sort().join(',');
 function pickMenu(today,prevKey,rnd,n){n=Math.min(8,Math.max(2,+n||4));
  const kinds=['cold'].concat(Array(n-1).fill('main'));
- const r=fillSlots([],kinds,[],today,rnd,g=>setKey(g)!==prevKey);if(!r)return null;
+ const r=withTodo([],kinds,[],today,rnd,g=>setKey(g)!==prevKey)||fillSlots([],kinds,[],today,rnd,g=>setKey(g)!==prevKey);if(!r)return null;
  return {dishes:r.got,key:setKey(r.got),relaxed:r.relaxed,relaxedProtein:r.relaxedProtein,skipped:r.skipped,n};}
 /* Replace only the dishes at idxs; slot type kept, removed dishes never come back in this swap. */
 function swapPick(cur,idxs,today,rnd){idxs=[...new Set(idxs)].filter(i=>i>=0&&i<cur.length).sort((a,b)=>a-b);if(!idxs.length)return null;
  const kept=cur.filter((x,i)=>!idxs.includes(i)), removed=idxs.map(i=>cur[i]);
- const r=fillSlots(kept,removed.map(x=>x.k),removed.map(x=>x.id),today,rnd);if(!r)return null;
+ const rk=removed.map(x=>x.k),rid=removed.map(x=>x.id);
+ const r=withTodo(kept,rk,rid,today,rnd)||fillSlots(kept,rk,rid,today,rnd);if(!r)return null;
  const pool={cold:r.got.filter(x=>x.k==='cold'),main:r.got.filter(x=>x.k==='main')};
  const dishes=cur.slice();idxs.forEach(i=>{dishes[i]=pool[cur[i].k].shift();});
  return {dishes,key:setKey(dishes),relaxed:r.relaxed,relaxedProtein:r.relaxedProtein,skipped:r.skipped,n:cur.length,replaced:idxs};}
@@ -719,7 +751,7 @@ function renderPick(note){const L=document.getElementById('pick-list');L.innerHT
   row.className='pr-row'+(marked.has(i)?' on':'')+(fresh.includes(i)?' new':'');row.dataset.id=x.id;row.dataset.i=i;
   row.style.cssText='--ca:'+pal[0]+';--cd:'+pal[1]+';--cb:'+pal[2];
   const th=x.p?'<img class="pr-th" src="'+x.p+'" alt="" loading="lazy">':'<span class="pr-th">'+x.i+'</span>';
-  const tags=[x.k==='cold'?'凉菜·蔬菜':x.m];if(x.k==='cold'&&x.m!=='素')tags.push(x.m);if(x.s)tags.push('汤');if(x.t)tags.push('最近');
+  const tags=[x.k==='cold'?'凉菜·蔬菜':x.m];if(x.k==='cold'&&x.m!=='素')tags.push(x.m);if(x.s)tags.push('汤');if(x.c==='todo')tags.push('待做');else if(x.t)tags.push('最近');
   const last=x.l?'<span class="pr-last">'+(daysAgo(x.l,new Date())<0?'已计划 ':'上次 ')+Number(x.l.slice(5,7))+'/'+Number(x.l.slice(8))+'</span>':'';
   row.innerHTML='<button type="button" class="pr-item" aria-pressed="'+marked.has(i)+'"><span class="pr-chk" aria-hidden="true"></span>'+th+
    '<span class="pr-tx"><span class="pr-n"></span><span class="pr-tags">'+tags.map(t=>'<span>'+t+'</span>').join('')+last+'</span></span>'+
