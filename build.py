@@ -536,7 +536,7 @@ span.pr-th{{display:flex;align-items:center;justify-content:center;font-size:24p
 <h1>{E(D["title"])}</h1><div class="jp">「{E(D["subtitle"])}」</div>
 <div class="sub">Home Menu · {total} 道拿手菜 · {len(CATS)} 类 · 点菜名看做法</div><div class="washi"></div></header>
 <section class="pick" id="pick"><div class="pick-row"><select class="pick-n" id="pick-n" aria-label="选几道菜">{"".join(f'<option value="{i}"{" selected" if i == 4 else ""}>{i} 道</option>' for i in range(2, 9))}</select><button class="pick-btn" id="pick-go" type="button">🎲 帮我选 4 道菜</button></div>
-<div class="pick-cap"><span id="pick-capn">1 道凉菜/蔬菜 + 3 道荤菜</span> · <span>主蛋白不重复</span> · <span>最多 1 个汤</span> · <span>最多 1 道「最近」待做</span> · <span>不选午餐/其他/甜品</span> · <span>尽量避开近 2 周吃过的</span></div>
+<div class="pick-cap"><span id="pick-capn">1 道凉菜/蔬菜 + 3 道荤菜</span> · <span>主蛋白不重复</span> · <span>最多 1 个汤</span> · <span>3/4 道时尽量带 1 道待做（最多 1 道）</span> · <span>不选午餐/其他/甜品</span> · <span>尽量避开近 2 周吃过的</span></div>
 <div class="pick-res hide" id="pick-res" aria-live="polite"><div class="pr-head"><span>🍱 今日菜单 <small>きょうのこんだて</small></span><button class="pr-re" id="pick-re" type="button">🔄 换一组</button></div>
 <div class="pr-list" id="pick-list"></div>
 <div class="pr-bar"><span class="pr-hint" id="pick-hint"></span><button class="pr-tool" id="pick-sel" type="button">☑️ 多选换菜</button><button class="pr-tool pr-do" id="pick-swap" type="button" disabled>换掉选中的</button><button class="pr-tool" id="pick-copy" type="button">📋 复制食材</button><button class="pr-tool" id="pick-day" type="button">📅 加入菜单</button></div>
@@ -713,7 +713,7 @@ function fillSlots(kept,kinds,excl,today,rnd,accept){today=today||new Date();rnd
  return null;}
 /* 3/4-dish sets: try to include exactly ONE 待做 dish. It is seeded as a kept dish, the other slots are then filled under all the usual rules
    (distinct proteins, <=1 soup, 2-week rule, skip tags, 1 cold + mains). Only a clean result (nothing relaxed) is accepted; otherwise null -> pick normally. */
-function withTodo(kept,kinds,excl,today,rnd,accept){
+function withTodo(kept,kinds,excl,today,rnd,accept){today=today||new Date();rnd=rnd||Math.random;
  if(kept.some(x=>x.t)||kinds.length+kept.length<3||kinds.length+kept.length>4)return null;
  const recent=x=>daysAgo(x.l,today)<=14, ex=new Set(excl.concat(kept.map(x=>x.id)));
  const usedP=new Set(kept.filter(isMeat).map(x=>x.m)), hasSoup=kept.some(x=>x.s);
