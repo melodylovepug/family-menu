@@ -199,20 +199,21 @@ for c in CATS:
 # tr=True: the old rule (最近-tagged + protein) -> drawable in every pick size; the rest are only drawn by the 3/4-dish "try one 待做" step.
 # At most ONE 待做/最近 dish per pick or swap result.
 TID = {id(t): t.get('id') or f't{i}' for i, t in enumerate(D['todo'], 1)}
-TODO_SKIP = ('辣酱', '鱼肝酱', '冷面', '拌饭', '菌菇汤', '广东汤', '糖藕')          # sauces / carb-only / no protein: never picked
-TODO_COLD = ('凉拌', '醋冻', '素什锦', '酸辣笋丁', '墨西哥玉米')                    # fill the 凉菜/蔬菜 slot
+TODO_COLD = ('凉拌', '醋冻', '素什锦', '酸辣笋丁', '墨西哥玉米', '糖藕', '鱼肝酱')   # fill the 凉菜/蔬菜 slot (cold appetizer / sweet sides; 八宝辣酱 is a hot 下饭酱 -> 荤菜 slot)
+TODO_NOPROT = ('辣酱', '鱼肝酱', '糖藕', '冷面', '拌饭')                                  # condiment / staple-like: no protein conflict
 TODO_PROT = [('牛', '牛'), ('羊', '羊'), ('虾', '虾'), ('章鱼|鱿鱼|墨鱼', '章鱼/鱿鱼'), ('鱼', '鱼'), ('鸭', '鸭'), ('猪|肉|肚|排骨|脚', '猪'),
              ('鸡蛋|豆腐', '豆腐/蛋'), ('鸡|chicken', '鸡')]
 def todo_pick(t):
-    """-> (kind, protein) or None when a 待做 item can't be placed in a pick slot."""
+    """-> (kind, protein) for EVERY non-skip 待做 item ('素' = no protein, never conflicts); soups are flagged via 汤 in the name."""
     if is_skip(t): return None
     name = t['name']; meat = t.get('meat')
     if meat and meat not in ('素', '甜品'): return ('main', canon(meat))
-    if meat == '甜品' or any(k in name for k in TODO_SKIP): return None
-    n = name.replace('羊肚菌', ''); kind = 'cold' if any(k in name for k in TODO_COLD) else 'main'
+    kind = 'cold' if (meat == '甜品' or any(k in name for k in TODO_COLD)) else 'main'
+    if meat == '甜品' or any(k in name for k in TODO_NOPROT): return (kind, '素')
+    n = name.replace('羊肚菌', '')
     for pat, lab in TODO_PROT:
         if re.search(pat, n, re.I): return (kind, canon(lab))
-    return ('cold', '素') if kind == 'cold' else None
+    return (kind, '素')      # soups w/o protein (三鲜菌菇汤, 广东汤), veg sides, anything else: still pickable, no protein conflict
 for t in D['todo']:
     tp = todo_pick(t)
     if not tp: continue
