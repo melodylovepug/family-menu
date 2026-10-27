@@ -200,6 +200,7 @@ for c in CATS:
 # At most ONE 待做/最近 dish per pick or swap result.
 TID = {id(t): t.get('id') or f't{i}' for i, t in enumerate(D['todo'], 1)}
 TODO_COLD = ('凉拌', '醋冻', '素什锦', '酸辣笋丁', '墨西哥玉米', '糖藕', '鱼肝酱')   # fill the 凉菜/蔬菜 slot (cold appetizer / sweet sides; 八宝辣酱 is a hot 下饭酱 -> 荤菜 slot)
+TODO_STAPLE = ('冷面', '拌饭', '炒饭', '煲仔饭', '炒面', '拌面')                          # 饭·面 dishes (= the menu's 饭·面包 'staple' group); no tag in menu.json for 待做, so inferred by name
 TODO_NOPROT = ('辣酱', '鱼肝酱', '糖藕', '冷面', '拌饭')                                  # condiment / staple-like: no protein conflict
 TODO_PROT = [('牛', '牛'), ('羊', '羊'), ('虾', '虾'), ('章鱼|鱿鱼|墨鱼', '章鱼/鱿鱼'), ('鱼', '鱼'), ('鸭', '鸭'), ('猪|肉|肚|排骨|脚', '猪'),
              ('鸡蛋|豆腐', '豆腐/蛋'), ('鸡|chicken', '鸡')]
@@ -218,7 +219,7 @@ for t in D['todo']:
     tp = todo_pick(t)
     if not tp: continue
     PICK.append(dict(id=TID[id(t)], n=t['name'], k=tp[0], m=tp[1], s=bool(t.get('soup')) or '汤' in t['name'].replace('高汤', ''), t=True, r=False,
-                     tr=bool(t.get('recent') and t.get('meat') and t['meat'] not in ('素', '甜品')),
+                     tr=bool(t.get('recent') and t.get('meat') and t['meat'] not in ('素', '甜品')), f=any(k in t['name'] for k in TODO_STAPLE),
                      o=bool(t.get('link') or t.get('details') or t.get('ingredients')), p='', i='🌸', c='todo', l=LAST.get(t['name'], '')))
 total = sum(len(c['dishes']) for c in CATS)
 out = []
@@ -752,7 +753,7 @@ function renderPick(note){const L=document.getElementById('pick-list');L.innerHT
   row.className='pr-row'+(marked.has(i)?' on':'')+(fresh.includes(i)?' new':'');row.dataset.id=x.id;row.dataset.i=i;
   row.style.cssText='--ca:'+pal[0]+';--cd:'+pal[1]+';--cb:'+pal[2];
   const th=x.p?'<img class="pr-th" src="'+x.p+'" alt="" loading="lazy">':'<span class="pr-th">'+x.i+'</span>';
-  const tags=[x.k==='cold'?'凉菜·蔬菜':x.m];if(x.k==='cold'&&x.m!=='素')tags.push(x.m);if(x.s)tags.push('汤');if(x.c==='todo')tags.push('待做');else if(x.t)tags.push('最近');
+  const tags=[x.k==='cold'?'凉菜·蔬菜':(x.f?'饭·面':x.m)];if(x.f&&x.m!=='素')tags.push(x.m);if(x.k==='cold'&&x.m!=='素')tags.push(x.m);if(x.s)tags.push('汤');if(x.c==='todo')tags.push('待做');else if(x.t)tags.push('最近');
   const last=x.l?'<span class="pr-last">'+(daysAgo(x.l,new Date())<0?'已计划 ':'上次 ')+Number(x.l.slice(5,7))+'/'+Number(x.l.slice(8))+'</span>':'';
   row.innerHTML='<button type="button" class="pr-item" aria-pressed="'+marked.has(i)+'"><span class="pr-chk" aria-hidden="true"></span>'+th+
    '<span class="pr-tx"><span class="pr-n"></span><span class="pr-tags">'+tags.map(t=>'<span>'+t+'</span>').join('')+last+'</span></span>'+
