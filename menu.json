@@ -601,19 +601,26 @@
     },
     {
      "id": "d84",
-     "name": "西班牙酸油辣虾",
+     "name": "西班牙蒜油辣虾",
      "tag": null,
      "meat": "虾",
-     "ingredients": "黑虎虾 · 大蒜 · 干辣椒 · 天椒粉 · 橄榄油 · 白葡萄酒 · 欧芹",
+     "ingredients": "黑虎虾500g · 大蒜1头 · 干辣椒少许 · 甜椒粉1勺 · 橄榄油30ml · 君度橙味力娇酒20ml（可用白葡萄酒替代） · 欧芹少许 · 黑胡椒少许 · 法棍适量",
      "note": "",
      "links": [
       {
        "label": "小红书",
        "url": "http://xhslink.com/o/2xU157Txdsq"
+      },
+      {
+       "label": "完整笔记",
+       "url": "https://www.rednote.com/discovery/item/6909c10f000000000402b5d9"
       }
      ],
-     "photo": null,
-     "recipe": ""
+     "photo": "img/xibanya-suan-you-la-xia.jpg",
+     "recipe": "",
+     "aliases": [
+      "西班牙酸油辣虾"
+     ]
     },
     {
      "id": "d85",
